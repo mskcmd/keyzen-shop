@@ -1,0 +1,100 @@
+<%- include('../admin/layouts/adminsidebars') %> <%-
+include('../admin/layouts/adminnavebar') %>
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card" id="products">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Product Management</h4>
+
+            <p class="card-description">All BloomStyle Products</p>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+
+                    <th>Name</th>
+                    <th>Images</th>
+                    <th>Category</th>
+                    <th>Stock</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                    <th>Edit</th>
+                    <a
+                      href="/admin/addProduct"
+                      class="btn btn-outline-primary btn-rounded"
+                      >Add Products</a
+                    >
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (product.length > 0) { %> <% for (let i = 0; i <
+                  product.length; i++) { %>
+                  <tr>
+                    <td><%= i+1 %></td>
+                    <td><%=product[i].name %></td>
+                    <td>
+                      <img
+                        src="/products/crope/<%= product[i].images.image1 %>"
+                        alt=""
+                      />
+                    </td>
+                    <td><%= product[i].category %></td>
+                    <td><%= product[i].quantity %></td>
+                    <td><%= product[i].price %></td>
+
+                    <td
+                      class="<% if (product[i].blocked === 0) { %>text-success<% } else if (product[i].blocked === 1) { %>text-danger<% } %>"
+                    >
+                      <% if (product[i].blocked === 0) { %>Active<% } else if
+                      (product[i].blocked === 1) { %>Blocked<% } %>
+                    </td>
+
+                    <td>
+                      <% if (product[i].blocked === 0) { %>
+                      <a href="/admin/problock?id=<%=product[i]._id%>">
+                        <button style="background-color: red; color: white">
+                          Block
+                        </button>
+                      </a>
+                      <% } else { %>
+                      <a href="/admin/problock?id=<%=product[i].id%>">
+                        <button style="background-color: green; color: white">
+                          Unblock
+                        </button>
+                      </a>
+                      <% } %>
+                    </td>
+                    <td>
+                      <a href="/admin/updeteproduct?id=<%=product[i]._id%>">
+                        <button
+                          style="
+                            background-color: rgb(0, 30, 255);
+                            color: white;
+                          "
+                        >
+                          Update
+                        </button>
+                      </a>
+                    </td>
+                  </tr>
+                  <% } %> <% } else { %>
+                  <tr>
+                    <td colspan="5">Products Not Found</td>
+                  </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../admin/layouts/adminfootbar') %>
+</div>

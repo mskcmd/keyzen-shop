@@ -1,0 +1,87 @@
+<%- include('../admin/layouts/adminsidebars') %> <%-
+include('../admin/layouts/adminnavebar') %>
+
+<div class="col-lg-12 grid-margin stretch-card">
+  <div class="content-wrapper">
+    <br /><br /><br />
+    <div class="card" id="category">
+      <div class="card-body">
+        <h4 class="card-title">Category Management</h4>
+
+        <button type="button" class="btn btn-success m-2">
+          <a style="color: blanchedalmond" href="/admin/addCategory"
+            >ADD CATEGORY</a
+          >
+        </button>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Action</th>
+                <th>Update</th>
+                <th>Delete</th>
+              </tr>
+              <% if (cate.length > 0) { %> <% for (let i = 0; i < cate.length;
+              i++) { %>
+              <tr>
+                <td><%= i+1 %></td>
+                <td><%=cate[i].name %></td>
+                <td
+                  class="<% if (cate[i].blocked === 0) { %>text-success<% } else if (cate[i].blocked === 1) { %>text-danger<% } %>"
+                >
+                  <% if (cate[i].blocked === 0) { %>Active<% } else if
+                  (cate[i].blocked === 1) { %>Blocked<% } %>
+                </td>
+
+                <td>
+                  <% if (cate[i].blocked === 0) { %>
+                  <a href="/admin/un-block?id=<%=cate[i]._id%>">
+                    <button style="background-color: red; color: white">
+                      Block
+                    </button>
+                  </a>
+                  <% } else { %>
+                  <a href="/admin/un-block?id=<%=cate[i].id%>">
+                    <button style="background-color: green; color: white">
+                      Unblock
+                    </button>
+                  </a>
+                  <% } %>
+                </td>
+                <td>
+                  <a href="/admin/cateUpdate?id=<%=cate[i]._id%>">
+                    <button
+                      style="background-color: rgb(0, 30, 255); color: white"
+                    >
+                      Update
+                    </button>
+                  </a>
+                </td>
+                <td>
+                  <a href="/admin/cateDelete?id=<%=cate[i]._id%>">
+                    <button style="background-color: red; color: white">
+                      Delete
+                    </button>
+                  </a>
+                </td>
+              </tr>
+              <% } %> <% } else { %>
+
+              <tr>
+                <td colspan="5">Catagories Not Found</td>
+              </tr>
+
+              <% } %>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../admin/layouts/adminfootbar') %>

@@ -1,0 +1,38 @@
+<%- include('../admin/layouts/adminsidebars') %> <%-
+include('../admin/layouts/adminnavebar') %>
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Update Category</h4>
+
+          <form
+            action="/admin/updatecategory"
+            id="editCate"
+            method="post"
+            class="forms-sample"
+          >
+            <div class="form-group">
+              <label for="exampleInputName1">Category Name</label>
+              <input
+                name="name"
+                type="text"
+                class="form-control"
+                id="name"
+                value="<%= cate.name %>"
+                placeholder="Category Name"
+              />
+            </div>
+            <input type="hidden" name="id" value="<%= cate._id%>" /><br />
+
+            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../admin/layouts/adminfootbar') %>
+</div>

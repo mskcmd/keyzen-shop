@@ -1,0 +1,82 @@
+<%- include('../admin/layouts/adminsidebars') %>
+<%- include('../admin/layouts/adminnavebar') %>
+
+    <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="page-header">
+              <h3 class="page-title">Edit Form  </h3>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Edit Form </li>
+                </ol>
+              </nav>
+            </div>
+            <div class="row">
+              <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title"> Edit User</h4>
+                    <p class="card-description">    </p>
+                    <form id="UpdateForm" method="post" action="" class="forms-sample">
+                        <div class="form-group">
+                          <label for="exampleInputUsername1">name</label>
+                          <input type="text" name="name" value="<%=user.name %>" class="form-control" id="exampleInputUsername1" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Email address</label>
+                          <input type="email" name="email" value="<%= user.email %>" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                        </div>
+                       
+                       
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">mobile number</label>
+                            <input type="number" name="mobile" value="<%= user.mobile %>" class="form-control" id="mobile" placeholder="number">
+                          </div>
+                          <input type="hidden" name="id" value="<%= user._id%>">
+
+                        <button type="submit" value="update User" id="updateButton" class="btn btn-primary mr-2">Submit</button>
+                        <button class="btn btn-dark">Cancel</button>
+                      </form>    
+                  </div>
+                </div>
+              </div>
+             
+            </div>
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+          <footer class="footer">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="/admin/assets/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="/admin/assets/vendors/select2/select2.min.js"></script>
+    <script src="/admin/assets/vendors/typeahead.js/typeahead.bundle.min.js"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="/admin/assets/js/off-canvas.js"></script>
+    <script src="/admin/assets/js/hoverable-collapse.js"></script>
+    <script src="/admin/assets/js/misc.js"></script>
+    <script src="/admin/assets/js/settings.js"></script>
+    <script src="/admin/assets/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="/admin/assets/js/file-upload.js"></script>
+    <script src="/admin/assets/js/typeahead.js"></script>
+    <script src="/admin/assets/js/select2.js"></script>
+    <!-- End custom js for this page -->
+  </body>
+</html>

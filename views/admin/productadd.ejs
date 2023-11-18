@@ -1,0 +1,163 @@
+<!-- Include your sidebar and navbar here -->
+<%- include('../admin/layouts/adminsidebars') %>
+<%- include('../admin/layouts/adminnavebar') %>
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Add Products</h4>
+          <p class="card-description">Give product details</p>
+          <form class="forms-sample" id="addPro" action="/admin/addProduct" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="exampleInputName1">Product Name</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+              <p id="nameError" style="color: red; display: none;"></p>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail3">Product Price</label>
+              <input type="number" class="form-control" id="price" name="price" placeholder="Price">
+              <p id="priceError" style="color: red; display: none;"></p>
+            </div>
+
+
+            <div class="form-group">
+              <label for="Category">Category</label>
+              <select name="category" id="categorySelect">
+                <% if(catData.length > 0){
+                  for(let i=0; i<catData.length; i++){ %>
+                    <option value="<%= catData[i].name %>"><%= catData[i].name %></option>
+                  <% }
+                } else { %>
+                  <option value="">No Categories</option>
+                <% } %>
+              </select> 
+            </div>
+            
+            <div class="form-group">
+              <label for="exampleInputPassword4">Quantity</label>
+              <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Quantity">
+              <p id="quanError" style="color: red; display: none;"></p>
+            </div>
+            <div class="form-group">
+              <label for="exampleTextarea1">Description</label>
+              <input type="text" class="form-control" id="description" name="description" placeholder="Description">
+              <p id="descError" style="color: red; display: none;"></p>
+            </div>
+            <label for="exampleTextarea1">Product Images</label>
+            <div>
+              <div class="col-lg-3 col-md-6 rounded-image-preview">
+                <label for="imageInput1" class="image-label">
+                  <div class="rounded-image-preview">
+                    <img id="imagePreview1" src="/admin/assets/images/preview.jpg" alt="Preview" />
+                  </div>
+                  <input name="image1" type="file" accept="image/*" id="imageInput1" class="imageInput" multiple required>
+                </label>
+              </div>
+              <div class="col-lg-3 col-md-6 rounded-image-preview">
+                <label for="imageInput2" class="image-label">
+                  <div class="rounded-image-preview">
+                    <img id="imagePreview2" src="/admin/assets/images/preview.jpg" alt="Preview" />
+                  </div>
+                  <input name="image2" type="file" accept="image/*" id="imageInput2" class="imageInput" multiple required>
+                </label>
+              </div>
+              <div class="col-lg-3 col-md-6 rounded-image-preview">
+                <label for="imageInput3" class="image-label">
+                  <div class="rounded-image-preview">
+                    <img id="imagePreview3" src="/admin/assets/images/preview.jpg" alt="Preview" />
+                  </div>
+                  <input name="image3" type="file" accept="image/*" id="imageInput3" class="imageInput" multiple required>
+                </label>
+              </div>
+              <div class="col-lg-3 col-md-6 rounded-image-preview">
+                <label for="imageInput4" class="image-label">
+                  <div class="rounded-image-preview">
+                    <img id="imagePreview4" src="/admin/assets/images/preview.jpg" alt="Preview" />
+                  </div>
+                  <input name="image4" type="file" accept="image/*" id="imageInput4" class="imageInput" multiple required>
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+            <button class="btn btn-inverse-danger" onclick="window.location.href='/admin/product'">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add this script to include jQuery before your custom script -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    // Function to handle image preview
+    function updateImagePreview(inputElement, imagePreviewId) {
+      var imagePreview = $("#" + imagePreviewId)[0];
+      var file = inputElement.files[0];
+
+      if (file) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          imagePreview.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+      } else {
+        // Reset the image preview when no file is selected
+        imagePreview.src = "/admin/assets/images/preview.jpg";
+      }
+    }
+
+    // Event handler for image input change
+    $(".imageInput").change(function() {
+      var input = this;
+      var imagePreviewId = $(input).siblings('.rounded-image-preview').children('img').attr('id');
+      updateImagePreview(input, imagePreviewId);
+    });
+  });
+
+  document.getElementById('addPro').addEventListener('submit', function(event) {
+        const name = document.getElementById('name').value;
+        const price = document.getElementById('price').value;
+        const quantity = document.getElementById('quantity').value;
+        const description = document.getElementById('description').value;
+
+        const nameError = document.getElementById('nameError');
+        const priceError = document.getElementById('priceError');
+        const quanError = document.getElementById('quanError');
+        const descError = document.getElementById('descError');
+
+        if (name.trim() === "" || price.trim() === "" || quantity.trim() === "" || description.trim() === "") {
+          nameError.textContent = "All fields must be filled out.";
+          event.preventDefault();
+        }
+
+        if (name.trim() === "") {
+          nameError.textContent = "Product name is required.";
+          event.preventDefault();
+        }
+
+        if (price < 1) {
+          priceError.textContent = "Price must be a positive value.";
+          event.preventDefault();
+        }
+
+        if (quantity < 1) {
+          quanError.textContent = "Quantity must be a positive value.";
+          event.preventDefault();
+        }
+
+        if (description.length < 10) {
+          descError.textContent = "Description must be at least 10 characters.";
+          event.preventDefault();
+        }
+      });
+</script>
+
+<!-- Include your footer here -->
+<%- include('../admin/layouts/adminfootbar') %>

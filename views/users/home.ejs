@@ -194,7 +194,7 @@
 
                                     <div class="deal-countdown" data-until="+10h"></div><!-- End .deal-countdown -->
 
-                                    <a href="product.html" class="btn btn-primary">
+                                    <a href="/product" class="btn btn-primary">
                                         <span>Shop Now</span><i class="icon-long-arrow-right"></i>
                                     </a>
                                 </div><!-- End .deal-content -->
@@ -253,11 +253,11 @@
         
                                             <div class="product-action">
                                                 <% if(products[i].quantity==0) { %>
-                                                    <a style="cursor: pointer;" class="btn-product btn-cart text-danger">
+                                                    <a style="cursor: pointer;" id="noStockBtn" class="btn-product btn-cart text-danger">
                                                         <span>No Stock</span>
                                                     </a>
                                                 <% } else { %>
-                                                    <a style="cursor: pointer;" onclick="addCart('<%= products[i]._id %>','<%= user %>')" class="btn-product btn-cart">
+                                                    <a style="cursor: pointer;" id="addtocart" data-product-id ="<%=products[i]._id %>"  class="btn-product btn-cart">
                                                         <span>add to cart</span>
                                                     </a>
                                                 <% } %>
@@ -279,8 +279,18 @@
                                                 <span class="ratings-text">( 2 Reviews )</span>
                                             </div>
                                         </div>
+                                        
+
                                         <div class="product-action">
-                                            <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                            <% if(products[i].quantity==0) { %>
+                                                <a style="cursor: pointer;" id="noStockBtn" class="btn-product btn-cart text-danger">
+                                                    <span>No Stock</span>
+                                                </a>
+                                                <% } else { %>
+                                                    
+                                            <a   href="/productdeteal?id=<%= products[i]._id %>"  class="btn-product btn-cart"><span> Buy Now</span></a>
+                                            <% } %>
+
                                         </div><!-- End .product-action -->
                                     </div><!-- End .product -->
                                 </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
@@ -395,6 +405,60 @@
                 </div><!-- End .container -->
             </div><!-- End .blog-posts -->
         </main><!-- End .main -->
+
+        <script>
+            $(document).ready(function () {
+                $('#noStockBtn').on('click', function () {
+                    Swal.fire({
+                        title: "Error",
+                        text: "No stock available.",
+                        icon: "error"
+                    });
+                    // You can replace Swal.fire with a more sophisticated UI element or action.
+                });
+            });
+            document.addEventListener("DOMContentLoaded", function () {
+                // Use querySelectorAll to select all elements with the class 'btn-cart'
+                var addToCartButtons = document.querySelectorAll('.btn-cart');
+        
+                // Add a click event listener to each button
+                addToCartButtons.forEach(function (button) {
+                    button.addEventListener('click', function () {
+                        var productId = this.getAttribute('data-product-id');
+                        
+        
+                        // Use fetch to send a POST request with the product ID in the request body
+                        $.ajax({
+                            url:'/addtocart',
+                            method:"post",
+                            data:{id:productId},
+                            success:((response)=>{
+                                console.log(response);
+                             if(response.noUser){
+                                window.location.href = "/login"
+                            }
+        
+                            if(response.added){
+        
+                               Swal.fire({
+                                title: "Item Added in Cart!",
+                                text: "You clicked the button!",
+                                icon: "success"
+                            });
+                            }
+                           if(response.nostoked){
+                            Swal.fire({
+                        title: "Error",
+                        text: "out of stock.you have added the entire stock th the cart",
+                        icon: "error"
+                    });                    }
+                            })
+                        })
+                
+                    });
+                });
+            });
+        </script>
 
        
         <%- include('../users/layouts/footer') %>

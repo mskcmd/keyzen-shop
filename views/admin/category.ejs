@@ -22,13 +22,12 @@ include('../admin/layouts/adminnavebar') %>
                 <th>Status</th>
                 <th>Action</th>
                 <th>Update</th>
-                <th>Delete</th>
               </tr>
               <% if (cate.length > 0) { %> <% for (let i = 0; i < cate.length;
               i++) { %>
               <tr>
                 <td><%= i+1 %></td>
-                <td><%=cate[i].name %></td>
+                <td><%=cate[i].name.slice(0, 10)%></td>
                 <td
                   class="<% if (cate[i].blocked === 0) { %>text-success<% } else if (cate[i].blocked === 1) { %>text-danger<% } %>"
                 >
@@ -60,13 +59,7 @@ include('../admin/layouts/adminnavebar') %>
                     </button>
                   </a>
                 </td>
-                <td>
-                  <a href="/admin/cateDelete?id=<%=cate[i]._id%>">
-                    <button style="background-color: red; color: white">
-                      Delete
-                    </button>
-                  </a>
-                </td>
+                
               </tr>
               <% } %> <% } else { %>
 

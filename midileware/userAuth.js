@@ -10,12 +10,15 @@ const islogin = async (req, res, next) => {
       } else {
         req.session.user_id = null;
 
-        res.redirect("/");
+        res.redirect("/login");
       }
+      // res.redirect("/");
+
     } else {
-      const userData = await User.findById(req.session.user_id);
       const products = await productdata.find();
-      res.render("home", { user: false, products: products });
+      // res.render("home", { user: false, products: products });
+      res.redirect("/login");
+
     }
   } catch (error) {
     console.log(error.message);

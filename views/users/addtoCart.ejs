@@ -1,0 +1,416 @@
+<%- include('../users/layouts/userHeader') %>
+
+
+
+
+
+<div class="page-wrapper">
+
+	<main class="main">
+	  <div
+		class="page-header text-center"
+		style="background-image: url('/user/assets/images/page-header-bg.jpg')"
+	  >
+		<div class="container">
+		  <h1 class="page-title">Shopping Cart<span>Shop</span></h1>
+		</div>
+		<!-- End .container -->
+	  </div>
+	  <!-- End .page-header -->
+	  <nav aria-label="breadcrumb" class="breadcrumb-nav">
+		<div class="container">
+		  <ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">Home</a></li>
+			<li class="breadcrumb-item"><a href="/product">Shop</a></li>
+			<li class="breadcrumb-item active" aria-current="page">
+			  Shopping Cart
+			</li>
+		  </ol>
+		</div>
+		<!-- End .container -->
+	  </nav>
+	  <!-- End .breadcrumb-nav -->
+  
+	  <div class="page-content">
+		<div class="cart">
+		  <div class="container">
+			<div class="row">
+			  <div class="col-lg-9">
+				<table class="border table table-cart table-mobile">
+				  <thead>
+					<tr>
+						<th>&nbsp;&nbsp;&nbsp;Product</th>
+
+					  <th>&nbsp;Price</th>
+					  <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Quantity</th>
+					  <th>&nbsp;&nbsp;&nbsp;Total</th>
+					  <th></th>
+					</tr>
+				  </thead>
+  
+				  <tbody>
+					<%if(cartData&& cartData.products && cartData.products.length> 0) {
+					  for(var i=0;i< cartData.products.length;i++){%>
+					<tr>
+					  <td class="product-col">
+						<div class="product">
+						  <figure class="product-media">
+							<a
+							  href="/product?id=<%= cartData.products[i].product._id %>"
+							>
+							  <img
+								src="/products/images/<%= cartData.products[i].product.images.image1%>"
+								alt="Product image"
+							  />
+							</a>
+						  </figure>
+  
+						  <div>
+							<div> 
+							  <h3 class="product-title">
+							 <a
+							   href="/product?id=<%= cartData.products[i].product._id %>"
+							   ><%= cartData.products[i].product.name %></a
+							 >
+						   </h3>
+						 </div>
+							<div>
+							  <% if (cartData.products[i].count >= cartData.products[i].product.quantity) { %>
+								<p id="nostock" class="text-danger"></p>
+							  <% } %>
+							</div>
+						   </div>
+						  <!-- End .product-title -->
+						</div>
+						<!-- End .product -->
+					  </td>
+  
+					  <td
+						class="price-col .product-price"
+						id="priceColumn_<%= cartData.products[i].product._id %>"
+					  >
+						<%= cartData.products[i].product.price %>
+					  </td>
+					  <span>
+                      <td class="quantity-col">
+                        
+                        
+						<% if(cartData.products[i].count > cartData.products[i].product.quantity){ %>
+                        <p style="color: red"><b>Out of Stock !</b></p>
+						<% } else { %>
+							<input
+                          style="width: 5vb"
+                          class="btn-outline-primary btn-rounded quantity-decrease123 px-3"
+                          type="button"
+                          class="btneg"
+                          value="-"
+                        />
+                        <input
+                          style="width: 5vb"
+                          class="btn-outline-primary btn-rounded  quantity-input text-center"
+                          type="text"
+						  type="number"
+                          value="<%= cartData.products[i].count %>"
+                          min="1"
+                          data-product-id="<%=cartData.products[i].product._id %>"
+                          max="10"
+                          id="qty<%=cartData.products[i].product._id %>"
+                         data-decimals="0"
+                          required readonly
+
+						  
+                        />
+                        <input
+                          style="width: 5vb"
+                          class="btn-outline-primary btn-rounded quantity-increase123 px-3"
+                          type="button"
+                          class="btpos"
+                          value="+"
+                        />
+						<% } %>
+
+					    </td>
+                    </span>
+						<!-- End .cart-product-quantity -->
+					  </td>
+					  <td class="total-price">
+						<%= (cartData.products[i].product.price * cartData.products[i].count).toFixed(2) %>
+  
+					  </td>
+  
+
+					  <td onclick="deleteCartItem('<%=cartData.products[i].product._id%>')" class="remove-col">
+                             <button class="btn-remove">
+                          <i class="icon-close"></i>
+                              </button>
+                                  </td>
+
+
+					</tr>
+				  </tbody>
+				  <%}}else{%>
+  
+				  <td colspan="5">
+					<div
+					  class="d-flex flex-column align-items-center justify-content-center"
+					>
+					  <i class="icon-shopping-incart"></i>
+					  <h5 class="text-center">No items in cart</h5>
+					</div>
+				  </td>
+  
+				  <%}%>
+				</table>
+  
+				<!-- End .table table-wishlist --
+				<!-- End .cart-bottom -->
+			  </div>
+			  <!-- End .col-lg-9 -->
+			  <aside class="col-lg-3">
+				<div class="summary summary-cart">
+				  <h3 class="summary-title">Cart Total</h3>
+				  <!-- End .summary-title -->
+  
+				  <table class="table table-summary">
+					<tbody>
+					  <tr >
+						<td>Subtotal:</td>
+						<td id="subAmount"><%=totalAmount%></td>
+					  </tr>
+					  <!-- End .summary-subtotal -->
+					  <tr class="summary-shipping">
+						<td>discount:</td>
+						<td>0:00</td>
+					  </tr>
+  
+					  <!-- End .summary-shipping-estimate -->
+  
+					  <tr class="summary-total">
+						<td>Total:</td>
+						<td id="totalAmount"><%=totalAmount %></td>
+  
+  
+					  </tr>
+					  <!-- End .summary-total -->
+					</tbody>
+				  </table>
+  
+				  <!-- End .table table-summary -->
+  
+				  <button
+					  class="btn btn-outline-primary-2 btn-order btn-block"
+					  onclick="proceedToCheckout()"
+					>PROCEED TO CHECKOUT</button>
+				</div>
+				<!-- End .summary -->
+  
+				<a
+				  href="/product"
+				  class="btn btn-outline-dark-2 btn-block mb-3"
+				  ><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i
+				></a>
+			  </aside>
+			  <!-- End .col-lg-3 -->
+			</div>
+			<!-- End .row -->
+		  </div>
+		  <!-- End .container -->
+		</div>
+		<!-- End .cart -->
+	  </div>
+	  <!-- End .page-content -->
+	</main>
+</div>
+
+  
+  <!-- End .main -->
+
+  <!-- SweetAlert CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="path/to/inputSpinnerPlugin.js"></script>
+  
+
+<!-- HTML -->
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+  const quantityInputs = document.querySelectorAll(".quantity-input");
+ 
+  const totalPriceElements = document.querySelectorAll(".total-price");
+
+  quantityInputs.forEach((input, index) => {
+    const minusButton = input.parentElement.querySelector(".quantity-decrease123");
+    const plusButton = input.parentElement.querySelector(".quantity-increase123");
+    const productID = input.getAttribute("data-product-id");
+
+    function updateMinusButtonStatus() {
+      const quantity = parseInt(input.value, 10);
+	  if (quantity === 1) {
+		minusButton.disabled = true;
+	  } else {
+		minusButton.disabled =false ;
+	  }
+      
+    }
+
+    minusButton.addEventListener("click", function () {
+      const quantity = parseInt(input.value, 10);
+      if (quantity > 1) {
+        const newQuantity = quantity - 1;
+        handleQuantityUpdate(productID, newQuantity, index);
+      }
+    });
+
+    plusButton.addEventListener("click", function () {
+      const quantity = parseInt(input.value, 10);
+      if (quantity <= 10) {
+        const newQuantity = quantity + 1;
+        handleQuantityUpdate(productID, newQuantity, index);
+      }
+    });
+  });
+  
+  async function handleQuantityUpdate(productID, quantity, index) {
+    try {
+		
+      const response = await fetch("/updatecart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+		
+        body: JSON.stringify({ product_id: productID, count: quantity }),
+      });
+	  
+      const data = await response.json();
+	  
+      if (data && data.message === 'Cart updated successfully') {
+        quantityInputs[index].value = quantity;
+        const totalPrice = data.amount;
+        totalPriceElements[index].textContent = ` ${totalPrice.toFixed(2)}`;
+        updateSubtotal();
+      } else {
+        console.log('Error updating cart quantity:');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Failed to update cart quantity. Please try again.',
+        });
+      }
+    } catch (error) {
+      console.error('Error updating cart quantity:', error.message);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'An error occurred. Please try again.',
+      });
+    }
+  }
+
+  function updateSubtotal() {
+    const totalPrices = Array.from(totalPriceElements)
+      .map((total) => parseFloat(total.textContent.replace(" ", "")))
+      .reduce((acc, val) => acc + val, 0);
+    document.getElementById("totalAmount").textContent = `${totalPrices.toFixed(2)}`;
+    document.getElementById("subAmount").textContent = `${totalPrices.toFixed(2)}`;
+  }
+});
+</script>
+<script>
+  function proceedToCheckout() {
+    try {
+      $.ajax({
+        url: "/loadchekout",
+        type: "get",
+        dataType: "json",
+        success: function (data) {
+
+          if (data.cartEmpty) {
+			Swal.fire({
+                title: "Error",
+                text: "cart is empty .",
+                icon: "error"
+            });
+          } if(data.noStock){
+			
+			Swal.fire({
+                title: "Error",
+                text: data.message,
+                icon: "error"
+            });
+		  }else if(data.success){
+			window.location.href = "/landchekout"
+		  }
+        },
+        error: function (error) {
+          console.error('Error fetching cart data:', error);
+        },
+      });
+    } catch (error) {
+      console.error('Error in proceedToCheckout:', error);
+    }
+  }
+</script>
+
+
+<script>
+	function deleteCartItem(proId) {
+  console.log(proId);
+
+  swal
+    .fire({
+      title: "Are You Sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    })
+    .then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch("/removeCartItem", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              product: proId,
+            }),
+          });
+
+          const responseData = await response.json();
+
+          if (responseData.success) {
+            location.reload();
+            swal.fire({
+              title: "Deleted!",
+              text: "Your item has been deleted.",
+              icon: "success",
+              timer: 1500,
+              showConfirmButton: false,
+            });
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          // Handle error if needed
+        }
+      }
+    });
+}
+
+
+
+ </script>
+
+
+
+     
+        <%- include('../users/layouts/footer') %>

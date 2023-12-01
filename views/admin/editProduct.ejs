@@ -41,7 +41,7 @@
               <select name="category" id="categorySelect">
                 <% if(catData.length > 0){
                   for(let i=0; i<catData.length; i++){ %>
-                    <option value="<%= catData[i].name %>"><%= catData[i].name %></option>
+                    <option value="<%= catData[i].name.slice(0, 10) %>"><%= catData[i].name.slice(0, 10) %></option>
                   <% }
                 } else { %>
                   <option value="">No Categories</option>

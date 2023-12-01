@@ -5,22 +5,12 @@
             <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
                 <div class="container d-flex align-items-center">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Products</a></li>
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/product">Products</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Centered</li>
                     </ol>
 
-                    <nav class="product-pager ml-auto" aria-label="Product">
-                        <a class="product-pager-link product-pager-prev" href="#" aria-label="Previous" tabindex="-1">
-                            <i class="icon-angle-left"></i>
-                            <span>Prev</span>
-                        </a>
-
-                        <a class="product-pager-link product-pager-next" href="#" aria-label="Next" tabindex="-1">
-                            <span>Next</span>
-                            <i class="icon-angle-right"></i>
-                        </a>
-                    </nav><!-- End .pager-nav -->
+                    
                 </div><!-- End .container -->
             </nav><!-- End .breadcrumb-nav -->
 
@@ -34,7 +24,7 @@
                                         <figure class="product-main-image">
                                             <img id="product-zoom"
                                             src="/products/images/<%= product.images.image1 %>"
-                                            data-zoom-image="/products/images/<%= product.images.image1 %>"
+                                            data-zoom-image="/products/crope/<%= product.images.image1 %>"
                                             alt="product image">
                                             <a href="#" id="btn-product-gallery" class="btn-product-gallery">
                                                 <i class="icon-arrows"></i>
@@ -43,29 +33,29 @@
 
                                         <div id="product-zoom-gallery" class="product-image-gallery">
                                             <a class="product-gallery-item active" href="#" 
-                                            data-image="/products/crope/<%= product.images.image1 %>"
-                                            data-zoom-image="/products/images/<%= product.images.image1 %>">
+                                            data-image="/products/images/<%= product.images.image1 %>"
+                                            data-zoom-image="/products/crope/<%= product.images.image1 %>">
                                             <img src="/products/images/<%= product.images.image1 %>"
                                                 alt="product side">
                                             </a>
 
                                             <a class="product-gallery-item" href="#" 
-                                            data-image="/products/crope/<%= product.images.image2 %>"
-                                            data-zoom-image="/products/images/<%= product.images.image2 %>">
+                                            data-image="/products/images/<%= product.images.image2 %>"
+                                            data-zoom-image="/products/crope/<%= product.images.image2 %>">
                                             <img src="/products/images/<%= product.images.image2 %>"
                                                  alt="product with model">
                                             </a>
 
                                             <a class="product-gallery-item" href="#" 
-                                            data-image="/products/crope/<%= product.images.image3 %>"
-                                            data-zoom-image="/products/images/<%= product.images.image3 %>">
+                                            data-image="/products/images/<%= product.images.image3 %>"
+                                            data-zoom-image="/products/crope/<%= product.images.image3 %>">
                                             <img src="/products/images/<%= product.images.image3 %>"
                                                  alt="product with model">
                                             </a>
 
                                             <a class="product-gallery-item" href="#" 
                                             data-image="/products/images/<%= product.images.image3 %>"
-                                            data-zoom-image="/products/images/<%= product.images.image3 %>">
+                                            data-zoom-image="/products/crope/<%= product.images.image3 %>">
                                             <img src="/products/images/<%= product.images.image3 %>"
                                              alt="product back">
                                             </a>
@@ -111,12 +101,19 @@
 
                                     <div class="product-details-action">
                                         <div class="details-action-col">
+                                            <% if(product.quantity==0) { %>
+                                                <a style="cursor: pointer;" class="btn-product btn-cart text-danger" id="noStockBtn">
+                                                    <span>No Stock</span>
+                                                </a>
+                                                <% } else { %>
+
                                             <div class="product-details-quantity">
                                                 <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
-                                            </div><!-- End .product-details-quantity -->
+                                            </div>
+                                            <a href="#"  id="addtocart" data-product-id ="<%=product._id %>" class="btn-product btn-cart"><span>add to cart</span></a>
+                                            <% } %>
 
-                                            <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
-                                        </div><!-- End .details-action-col -->
+                                        </div>
 
                                         <div class="details-action-wrapper">
                                             <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
@@ -168,15 +165,62 @@
 
       
     </div><!-- End .page-wrapper -->
-    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
-    <!-- Mobile Menu -->
-    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
-
+    <script>
+        $(document).ready(function () {
+            $('#noStockBtn').on('click', function () {
+                Swal.fire({
+                    title: "Error",
+                    text: "No stock available.",
+                    icon: "error"
+                });
+                // You can replace Swal.fire with a more sophisticated UI element or action.
+            });
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            // Use querySelectorAll to select all elements with the class 'btn-cart'
+            var addToCartButtons = document.querySelectorAll('.btn-cart');
+    
+            // Add a click event listener to each button
+            addToCartButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    var productId = this.getAttribute('data-product-id');
+                    
+    
+                    // Use fetch to send a POST request with the product ID in the request body
+                    $.ajax({
+                        url:'/addtocart',
+                        method:"post",
+                        data:{id:productId},
+                        success:((response)=>{
+                            console.log(response);
+                         if(response.noUser){
+                            window.location.href = "/login"
+                        }
+    
+                        if(response.added){
+    
+                           Swal.fire({
+                            title: "Item Added in Cart!",
+                            text: "You clicked the button!",
+                            icon: "success"
+                        });
+                        }
+                       if(response.nostoked){
+                        Swal.fire({
+                    title: "Error",
+                    text: "out of stock.you have added the entire stock th the cart",
+                    icon: "error"
+                });                    }
+                        })
+                    })
+            
+                });
+            });
+        });
+    </script>   
   
-    <!-- Sign in / Register Modal -->
   
     <%- include('../users/layouts/footer') %>
 
-    <!-- Plugins JS File -->
  

@@ -32,8 +32,10 @@ admin_route.set("views", "./views/admin");
 const adminController = require("../controllers/adminController");
 const productController = require("../controllers/productController");
 const multer = require("../midileware/mullter");
-
 const Auth = require("../midileware/adminAuth");
+const adddressController = require("../controllers/addressController");
+const cartController = require("../controllers/cartController");
+const orderController = require("../controllers/orderControoler");
 
 //===================================adminlogin=============================================
 
@@ -95,6 +97,12 @@ admin_route.get("/updeteproduct", productController.prouppage);
 admin_route.get("/category", Auth.isLogin, adminController.category);
 admin_route.get("/addCategory", Auth.isLogin, adminController.addCategory);
 admin_route.post("/addCate", Auth.isLogin, adminController.addCate);
+
+admin_route.get("/orderManage",orderController.orderManage)
+admin_route.get("/orderFullDetails",orderController.orderFullDetails)
+
+admin_route.get('/statusUpdate', orderController.statusUpdate)
+
 
 
 

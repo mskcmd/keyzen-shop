@@ -1,13 +1,15 @@
 const User = require("../models/userModel");
+const productdata = require("../models/productModel");
+const Cate = require("../models/category");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const otpGenerator = require("otp-generator");
 const express = require("express");
 const crypto = require("crypto");
-const productdata = require("../models/productModel");
-const Cate = require("../models/category");
-const randomstring = require('randomstring');
+const randomstring = require("randomstring");
 const app = express();
+const Address = require("../models/address");
+const Order = require("../models/oderModel");
 
 //==========================================securePassword=============================================
 
@@ -180,10 +182,10 @@ const resendOTP = async (req, res) => {
 const homeload = async (req, res) => {
   try {
     const userData = await User.findById(req.session.user_id);
-    const products = await productdata.find({blocked:0});
+    const products = await productdata.find({ blocked: 0 });
 
-      res.render("home", { user: userData,products:products });
-    
+
+    res.render("home", { user: userData, products: products });
   } catch (error) {
     console.log(error.message);
   }
@@ -253,10 +255,24 @@ const loadhome = async (req, res) => {
 //==============================================userprofile============================================
 const userprofile = async (req, res) => {
   try {
-    const userData = await User.findById(req.session.user_id);
+    const user_id = req.session.user_id;
+    const userData = await User.findById(user_id);
+    const AddressData = await Address.find({ user: user_id });
+    const orderData = await Order.find({ userId: user_id}).sort({date: -1});
+    const totalPrice=orderData.totalAmount
+    console.log(totalPrice);
+    
+   
+    // console.log(orderData);
 
-    if (userData) {
-      res.render("userprofile", { user: userData }); // Pass userData as "user"
+    
+
+    if (userData && AddressData) {
+      res.render("userprofile", {
+        user: userData,
+        add: AddressData,
+        oderData: orderData,
+      }); 
     } else {
       res.render("userprofile", { user: false });
     }
@@ -270,12 +286,9 @@ const userprofile = async (req, res) => {
 const product = async (req, res) => {
   try {
     const userData = await User.findById(req.session.user_id);
-    const products = await productdata.find({blocked:0});
-    // console.log(products);
-
-
-      res.render("shop", { user: userData, products});
-                 
+    const products = await productdata.find({ blocked: 0 });
+    const catedata = await Cate.find({ blocked: 0 });
+    res.render("shop", { user: userData, products });
   } catch (error) {
     console.log(error.message);
   }
@@ -286,7 +299,7 @@ const productdeteal = async (req, res) => {
   try {
     const userData = await User.findById(req.session.user_id);
     const product = await productdata.findOne({ _id: req.query.id });
-    if (userData&&product) {
+    if (userData && product) {
       res.render("Productsdetail", { user: userData, product: product });
     } else {
       res.render("Productsdetail", { user: false, product });
@@ -325,7 +338,9 @@ const forgetsendmail = async (req, res) => {
           }
         );
         passRecoverVerifyMail(userData.name, email, randomS);
-        res.render("login",{message:"Successfully sent email. Check your mail."});
+        res.render("login", {
+          message: "Successfully sent email. Check your mail.",
+        });
       }
     } else {
       res.render("forgetpassword", {
@@ -340,7 +355,7 @@ const forgetsendmail = async (req, res) => {
 
 //==========================================passRecoverVerifyMail=============================================
 
-const passRecoverVerifyMail = async(name,email,token)=>{
+const passRecoverVerifyMail = async (name, email, token) => {
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -357,8 +372,8 @@ const passRecoverVerifyMail = async(name,email,token)=>{
       to: email,
       subject: "For Recover Password",
 
-      html: 
-      "<h2>Dear " +
+      html:
+        "<h2>Dear " +
         name +
         ' ,please click here to <a href="http://localhost:3000/resetpassword?token=' +
         token +
@@ -371,41 +386,36 @@ const passRecoverVerifyMail = async(name,email,token)=>{
         console.log("Email has been sent:", info.response);
       }
     });
-
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ error: "Internal server error" });
   }
-}
-
+};
 
 //==========================================resetpassword=============================================
 
-const resetpassword = async(req,res)=>{
+const resetpassword = async (req, res) => {
   try {
-    const token = req.query.token
+    const token = req.query.token;
     console.log(token);
-    const tokenData = await User.findOne({token:token});
-   
-    console.log("totken",tokenData);
-    res.render('resetPassword',{user:tokenData})
+    const tokenData = await User.findOne({ token: token });
 
+    console.log("totken", tokenData);
+    res.render("resetPassword", { user: tokenData });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ error: "Internal server error" });
   }
-}
+};
 
 //==========================================reSetpass=============================================
 
-
-const reSetpass = async(req, res) => {
+const reSetpass = async (req, res) => {
   try {
     const password = req.body.password;
     const id = req.body.id;
     console.log("Received password :", password);
-    console.log("Received user ID:",  id);
-
+    console.log("Received user ID:", id);
 
     const secPassword = await securePassword(password);
     console.log("Secure password generated:", secPassword);
@@ -419,7 +429,7 @@ const reSetpass = async(req, res) => {
 
     if (updatedData) {
       console.log("Password updated successfully");
-      res.render("login",{message:"Password reset successful."});
+      res.render("login", { message: "Password reset successful." });
     } else {
       console.log("Password update failed");
     }
@@ -427,25 +437,23 @@ const reSetpass = async(req, res) => {
     console.log("Error:", error.message);
     res.status(500).json({ error: "Internal server error" });
   }
-}
+};
 
 //==========================================contact=============================================
 
-const contact =async(req,res)=>{
+const contact = async (req, res) => {
   try {
     const userData = await User.findById(req.session.user_id);
-if(userData){
-  res.render("contact",{user:userData})
-
-}else{
-  res.render("contact",{user:false})
-
-}
+    if (userData) {
+      res.render("contact", { user: userData });
+    } else {
+      res.render("contact", { user: false });
+    }
   } catch (error) {
     console.log("Error:", error.message);
     res.status(500).json({ error: "Internal server error" });
   }
-}
+};
 
 module.exports = {
   loadRegister,
@@ -464,6 +472,5 @@ module.exports = {
   forgetsendmail,
   resetpassword,
   reSetpass,
-  contact
-
+  contact,
 };

@@ -81,6 +81,8 @@ user_route.post("/updatecart",cartController.changeCartQuantity)
 
 user_route.get("/loadchekout",cartController.loadchekout)
 
+
+
 user_route.get("/landchekout",cartController.landchekout)
 user_route.get('/addaddres2',adddressController.addaddres2)
 

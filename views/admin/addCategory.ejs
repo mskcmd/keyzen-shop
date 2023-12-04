@@ -1,32 +1,73 @@
-<%- include('../admin/layouts/adminsidebars') %>
-<%- include('../admin/layouts/adminnavebar') %>
+<%- include('../admin/layouts/adminsidebars') %> <%-
+include('../admin/layouts/adminnavebar') %>
 
 <div class="main-panel">
   <div class="content-wrapper">
-<div class="col-12 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">New Category</h4>
-        
-        <form action="/admin/addCate" id="editCate" method="post" class="forms-sample">
-          <div class="form-group">
-            <label for="exampleInputName1">Category Name</label>
-            <input name="name" type="text" class="form-control" id="name" placeholder="Category Name">
-          </div>
-          
-          <button type="submit" class="btn btn-primary mr-2">Submit</button>
-          <span style="color: red; display: none;" id="nameError"></span> 
-          <% if(typeof message !== 'undefined'){ %>
-            <span
-              id="er2"
-              style="color: rgb(241, 7, 7); text-align: center"
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">New Category</h4>
+
+          <form
+            action="/admin/addCate"
+            id="editCate"
+            method="post"
+            class="forms-sample"
+          >
+            <div class="form-group">
+              <label for="exampleInputName1">Category Name</label>
+              <input
+                name="name"
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="Category Name"
+              />
+            </div>
+
+            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+            <div style="color: red" id="nameError"></div>
+            <span style="color: red; display: none" id="nameError"></span>
+            <% if(typeof message !== 'undefined'){ %>
+            <span id="er2" style="color: rgb(241, 7, 7); text-align: center"
               ><%= message %></span
             >
-            <% } %>          
-        </form>
+            <% } %>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-  </div>
- 
-<%- include('../admin/layouts/adminfootbar') %>
+
+  <%- include('../admin/layouts/adminfootbar') %>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var editCateForm = document.getElementById("editCate");
+      var nameInput = document.getElementById("name");
+      var nameError = document.getElementById("nameError");
+
+      editCateForm.addEventListener("submit", function (event) {
+        var isValid = true;
+
+        // Reset previous error messages
+        nameError.textContent = "";
+
+        // Validate Category Name
+        var nameValue = nameInput.value.trim();
+        if (nameValue === "") {
+          nameError.textContent = "Category Name is required.";
+          isValid = false;
+        } else if (!/^[a-zA-Z\s]+$/.test(nameValue)) {
+          nameError.textContent =
+            "Category Name should contain only alphabets.";
+          isValid = false;
+        }
+
+        // Prevent form submission if validation fails
+        if (!isValid) {
+          event.preventDefault();
+        }
+      });
+    });
+  </script>
+</div>

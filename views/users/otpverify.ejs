@@ -1,108 +1,137 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
     <style>
-        .card {
-            border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
+      .card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+      }
 
-        .icon-blue {
-            color: blue;
-        }
+      .icon-blue {
+        color: blue;
+      }
 
-        .ff {
-            color: blue;
-            font-size: 2em; 
-            margin-left: 100px;
-        }
+      .ff {
+        color: blue;
+        font-size: 2em;
+        margin-left: 100px;
+      }
     </style>
-</head>
-<body>
-    <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="card p-4">
-            <form action="/verify" method="post">
-                <h6 class="text-dark text-center">
-                    <!-- Add your title here -->
-                </h6>
-                <div class="d-flex flex-row justify-content-center">
-                    <p>A code has been sent to</p>
-                </div>
-                <i class="ff bx bxs-check-shield"></i>
+  </head>
+  <body>
+    <div
+      class="container d-flex justify-content-center align-items-center vh-100"
+    >
+      <div class="card p-4">
+        <form action="/verify" method="post">
+          <h6 class="text-dark text-center">
+            <!-- Add your title here -->
+          </h6>
+          <div class="d-flex flex-row justify-content-center">
+            <p>A code has been sent to</p>
+          </div>
+          <i class="ff bx bxs-check-shield"></i>
 
-                <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
-                    <input class="m-2 text-center form-control rounded" type="text" id="first" maxlength="6" name="otp">
-                </div>
+          <div
+            id="otp"
+            class="inputs d-flex flex-row justify-content-center mt-2"
+          >
+            <input
+              class="m-2 text-center form-control rounded"
+              type="text"
+              id="first"
+              maxlength="6"
+              name="otp"
+            />
+          </div>
 
-                <div class="timeforotp d-flex justify-content-center">
-                    <p class="small">OTP time ends in <span id="countdown">45</span>s</p>
-                </div>
+          <div class="timeforotp d-flex justify-content-center">
+            <p class="small">
+              OTP time ends in <span id="countdown">45</span>s
+            </p>
+          </div>
 
-                <div class="d-flex justify-content-center mt-3">
-                    <a href="/resend" id="verify" class="btn btn-link disabled" onclick="resendOTP()" style="color: black;">
-                        <i class="icon-blue bx bx-redo"></i> Resend OTP
-                    </a>
-                </div>
+          <div class="d-flex justify-content-center mt-3">
+            <a
+              href="/resend"
+              id="verify"
+              class="btn btn-link disabled"
+              onclick="resendOTP()"
+              style="color: black"
+            >
+              <i class="icon-blue bx bx-redo"></i> Resend OTP
+            </a>
+          </div>
 
-                <% if (typeof message !== "undefined") { %>
-                    <div class="alert alert-info mt-3" role="alert">
-                        <!-- Replace the message with your dynamic message -->
-                        <%= message %>
-                    </div>
-                <% } %>
+          <% if (typeof message !== "undefined") { %>
+          <div class="alert alert-info mt-3" role="alert">
+            <!-- Replace the message with your dynamic message -->
+            <%= message %>
+          </div>
+          <% } %>
 
-                <div class="d-flex justify-content-center mt-3">
-                    <button type="submit" class="btn btn-danger px-4 validate">Validate</button>
-                </div>
-            </form>
-        </div>
+          <div class="d-flex justify-content-center mt-3">
+            <button type="submit" class="btn btn-danger px-4 validate">
+              Validate
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
     <script>
-        let countdown = 45;
-        const countdownElement = document.getElementById("countdown");
-        const resendButton = document.getElementById("verify");
+      let countdown = 45;
+      const countdownElement = document.getElementById("countdown");
+      const resendButton = document.getElementById("verify");
 
-        function updateCountdown() {
-            countdownElement.textContent = countdown;
-            if (countdown === 0) {
-                resendButton.classList.remove("disabled");
-            }
-            if (countdown > 0) {
-                countdown--;
-                setTimeout(updateCountdown, 1000);
-            }
+      function updateCountdown() {
+        countdownElement.textContent = countdown;
+        if (countdown === 0) {
+          resendButton.classList.remove("disabled");
         }
-
-        resendButton.classList.add("disabled");
-
-        updateCountdown();
-
-        function resendOTP() {
-            if (!resendButton.classList.contains("disabled")) {
-
-                fetch("/verify", {
-                    method: "POST",
-                })
-                    .then((response) => {
-                        if (response.status === 200) {
-                            resendButton.classList.add("disabled");
-                            countdown = 45;
-                            updateCountdown();
-                        } else {
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Error:", error);
-                    });
-            }
+        if (countdown > 0) {
+          countdown--;
+          setTimeout(updateCountdown, 1000);
         }
+      }
+
+      resendButton.classList.add("disabled");
+
+      updateCountdown();
+
+      function resendOTP() {
+        if (!resendButton.classList.contains("disabled")) {
+          fetch("/verify", {
+            method: "POST",
+          })
+            .then((response) => {
+              if (response.status === 200) {
+                resendButton.classList.add("disabled");
+                countdown = 45;
+                updateCountdown();
+              } else {
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        }
+      }
     </script>
-</body>
+  </body>
 </html>

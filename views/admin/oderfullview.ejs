@@ -32,12 +32,19 @@ include('../admin/layouts/adminnavebar') %>
                                 <td> <span style="color: darkgrey">Status:</span></td>
                                 <td> <%= orders.status %></td>
                                 </tr>
+                                <% if (orders.status == "shipped" || orders.status == "placed") { %>
                                 <tr>
                                     <td> <span style="color: darkgrey">Payment method: </span></td>
-                                    <td> <%= orders.paymentMethod %></td>
+                                    <td> <%= orders.paymentMethod %></td> 
                                     </tr>
+                                    <% } else { %>
+                                      <tr>
+                                        <td> <span style="color: darkgrey">cancelReason: </span></td>
+                                        <td> <%= orders.cancelReason %></td> 
+                                        </tr>
                                    
-                        
+                                        <% } %>
+
                                
                                   
                               </tr>

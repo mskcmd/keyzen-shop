@@ -198,7 +198,7 @@ const otp = async (req, res) => {
     res.render("otpverify");
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
 
 //==========================================login=================================================
@@ -208,7 +208,7 @@ const login = async (req, res) => {
     res.render("login");
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
 //==========================================userLogout=================================================
 
@@ -278,7 +278,7 @@ const userprofile = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
 
 //==============================================userprofile============================================
@@ -291,7 +291,7 @@ const product = async (req, res) => {
     res.render("shop", { user: userData, products });
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
 
 //========================================shop================================
@@ -306,7 +306,7 @@ const productdeteal = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
 //========================================forgetpassword================================
 
@@ -315,7 +315,7 @@ const forgetpassword = async (req, res) => {
     res.render("forgetpassword");
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
 
 //========================================forgetpassword================================

@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
- 
   user: {
     type: mongoose.Types.ObjectId,
-    ref: 'User', // Reference to User model
+    ref: "User", // Reference to User model
   },
   uniqueId: {
     type: Number,
@@ -19,7 +18,7 @@ const orderSchema = new mongoose.Schema({
     {
       productId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'products' 
+        ref: "products",
       },
       count: {
         type: Number,
@@ -30,16 +29,15 @@ const orderSchema = new mongoose.Schema({
       },
       totalPrice: {
         type: Number,
-       
-      }
+      },
     },
   ],
 
   address: [
     {
-        addressId: {
+      addressId: {
         type: mongoose.Types.ObjectId,
-        ref: 'address', // Reference to Product model
+        ref: "address", // Reference to Product model
       },
 
       name: {
@@ -63,18 +61,16 @@ const orderSchema = new mongoose.Schema({
       pin: {
         type: String,
       },
-     
-    
     },
   ],
   deliveryDate: {
     type: Date,
   },
   cancelReason: {
-    type: String
+    type: String,
   },
   returnReason: {
-    type: String
+    type: String,
   },
   totalAmount: {
     type: Number,
@@ -88,7 +84,7 @@ const orderSchema = new mongoose.Schema({
   },
   statusLevel: {
     type: Number,
-    default: 0
+    default: 0,
   },
   paymentMethod: {
     type: String,
@@ -97,13 +93,11 @@ const orderSchema = new mongoose.Schema({
     type: String,
   },
   paymentId: {
-    type: String
+    type: String,
   },
   discount: {
-    type: Number 
-  }
-
-
+    type: Number,
+  },
 });
 
 module.exports = mongoose.model("Order", orderSchema);

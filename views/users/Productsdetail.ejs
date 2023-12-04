@@ -23,8 +23,8 @@
                                     <div class="row">
                                         <figure class="product-main-image">
                                             <img id="product-zoom"
-                                            src="/products/images/<%= product.images.image1 %>"
-                                            data-zoom-image="/products/crope/<%= product.images.image1 %>"
+                                            src="/products/crope/<%= product.images.image1 %>"
+                                            data-zoom-image="/products/images/<%= product.images.image1 %>"
                                             alt="product image">
                                             <a href="#" id="btn-product-gallery" class="btn-product-gallery">
                                                 <i class="icon-arrows"></i>
@@ -33,30 +33,30 @@
 
                                         <div id="product-zoom-gallery" class="product-image-gallery">
                                             <a class="product-gallery-item active" href="#" 
-                                            data-image="/products/images/<%= product.images.image1 %>"
-                                            data-zoom-image="/products/crope/<%= product.images.image1 %>">
-                                            <img src="/products/images/<%= product.images.image1 %>"
+                                            data-image="/products/crope/<%= product.images.image1 %>"
+                                            data-zoom-image="/products/images/<%= product.images.image1 %>">
+                                            <img src="/products/crope/<%= product.images.image1 %>"
                                                 alt="product side">
                                             </a>
 
                                             <a class="product-gallery-item" href="#" 
-                                            data-image="/products/images/<%= product.images.image2 %>"
-                                            data-zoom-image="/products/crope/<%= product.images.image2 %>">
-                                            <img src="/products/images/<%= product.images.image2 %>"
+                                            data-image="/products/crope/<%= product.images.image2 %>"
+                                            data-zoom-image="/products/images/<%= product.images.image2 %>">
+                                            <img src="/products/crope/<%= product.images.image2 %>"
                                                  alt="product with model">
                                             </a>
 
                                             <a class="product-gallery-item" href="#" 
-                                            data-image="/products/images/<%= product.images.image3 %>"
-                                            data-zoom-image="/products/crope/<%= product.images.image3 %>">
-                                            <img src="/products/images/<%= product.images.image3 %>"
+                                            data-image="/products/crope/<%= product.images.image3 %>"
+                                            data-zoom-image="/products/images/<%= product.images.image3 %>">
+                                            <img src="/products/crope/<%= product.images.image3 %>"
                                                  alt="product with model">
                                             </a>
 
                                             <a class="product-gallery-item" href="#" 
-                                            data-image="/products/images/<%= product.images.image3 %>"
-                                            data-zoom-image="/products/crope/<%= product.images.image3 %>">
-                                            <img src="/products/images/<%= product.images.image3 %>"
+                                            data-image="/products/crope/<%= product.images.image3 %>"
+                                            data-zoom-image="/products/images/<%= product.images.image3 %>">
+                                            <img src="/products/crope/<%= product.images.image3 %>"
                                              alt="product back">
                                             </a>
                                         </div><!-- End .product-image-gallery -->
@@ -107,9 +107,7 @@
                                                 </a>
                                                 <% } else { %>
 
-                                            <div class="product-details-quantity">
-                                                <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
-                                            </div>
+                                          
                                             <a href="#"  id="addtocart" data-product-id ="<%=product._id %>" class="btn-product btn-cart"><span>add to cart</span></a>
                                             <% } %>
 
@@ -165,8 +163,18 @@
 
       
     </div><!-- End .page-wrapper -->
+      <script src="/user/assets/js/jquery.elevateZoom.min.js"></script>
 
     <script>
+
+$('#product-zoom').elevateZoom({
+    zoomType: "inner",
+    cursor: "crosshair",
+    gallery: 'product-zoom-gallery',
+    galleryActiveClass: 'active',
+});
+
+
         $(document).ready(function () {
             $('#noStockBtn').on('click', function () {
                 Swal.fire({

@@ -4,6 +4,9 @@ const Cart = require("../models/cartModels");
 const Address = require("../models/address");
 const Order = require("../models/oderModel");
 
+
+//==========================================placeOrder=============================================
+
 const placeOrder = async (req, res) => {
   try {
     const userId = req.session.user_id;
@@ -114,6 +117,9 @@ const placeOrder = async (req, res) => {
   }
 };
 
+//==========================================viewOrderDetails=============================================
+
+
 const viewOrderDetails = async (req, res) => {
   try {
     const userid = req.session.user_id;
@@ -141,6 +147,9 @@ if(userid){
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+//==========================================orderManage=============================================
+
 
 const orderManage = async (req, res) => {
   try {
@@ -197,6 +206,7 @@ orderData.forEach((order) => {
   }
 };
 
+//==========================================orderFullDetails=============================================
 
 const orderFullDetails =  async(req,res)=>{
   try {
@@ -214,6 +224,7 @@ const orderFullDetails =  async(req,res)=>{
 }
 
 
+//==========================================orderCancel=============================================
 
 const orderCancel = async (req, res) => {
   try {
@@ -221,6 +232,7 @@ const orderCancel = async (req, res) => {
     const orderId = req.body.orderid;
     const userId = req.session.user_id;
     const cancelReason = req.body.reason;
+    console.log(cancelReason);
 
     const orderData = await Order.findOne({ _id: orderId });
     console.log(orderData);
@@ -243,7 +255,7 @@ const orderCancel = async (req, res) => {
           $set: { cancelReason: cancelReason, status: "cancelled", statusLevel: 0 },
         }
       );
-
+ console.log(updatedData);
       if (!updatedData) {
         console.log("Order status not updated");
         return res.status(500).json({ error: "Internal server error" });
@@ -270,6 +282,8 @@ const orderCancel = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+//==========================================statusUpdate=============================================
 
 const statusUpdate = async (req, res) => {
   try {
@@ -304,6 +318,7 @@ const statusUpdate = async (req, res) => {
   }
 };
 
+//==========================================orderSuccess=============================================
 
 const orderSuccess = async(req,res)=>{
   try {
@@ -318,6 +333,7 @@ const orderSuccess = async(req,res)=>{
     res.status(500).json({ error: 'Internal server error' });
   }
 }
+//==========================================homeOrderBtn=============================================
 
 const homeOrderBtn = async(req,res)=>{
   try {

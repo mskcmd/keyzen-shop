@@ -19,8 +19,10 @@ db.once("open", () => {
 });
 
 app.use(nocache());
+
 // app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
+
 const userRoute = require("./routes/userRoute");
 const adminRoute = require("./routes/adminRoute");
 

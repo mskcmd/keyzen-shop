@@ -17,8 +17,7 @@ const productlist = async (req, res) => {
 
 //==============================addProduct===================================
 
-
-const addProduct = async (req, res) => {  
+const addProduct = async (req, res) => {
   try {
     const catData = await Cate.find({ blocked: 0 });
     res.render("productadd", { catData: catData });
@@ -27,7 +26,6 @@ const addProduct = async (req, res) => {
   }
 };
 //==============================inserproduct===================================
-
 
 const inserproduct = async (req, res) => {
   try {
@@ -47,7 +45,7 @@ const inserproduct = async (req, res) => {
 
       for (let i = 0; i < img.length; i++) {
         await Sharp("public/products/images/" + img[i])
-          .resize(1080, 1080)
+          .resize(480, 480)
           .toFile("public/products/crope/" + img[i]);
       }
 
@@ -77,9 +75,7 @@ const inserproduct = async (req, res) => {
   }
 };
 
-
 //==============================problock===================================
-
 
 const problock = async (req, res) => {
   try {
@@ -105,7 +101,6 @@ const problock = async (req, res) => {
 
 //==============================product update page============================
 
-
 const prouppage = async (req, res) => {
   try {
     const catData = await Cate.find({ blocked: 0 });
@@ -117,7 +112,6 @@ const prouppage = async (req, res) => {
 };
 
 //==============================editProduct===================================
-
 
 const editProduct = async (req, res) => {
   try {

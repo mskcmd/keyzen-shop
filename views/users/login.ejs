@@ -1,5 +1,3 @@
-
-
 <%- include('../users/layouts/navbar') %>
 
 <!-- End .header -->
@@ -24,9 +22,7 @@
     "
   >
     <div class="container">
-     
       <div class="form-box">
-      
         <div class="form-tab text-center">
           <h3 class="mb-3">Sign In</h3>
         </div>
@@ -36,13 +32,7 @@
             <label for="singin-email-2" class="mb-2"
               >Username or email address *</label
             >
-            <input
-              type="text"
-              class="form-control"
-              id="email"
-              name="email"
-              required
-            />
+            <input type="text" class="form-control" id="email" name="email" />
           </div>
           <!-- End .form-group -->
 
@@ -53,7 +43,6 @@
               class="form-control"
               id="password"
               name="password"
-              required
             />
           </div>
           <!-- End .form-group -->
@@ -75,38 +64,40 @@
             </div>
           </div>
         </form>
+        <p
+          id="error-message"
+          class="error-message alert-danger text-center"
+        ></p>
 
         <% if (typeof message !== "undefined") { %>
-          <div class="alert alert-primary mt-3" role="alert">
-              <!-- Replace the message with your dynamic message -->
-              <%= message %>
-          </div>
-          <% } %>
+        <div class="alert alert-primary mt-3" role="alert">
+          <!-- Replace the message with your dynamic message -->
+          <%= message %>
+        </div>
+        <% } %>
       </div>
     </div>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      var loginForm = document.getElementById("loginform");
+      var loginForm = document.getElementById("loginForm");
       var errorMessage = document.getElementById("error-message");
-    
+
       loginForm.addEventListener("submit", function (event) {
         event.preventDefault();
-    
+
         var emailValue = document.getElementById("email").value.trim();
         var passwordValue = document.getElementById("password").value.trim();
-    
+
         if (emailValue === "" || passwordValue === "") {
-          errorMessage.textContent = "Please fill in both email and password.";
+          errorMessage.textContent = " Please fill in both email and password.";
         } else {
           errorMessage.textContent = "";
-    
+
           loginForm.submit();
         }
-        
       });
     });
-    </script>
+  </script>
 </main>
-

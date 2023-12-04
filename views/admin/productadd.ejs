@@ -2,11 +2,11 @@
 <%- include('../admin/layouts/adminsidebars') %>
 <%- include('../admin/layouts/adminnavebar') %>
 
-<div class="main-panel">
-  <div class="content-wrapper">
+<div class="main-panel col-md-12  ">
+  <div class="content-wrapper ">
     <div class="col-12 grid-margin stretch-card">
-      <div class="card">
-        <div class="card-body">
+      <div class="card   ">
+        <div class="card-body  ">
           <h4 class="card-title">Add Products</h4>
           <p class="card-description">Give product details</p>
           <form class="forms-sample" id="addPro" action="/admin/addProduct" method="post" enctype="multipart/form-data">
@@ -24,13 +24,16 @@
 
             <div class="form-group">
               <label for="Category">Category</label>
+             
               <select name="category" id="categorySelect">
                 <% if(catData.length > 0){
                   for(let i=0; i<catData.length; i++){ %>
-                    <option value="<%= catData[i].name %>"><%= catData[i].name %></option>
+                    <option value="<%= catData[i].name %>"><%= catData[i].name .slice(0, 10)%></option>
+                    >
                   <% }
                 } else { %>
                   <option value="">No Categories</option>
+                  
                 <% } %>
               </select> 
             </div>
@@ -46,11 +49,11 @@
               <p id="descError" style="color: red; display: none;"></p>
             </div>
             <label for="exampleTextarea1">Product Images</label>
-            <div>
+            <div class="row" style="display: flex;">
               <div class="col-lg-3 col-md-6 rounded-image-preview">
                 <label for="imageInput1" class="image-label">
                   <div class="rounded-image-preview">
-                    <img id="imagePreview1" src="/admin/assets/images/preview.jpg" alt="Preview" />
+                    <img id="imagePreview1" src="/admin/assets/images/preview.jpg" alt="Preview" style="width: 50%; height: 50%;" />
                   </div>
                   <input name="image1" type="file" accept="image/*" id="imageInput1" class="imageInput" multiple required>
                 </label>
@@ -58,7 +61,7 @@
               <div class="col-lg-3 col-md-6 rounded-image-preview">
                 <label for="imageInput2" class="image-label">
                   <div class="rounded-image-preview">
-                    <img id="imagePreview2" src="/admin/assets/images/preview.jpg" alt="Preview" />
+                    <img id="imagePreview2" src="/admin/assets/images/preview.jpg" alt="Preview" style="width: 50%; height: 50%;" />
                   </div>
                   <input name="image2" type="file" accept="image/*" id="imageInput2" class="imageInput" multiple required>
                 </label>
@@ -66,7 +69,7 @@
               <div class="col-lg-3 col-md-6 rounded-image-preview">
                 <label for="imageInput3" class="image-label">
                   <div class="rounded-image-preview">
-                    <img id="imagePreview3" src="/admin/assets/images/preview.jpg" alt="Preview" />
+                    <img id="imagePreview3" src="/admin/assets/images/preview.jpg" alt="Preview" style="width: 50%; height: 50%;" />
                   </div>
                   <input name="image3" type="file" accept="image/*" id="imageInput3" class="imageInput" multiple required>
                 </label>
@@ -74,7 +77,7 @@
               <div class="col-lg-3 col-md-6 rounded-image-preview">
                 <label for="imageInput4" class="image-label">
                   <div class="rounded-image-preview">
-                    <img id="imagePreview4" src="/admin/assets/images/preview.jpg" alt="Preview" />
+                    <img id="imagePreview4" src="/admin/assets/images/preview.jpg" alt="Preview" style="width: 50%; height: 50%;" />
                   </div>
                   <input name="image4" type="file" accept="image/*" id="imageInput4" class="imageInput" multiple required>
                 </label>
@@ -121,43 +124,46 @@
     });
   });
 
-  document.getElementById('addPro').addEventListener('submit', function(event) {
-        const name = document.getElementById('name').value;
-        const price = document.getElementById('price').value;
-        const quantity = document.getElementById('quantity').value;
-        const description = document.getElementById('description').value;
+  
 
-        const nameError = document.getElementById('nameError');
-        const priceError = document.getElementById('priceError');
-        const quanError = document.getElementById('quanError');
-        const descError = document.getElementById('descError');
-
-        if (name.trim() === "" || price.trim() === "" || quantity.trim() === "" || description.trim() === "") {
-          nameError.textContent = "All fields must be filled out.";
-          event.preventDefault();
-        }
-
-        if (name.trim() === "") {
-          nameError.textContent = "Product name is required.";
-          event.preventDefault();
-        }
-
-        if (price < 1) {
-          priceError.textContent = "Price must be a positive value.";
-          event.preventDefault();
-        }
-
-        if (quantity < 1) {
-          quanError.textContent = "Quantity must be a positive value.";
-          event.preventDefault();
-        }
-
-        if (description.length < 10) {
-          descError.textContent = "Description must be at least 10 characters.";
-          event.preventDefault();
-        }
-      });
 </script>
+<script>
+  //=============PRODUCT VALIDATION==================
+document.getElementById('addPro').addEventListener('click', function(event){
+    
+    const name = document.getElementById('name').value;
+    const price = document.getElementById('price').value;
+    const quantity = document.getElementById('quantity').value;
+    const description = document.getElementById('description').value;
+    
+    const nameError = document.getElementById('nameError')
+    const priceError = document.getElementById('priceError')
+    const quanError = document.getElementById('quanError')
+    const descError = document.getElementById('descError')
+
+    if(price.trim() === "" && quantity.trim() == "" && description.trim() == ""){
+      nameError.style.display = ""
+      nameError.textContent = "Must fillout all the fields."
+      event.preventDefault()
+    }else if(name.trim() == ""){
+      nameError.style.display = ""
+      nameError.textContent = "Product name is required."
+      event.preventDefault()
+    }else if(price < 1){
+      priceError.style.display = ""
+      priceError.textContent = "Price must be positive value."
+      event.preventDefault()
+    }else if(quantity < 1){
+      quanError.style.display = ""
+      quanError.textContent = "Quantity must be positive value."
+      event.preventDefault()
+    }else if(description.length < 10){
+      descError.style.display = ""
+      descError.textContent = "Description atleast 10 letters."
+    }
+
+})
+  </script>
 
 <!-- Include your footer here -->
 <%- include('../admin/layouts/adminfootbar') %>

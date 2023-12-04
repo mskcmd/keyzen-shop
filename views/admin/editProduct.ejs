@@ -77,11 +77,11 @@
             <label for="exampleTextarea1">Product Images</label>
             <div class="row">
               <!-- Image 1 -->
-              <div class="col-lg-3 col-md-6">
+              <div class="col-lg-3 col-md-6" >
                 <div class="rounded-image-preview">
                   <label for="imageInput1" class="image-label">
                     <div class="rounded-image-preview">
-                      <img
+                      <img style="width: 50%; height: 50%;"
                         id="imagePreview1"
                         src="/products/images/<%= product.images.image1 %>"
                         alt="Preview"
@@ -113,7 +113,7 @@
                 <div class="rounded-image-preview">
                   <label for="imageInput2" class="image-label">
                     <div class="rounded-image-preview">
-                      <img
+                      <img style="width: 50%; height: 50%;"
                         id="imagePreview2"
                         src="/products/images/<%= product.images.image2 %>"
                         alt="Preview"
@@ -146,7 +146,7 @@
                 <div class="rounded-image-preview">
                   <label for="imageInput3" class="image-label">
                     <div class="rounded-image-preview">
-                      <img
+                      <img style="width: 50%; height: 50%;"
                         id="imagePreview3"
                         src="/products/images/<%= product.images.image3 %>"
                         alt="Preview"
@@ -177,7 +177,7 @@
                 <div class="rounded-image-preview">
                   <label for="imageInput4" class="image-label">
                     <div class="rounded-image-preview">
-                      <img
+                      <img style="width: 50%; height: 50%;"
                         id="imagePreview4"
                         src="/products/images/<%= product.images.image4 %>"
                         alt="Preview"
@@ -259,6 +259,45 @@
     removeButton.style.display = "none"; // Hide the remove button
     inputElement.value = ""; // Clear the file input value
   }
+
+  
+//============= EDIT PRODUCT VALIDATION==================
+document.getElementById('editPro').addEventListener('click', function(event){
+    
+    const name = document.getElementById('name').value;
+    const price = document.getElementById('price').value;
+    const quantity = document.getElementById('quantity').value;
+    const description = document.getElementById('description').value;
+    
+    const nameError = document.getElementById('nameError')
+    const priceError = document.getElementById('priceError')
+    const quanError = document.getElementById('quanError')
+    const descError = document.getElementById('descError')
+  
+    if(price.trim() === "" && quantity.trim() == "" && description.trim() == ""){
+      nameError.style.display = ""
+      nameError.textContent = "Must fillout all the fields."
+      event.preventDefault()
+    }else if(name.trim() == ""){
+      nameError.style.display = ""
+      nameError.textContent = "Product name is required."
+      event.preventDefault()
+    }else if(price < 1){
+      priceError.style.display = ""
+      priceError.textContent = "Price must be positive value."
+      event.preventDefault()
+    }else if(quantity < 1){
+      quanError.style.display = ""
+      quanError.textContent = "Quantity must be positive value."
+      event.preventDefault()
+    }else if(description.length < 10){
+      descError.style.display = ""
+      descError.textContent = "Description atleast 10 letters."
+    }
+  
+  })
+  
+  
 
 
   

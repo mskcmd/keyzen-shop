@@ -3,6 +3,7 @@ const Product = require("../models/productModel");
 const Cart = require("../models/cartModels");
 const Address = require("../models/address");
 
+//==========================================addtocart=============================================
 
 const addtocart = async (req, res) => {
   try {
@@ -22,19 +23,16 @@ const addtocart = async (req, res) => {
         const totalprice = productPrice.price;
 
         if (existingProduct) {
-          const cartData = await Product.findOne({_id:product_id})
-          if(existingProduct.count >= cartData.quantity){
+          const cartData = await Product.findOne({ _id: product_id });
+          if (existingProduct.count >= cartData.quantity) {
             return res.json({ message: "stoke is deon", nostoked: true });
-
-
           }
           existingProduct.count += 1;
-
-        } else {  
+        } else {
           existingUser.products.push({
             product: product_id,
             count: 1,
-          }); 
+          });
         }
 
         await existingUser.save();
@@ -58,6 +56,8 @@ const addtocart = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+//==========================================cartpage=============================================
 
 const cartpage = async (req, res) => {
   try {
@@ -95,6 +95,8 @@ const cartpage = async (req, res) => {
   }
 };
 
+//==========================================removeCartItem=============================================
+
 const removeCartItem = async (req, res, next) => {
   try {
     const userId = req.session.user_id;
@@ -117,6 +119,8 @@ const removeCartItem = async (req, res, next) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+//==========================================changeCartQuantity=============================================
 
 const changeCartQuantity = async (req, res) => {
   try {
@@ -142,7 +146,7 @@ const changeCartQuantity = async (req, res) => {
           message: "Cart updated successfully",
         });
       } else {
-        res.status(400).json({message:"Cart not updeted"})
+        res.status(400).json({ message: "Cart not updeted" });
       }
     }
   } catch (error) {
@@ -151,42 +155,44 @@ const changeCartQuantity = async (req, res) => {
   }
 };
 
-const loadchekout = async (req, res) => {
+//==========================================loadchekout=============================================
 
+const loadchekout = async (req, res) => {
   try {
- 
     const userId = req.session.user_id;
     if (userId) {
       const userCart = await Cart.findOne({ user: userId });
       if (!userCart) {
-        
-        return res.json({ message: 'Your cart is empty.', cartEmpty: true });
-
+        return res.json({ message: "Your cart is empty.", cartEmpty: true });
       }
-      
-      const productData = await Product.findOne({ _id: userCart.products[0].product });
 
-      if (userCart.products[0].count >productData.quantity) {
+      const productData = await Product.findOne({
+        _id: userCart.products[0].product,
+      });
+
+      if (userCart.products[0].count > productData.quantity) {
         console.log(productData.quantity);
-        return res.json({ message: "Stock is depleted . delet your cart product", noStock: true });
-      }else{
+        return res.json({
+          message: "Stock is depleted . delet your cart product",
+          noStock: true,
+        });
+      } else {
         return res.json({ success: true });
-
       }
-      
     }
-    
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: "Internal server error" });
-  } 
+  }
 };
 
-const landchekout =async (req,res)=>{
+//==========================================landchekout=============================================
+
+const landchekout = async (req, res) => {
   try {
-    const user_id=req.session.user_id;
+    const user_id = req.session.user_id;
     const userData = await User.findById(user_id);
-    const AddressData = await Address.find({user:user_id})
+    const AddressData = await Address.find({ user: user_id });
     const cartData = await Cart.findOne({ user: user_id }).populate(
       "products.product"
     );
@@ -199,18 +205,22 @@ const landchekout =async (req,res)=>{
         let productcount = cartItem.count;
         totalAmount += productcount * productprice;
       }
-    if(userData){
-    res.render("chekOut", { user: userData,add:AddressData,
-      cartData: cartData,totalAmount})
-    }
-    }else{
-      res.redirect("/login")
+      if (userData) {
+        res.render("chekOut", {
+          user: userData,
+          add: AddressData,
+          cartData: cartData,
+          totalAmount,
+        });
+      }
+    } else {
+      res.redirect("/login");
     }
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: "Internal server error" });
   }
-}
+};
 
 module.exports = {
   addtocart,
@@ -218,5 +228,5 @@ module.exports = {
   removeCartItem,
   changeCartQuantity,
   loadchekout,
-  landchekout
+  landchekout,
 };

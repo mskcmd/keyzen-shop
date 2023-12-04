@@ -68,7 +68,7 @@ const dashbord = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
 //==============================userLogout===================================
 
@@ -89,7 +89,7 @@ const showuser = async (req, res) => {
     res.render("userdatas", { users: usersData });
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
 //==============================user = un=blockuser===================================
 
@@ -138,7 +138,7 @@ const cateuppage = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
 
 //==============================edituser===================================
@@ -154,7 +154,7 @@ const edituser = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
 //==============================updateuser===================================
 
@@ -173,7 +173,7 @@ const updateuser = async (req, res) => {
     res.redirect("/admin/userdata");
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
 
 //==============================deletuser===================================
@@ -195,7 +195,7 @@ const cateDelete = async (req, res) => {
     res.redirect("/admin/category");
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
 
 //==============================adduser===================================
@@ -246,7 +246,7 @@ const addCategory = async (req, res) => {
     res.render("addCategory");
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
 
 //==============================addCate===================================
@@ -270,7 +270,7 @@ const addCate = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
 //==============================editCate===================================
 
@@ -280,14 +280,14 @@ const editCate = async (req, res) => {
     const data = new Cate({
       name: req.body.name,
     });
-    const already = await Cate.findOne({
-      name: { $regex: name, $options: "i" },
-    });
-    if (already) {
-      res.render("addCategory", {
-        message: "Entered category is already exist",
-      });
-    } else {
+    // const already = await Cate.findOne({
+    //   name: { $regex: name, $options: "i" },
+    // });
+    // if (already) {
+      // res.render("addCategory", {
+      //   message: "Entered category is already exist",
+      // });
+    // } else {
       const userData = await Cate.findByIdAndUpdate(
         { _id: req.body.id },
         {
@@ -297,11 +297,14 @@ const editCate = async (req, res) => {
         }
       );
       res.redirect("/admin/category");
-    }
+    // }
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
+
+
+
 
 module.exports = {
   loadlogin,

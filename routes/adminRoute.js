@@ -1,23 +1,23 @@
 const User = require("../models/userModel");
 const express = require("express");
 const nocache = require("nocache");
-const session = require('express-session');
+const session = require("express-session");
 const cookieParser = require("cookie-parser");
-const crypto = require('crypto');
-const secretKey = crypto.randomBytes(32).toString('hex');
-
+const crypto = require("crypto");
+const secretKey = crypto.randomBytes(32).toString("hex");
 
 const admin_route = express();
 
-admin_route.use(session({
-  secret: secretKey,
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    maxAge: 48 * 60 * 60 * 1000, 
-  },
-
-}));
+admin_route.use(
+  session({
+    secret: secretKey,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 48 * 60 * 60 * 1000,
+    },
+  })
+);
 
 admin_route.use(cookieParser());
 admin_route.use(nocache());
@@ -84,8 +84,16 @@ admin_route.post("/adduser", Auth.isLogin, adminController.addtouser);
 
 admin_route.get("/Product", productController.productlist);
 admin_route.get("/addProduct", productController.addProduct);
-admin_route.post("/addProduct",multer.productImagesUpload,productController.inserproduct);
-admin_route.post("/editProduct", multer.productImagesUpload, productController.editProduct);
+admin_route.post(
+  "/addProduct",
+  multer.productImagesUpload,
+  productController.inserproduct
+);
+admin_route.post(
+  "/editProduct",
+  multer.productImagesUpload,
+  productController.editProduct
+);
 
 //==================================productblock================================================
 
@@ -98,14 +106,10 @@ admin_route.get("/category", Auth.isLogin, adminController.category);
 admin_route.get("/addCategory", Auth.isLogin, adminController.addCategory);
 admin_route.post("/addCate", Auth.isLogin, adminController.addCate);
 
-admin_route.get("/orderManage",orderController.orderManage)
-admin_route.get("/orderFullDetails",orderController.orderFullDetails)
+//==================================orderManage====================================================
 
-admin_route.get('/statusUpdate', orderController.statusUpdate)
-
-
-
-
-
+admin_route.get("/orderManage", orderController.orderManage);
+admin_route.get("/orderFullDetails", orderController.orderFullDetails);
+admin_route.get("/statusUpdate", orderController.statusUpdate);
 
 module.exports = admin_route;

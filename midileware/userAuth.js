@@ -9,19 +9,17 @@ const islogin = async (req, res, next) => {
         next();
       } else {
         req.session.user_id = null;
-
-        res.redirect("/login");
+       res.redirect("/login");
       }
       // res.redirect("/");
-
     } else {
       const products = await productdata.find();
       // res.render("home", { user: false, products: products });
       res.redirect("/login");
-
     }
   } catch (error) {
     console.log(error.message);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -34,6 +32,7 @@ const isLogout = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 module.exports = {

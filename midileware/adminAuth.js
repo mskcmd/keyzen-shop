@@ -7,7 +7,7 @@ const isLogin = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
 
 const isLogout = async (req, res, next) => {
@@ -19,7 +19,7 @@ const isLogout = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
-  }
+    res.status(500).json({ error: 'Internal server error' });  }
 };
 
 module.exports = {

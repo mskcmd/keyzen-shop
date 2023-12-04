@@ -14,7 +14,6 @@ const adddressController = require("../controllers/addressController");
 const cartController = require("../controllers/cartController");
 const orderController = require("../controllers/orderControoler");
 
-
 //===================================register=====================================
 
 user_route.get("/register", Auth.isLogout, userController.loadRegister);
@@ -22,7 +21,7 @@ user_route.post("/register", Auth.isLogout, userController.insertUser);
 
 //===================================home=========================================
 
-user_route.get("/",  userController.homeload);
+user_route.get("/", userController.homeload);
 // user_route.get("/", userController.homeload);
 
 //===================================verify========================================
@@ -63,44 +62,43 @@ user_route.post("/reSetpass", userController.reSetpass);
 
 user_route.get("/contact", userController.contact);
 
-user_route.get('/addaddres',adddressController.addaddres)
-user_route.post("/addaddress",adddressController.addresAdd)
+//===================================addaddres========================================
 
-user_route.get("/editaddress",adddressController.editaddress)
+user_route.get("/addaddres", Auth.islogin, adddressController.addaddres);
+user_route.post("/addaddress", Auth.islogin, adddressController.addresAdd);
+user_route.get("/editaddress", Auth.islogin, adddressController.editaddress);
+user_route.get("/editaddress", Auth.islogin, adddressController.editaddress);
 
+//===================================addtocart========================================
 
-user_route.get("/editaddress",adddressController.editaddress)
+user_route.post("/addtocart", cartController.addtocart);
+user_route.get("/cartpage", Auth.islogin, cartController.cartpage);
+user_route.post("/removeCartItem", Auth.islogin, cartController.removeCartItem);
+user_route.post("/updatecart", cartController.changeCartQuantity);
 
-user_route.post("/addtocart",cartController.addtocart)
+//===================================chekout========================================
 
+user_route.get("/loadchekout", Auth.islogin, cartController.loadchekout);
+user_route.get("/landchekout", Auth.islogin, cartController.landchekout);
 
-user_route.get("/cartpage",Auth.islogin,cartController.cartpage)
+//===================================addaddres========================================
 
-user_route.post("/removeCartItem",Auth.islogin,cartController.removeCartItem)
-user_route.post("/updatecart",cartController.changeCartQuantity)
+user_route.get("/addaddres2", Auth.islogin, adddressController.addaddres2);
+user_route.post("/addresAdd2", Auth.islogin, adddressController.addresAdd1);
+user_route.get("/editaddress2", Auth.islogin, adddressController.editaddress2);
+user_route.post("/updateaddress", Auth.islogin, adddressController.updteaddress2);
+user_route.post("/removeAddress", Auth.islogin, adddressController.removeAddress);
 
-user_route.get("/loadchekout",cartController.loadchekout)
+//===================================editProfile========================================
 
+user_route.post("/editProfile", adddressController.editProfile);
 
+//===================================order========================================
 
-user_route.get("/landchekout",cartController.landchekout)
-user_route.get('/addaddres2',adddressController.addaddres2)
-
-user_route.post("/addresAdd2",adddressController.addresAdd1)
-user_route.get("/editaddress2",adddressController.editaddress2)
-user_route.post("/updateaddress", adddressController.updteaddress2);
- 
-user_route.post("/editProfile",adddressController.editProfile)
-
-user_route.post("/placeOrder",Auth.islogin,orderController.placeOrder)
-
-user_route.get("/viewOrderDetails",orderController.viewOrderDetails)
- 
-user_route.post("/orderCancel",orderController.orderCancel)
-user_route.post ("/removeAddress",adddressController.removeAddress)
-
-user_route.get("/orderSuccess",orderController.orderSuccess)
-user_route.get("/home",orderController.homeOrderBtn)
-
+user_route.post("/placeOrder", Auth.islogin, orderController.placeOrder);
+user_route.get("/viewOrderDetails", Auth.islogin, orderController.viewOrderDetails);
+user_route.post("/orderCancel", Auth.islogin, orderController.orderCancel);
+user_route.get("/orderSuccess", Auth.islogin, orderController.orderSuccess);
+user_route.get("/home", Auth.islogin, orderController.homeOrderBtn);
 
 module.exports = user_route;

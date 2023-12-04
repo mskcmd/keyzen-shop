@@ -6,6 +6,10 @@ const Sharp = require("sharp");
 const Cate = require("../models/category");
 const Address = require("../models/address");
 
+
+//==========================================editProfile=============================================
+
+
 const editProfile = async (req, res) => {
     try {
         console.log(("fghjkl"));
@@ -37,6 +41,9 @@ const addaddres = async(req,res)=>{
     }
 }
 
+//==========================================addaddres2=============================================
+
+
 const addaddres2 = async(req,res)=>{
     try {
         const userData = await User.findById(req.session.user_id);
@@ -48,6 +55,9 @@ const addaddres2 = async(req,res)=>{
         res.status(500).json({ error: "Internal server error" }); 
     }
 }
+
+//==========================================addresAdd=============================================
+
 
 
  const addresAdd =async(req,res)=>{
@@ -76,6 +86,9 @@ try {
     res.status(500).json({ error: "Internal server error" }); 
 }
  }
+
+ //==========================================addresAdd1=============================================
+
 
 
  const addresAdd1= async (req, res) => {
@@ -111,6 +124,7 @@ try {
         res.status(500).json({ error: "Internal server error" });
     }
 };
+//==========================================editaddress=============================================
 
 const editaddress = async(req,res)=>{
     try {
@@ -128,6 +142,8 @@ const editaddress = async(req,res)=>{
     }
 }
 
+//==========================================editaddress2=============================================
+
 const editaddress2 = async(req,res)=>{
     try {
         const id = req.query.id;
@@ -143,6 +159,10 @@ const editaddress2 = async(req,res)=>{
     res.status(500).json({ error: "Internal server error" }); 
     }
 }
+
+//==========================================updteaddress2=============================================
+
+
 const updteaddress2 = async (req, res) => {
     try {
         const addressId = req.body.id;
@@ -172,6 +192,9 @@ console.log(userId);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+//==========================================removeAddress=============================================
+
 const removeAddress = async (req, res) => {
     try {
       const id = req.body.id;

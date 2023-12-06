@@ -42,6 +42,9 @@ user_route.get("/logout", Auth.islogin, userController.userLogout);
 //===================================product========================================
 
 user_route.get("/product", userController.product);
+user_route.post("/filterproduct",userController.filterproduct)
+user_route.get("/search",userController.search)
+
 
 //===================================userprofile====================================
 
@@ -100,5 +103,10 @@ user_route.get("/viewOrderDetails", Auth.islogin, orderController.viewOrderDetai
 user_route.post("/orderCancel", Auth.islogin, orderController.orderCancel);
 user_route.get("/orderSuccess", Auth.islogin, orderController.orderSuccess);
 user_route.get("/home", Auth.islogin, orderController.homeOrderBtn);
+user_route.post('/verify-payment', orderController.verifyPayment)
+
+
+
+
 
 module.exports = user_route;

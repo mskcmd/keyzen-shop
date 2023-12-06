@@ -1,4 +1,5 @@
 <%- include('../users/layouts/userHeader') %>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <main class="main">
     <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
@@ -21,7 +22,7 @@
         <div class="checkout">
             <div class="container">
                 <div class="checkout-discount">
-                    <form action="#">
+                    <form >
                         <input type="text" class="form-control" required id="checkout-discount-input">
                         <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
                     </form>
@@ -84,7 +85,7 @@
 
                     <aside class="col-lg-3">
                         <div class="summary">
-                            <form action="#">
+                            <form id="placeOrder" >
                                 <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
                                 <table class="table table-summary">
                                     <thead>
@@ -138,7 +139,7 @@
                                         <div class="mr-2">
                                             <input required type="radio" id="payment" name="payment" value="onlinePayment"  />
                                         </div>
-                                        <a href="" class="d-block text-dark" for="pay2">Online Payment</a>
+                                        <a  class="d-block text-dark" for="pay2">Online Payment</a>
                                     </div>
 
                                     <div class="d-flex align-items-center">
@@ -149,7 +150,7 @@
                                     </div>
                                 </div><!-- End .accordion -->
 
-                                <button  class="btn btn-outline-primary-2 btn-order btn-block" id="placeOrder" class="btn-product btn-cart">
+                                <button  class="btn btn-outline-primary-2 btn-order btn-block" class="btn-product btn-cart">
                                     <span class="btn-text">Place Order</span>
                                     <span class="btn-hover-text">Proceed to Checkout</span>
                                 </button>
@@ -206,15 +207,11 @@
             data: { Total: total, address, payment },
             success: function(response) {
                 if (response.success) {
-                //     Swal.fire({
-                //     position: "top-end",
-                //     icon: "success",
-                //     title: "Your order is place",
-                //     showConfirmButton: false,
-                //     timer: 1500
-                //    });
                window.location.href = "/orderSuccess"
-                } else if (response.notaddress) {
+                }else if (response.order){
+                    razorPayment(response.order);
+                     console.log(order)                }
+                else if (response.notaddress) {
                     Swal.fire({
                     icon: 'error',
                     title: 'Error!',
@@ -238,6 +235,75 @@
             }
         });
     });
+
+
+    function razorPayment(order) {
+        
+    console.log(order);
+    var options = {
+      key: "rzp_test_RDkVJejUvbbErR", // Enter the Key ID generated from the Dashboard
+      amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      currency: "INR",
+      name: "keyzen Pvt.Ltd", //your business name
+      description: "Test Transaction",
+      order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      handler: function (response) {
+        console.log(response);
+        //   alert(response.razorpay_payment_id);
+        //   alert(response.razorpay_order_id);
+        //   alert(response.razorpay_signature)
+          verifyPayment(response, order);
+    // console.log("order",order);
+    //     console.log("jh",response)
+    //     console.log("dd", response.razorpay_signature);
+
+      },
+      prefill: {
+        //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+        name: "keyzen Pvt.Ltd", //your customer's name
+        email: "keyzen007store@example.com",
+        contact: "910000000369", //Provide the customer's phone number for better conversion rates
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+      theme: {
+        color: "#c96",
+      },
+    };
+
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+  }
+
+  function verifyPayment(payment, order) {
+    const amount2 = document.getElementById("totel").innerHTML;
+    console.log("hjfhf")
+    console.log(amount2,payment,order)
+    $.ajax({
+      url: "/verify-payment",
+      method: "post",
+      data: {
+        payment: payment,
+        amount2: amount2,
+        order: order,
+      },
+      success: (response) => {
+        if (response.codsuccess == true) {
+            window.location.href = "/orderSuccess"
+        } else {
+          swal.fire({
+            positon: "center",
+            icon: "error",
+            title: "Payment failed",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      },
+    });
+  }
+
 </script>
 
 

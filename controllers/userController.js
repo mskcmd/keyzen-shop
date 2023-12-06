@@ -184,7 +184,6 @@ const homeload = async (req, res) => {
     const userData = await User.findById(req.session.user_id);
     const products = await productdata.find({ blocked: 0 });
 
-
     res.render("home", { user: userData, products: products });
   } catch (error) {
     console.log(error.message);
@@ -198,7 +197,8 @@ const otp = async (req, res) => {
     res.render("otpverify");
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: 'Internal server error' });  }
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 //==========================================login=================================================
@@ -208,7 +208,8 @@ const login = async (req, res) => {
     res.render("login");
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: 'Internal server error' });  }
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 //==========================================userLogout=================================================
 
@@ -258,27 +259,25 @@ const userprofile = async (req, res) => {
     const user_id = req.session.user_id;
     const userData = await User.findById(user_id);
     const AddressData = await Address.find({ user: user_id });
-    const orderData = await Order.find({ userId: user_id}).sort({date: -1});
-    const totalPrice=orderData.totalAmount
+    const orderData = await Order.find({ userId: user_id }).sort({ date: -1 });
+    const totalPrice = orderData.totalAmount;
     console.log(totalPrice);
-    
-   
-    // console.log(orderData);
 
-    
+    // console.log(orderData);
 
     if (userData && AddressData) {
       res.render("userprofile", {
         user: userData,
         add: AddressData,
         oderData: orderData,
-      }); 
+      });
     } else {
       res.render("userprofile", { user: false });
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: 'Internal server error' });  }
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 //==============================================userprofile============================================
@@ -286,12 +285,32 @@ const userprofile = async (req, res) => {
 const product = async (req, res) => {
   try {
     const userData = await User.findById(req.session.user_id);
-    const products = await productdata.find({ blocked: 0 });
+    var page = 1;
+    var limit = 8;
+    if (req.query.page) {
+      page = req.query.page;
+    }
+    const products = await productdata
+      .find({ blocked: 0 })
+      .limit(limit)
+      .skip((page - 1) * limit);
+
     const catedata = await Cate.find({ blocked: 0 });
-    res.render("shop", { user: userData, products });
+
+    const count = await productdata.find({ blocked: 0 }).countDocuments();
+    const totalPages = Math.ceil(count / limit);
+
+    res.render("shop", {
+      user: userData,
+      products,
+      category: catedata,
+      currentPage: page,
+      totalPages: totalPages,
+    });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: 'Internal server error' });  }
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 //========================================shop================================
@@ -306,7 +325,8 @@ const productdeteal = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: 'Internal server error' });  }
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 //========================================forgetpassword================================
 
@@ -315,7 +335,8 @@ const forgetpassword = async (req, res) => {
     res.render("forgetpassword");
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: 'Internal server error' });  }
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 //========================================forgetpassword================================
@@ -454,6 +475,45 @@ const contact = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+//==========================================filterproduct=============================================
+
+const filterproduct = async (req, res) => {
+  try {
+    const user= req.session.user_id
+    let cate = req.body.category;
+    console.log(cate);
+    let priceSort = parseInt(req.body.price);
+    console.log(priceSort);
+    const category = await Cate.find({ blocked: 0 }); 
+    let filtered;
+    if (req.body.category === "allCate") {
+      filtered = await productdata.find({ blocked: 0 }).sort({ price: priceSort });
+    } else {
+      filtered = await productdata.find({ category: cate, blocked: 0 }).sort({
+        price: priceSort,
+      });
+    }
+    res.render("shop", {
+      user,
+      products: filtered,
+      totalPages: 0,
+      category,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+const search = async(req,res)=>{
+try {
+  
+} catch (error) {
+  console.log(error.message);
+  res.status(500).json({ error: "Internal server error" });
+}
+}
+
 
 module.exports = {
   loadRegister,
@@ -473,4 +533,6 @@ module.exports = {
   resetpassword,
   reSetpass,
   contact,
+  filterproduct,
+  search
 };

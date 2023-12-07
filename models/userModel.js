@@ -30,7 +30,22 @@ const userSchema = new mongoose.Schema({
     is_admin:{
         type: Boolean,
         default: false
-    }
+    },
+    wallet:{
+        type:Number,
+        default:0
+    },
+    walletHistory:[{
+        date:{
+            type:Date
+        },
+        amount:{
+            type:Number,
+        },
+        reason:{
+            type: String,
+        }
+    }]
 });
 
 module.exports = mongoose.model("User", userSchema);

@@ -102,8 +102,7 @@ include('../admin/layouts/adminnavebar') %>
             
             
            
-          <% if( orders.status == "placed"){ %>
-            <td>
+              <% if (orders.status == "shipped" || orders.status == "placed"||orders.status == "delivered" ) { %>            <td>
             <div class="dropdown m-3">
               <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuOutlineButton5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Actions </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton5">
@@ -113,8 +112,14 @@ include('../admin/layouts/adminnavebar') %>
               </div>
             </div>
           </td>
-          <% } %>
-          <br>
+          <% } else { %>
+            <td>
+              <div class="">
+                <button class="btn btn-outline-danger " type="button" id="dropdownMenuOutlineButton5" > cancllled </button>
+                
+              </div>
+            </td>
+          <% } %>          <br>
 
             <table class="table table-dark">
               <thead>

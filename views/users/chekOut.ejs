@@ -1,6 +1,13 @@
 <%- include('../users/layouts/userHeader') %>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
+<style>
+    .swal2-toast {
+    width: 800px; /* Adjust the width as needed */
+    height: 70px; /* Adjust the height as needed */
+    font-size: 18px;
+    margin-top: 70px;
+  }
+  </style>
 <main class="main">
     <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
         <div class="container">
@@ -85,8 +92,7 @@
 
                     <aside class="col-lg-3">
                         <div class="summary">
-                            <form id="placeOrder" >
-                                <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
+                            <form id="checkout-form">                                <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
                                 <table class="table table-summary">
                                     <thead>
                                         <tr>
@@ -132,7 +138,7 @@
                                         <div class="mr-2">
                                             <input required type="radio" id="COD" name="payment" value="COD" checked />
                                         </div>
-                                        <a href="" class="d-block text-dark" for="pay1">Cash On Delivery</a>
+                                        <a  class="d-block text-dark" for="pay1">Cash On Delivery</a>
                                     </div>
 
                                     <div class="d-flex align-items-center">
@@ -146,7 +152,7 @@
                                         <div class="mr-2">
                                             <input required type="radio" id="wallet" name="payment" value="wallet" />
                                         </div>
-                                        <a href="" class="d-block text-dark" for="pay3">Wallet</a>
+                                        <a  class="d-block text-dark" for="pay3">Wallet</a>
                                     </div>
                                 </div><!-- End .accordion -->
 
@@ -193,8 +199,8 @@
   }
 </script>
 <script>
-    var addToCartButtons = document.getElementById('placeOrder');
-    addToCartButtons.addEventListener("click", function() {
+    $("#checkout-form").submit((e) => {
+    e.preventDefault();
         let address = $("input[name=address]:checked").val();
         let total = $("#totel").text();
         let payment = $("input[name=payment]:checked").val();
@@ -210,12 +216,23 @@
                window.location.href = "/orderSuccess"
                 }else if (response.order){
                     razorPayment(response.order);
-                     console.log(order)                }
-                else if (response.notaddress) {
+                     console.log(order) 
+                    }
+                    else if (response.walletFailed == true) {
+          swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Insufficient Balance In Your Wallet",
+            showConfirmButton: false,
+            showCancelButton: false,
+            timer: 1500,
+          });
+        }else if (response.notaddress) {
                     Swal.fire({
                     icon: 'error',
                     title: 'Error!',
                     text: 'Address is not available. Please Add address.'
+
                 });
                 } else {
                     Swal.fire({

@@ -5,6 +5,7 @@ const Address = require("../models/address");
 const Order = require("../models/oderModel");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
+const { log } = require("console");
 
 //==========================RAZORPAY INSTANCE================================
 
@@ -20,7 +21,6 @@ const placeOrder = async (req, res) => {
     const userData = await User.findOne({ _id: userId });
     const addressId = req.body.address;
     const address_details = await Address.findOne({ _id: addressId });
-
     const cartData = await Cart.findOne({ user: userId }).populate(
       "products.product"
     );
@@ -33,15 +33,14 @@ const placeOrder = async (req, res) => {
         totalAmount += productcount * productprice;
       }
     }
-
     const Total = totalAmount;
     const name = userData.name;
     const uniNum = Math.floor(Math.random() * 900000) + 100000;
-
     const status = req.body.payment === "COD" ? "placed" : "pending";
     console.log(status);
     const statusLevel = status === "placed" ? 1 : 0;
-
+    const walletBalance = userData.wallet;
+console.log("walletBalance,",walletBalance);
     const orderProducts = [];
     for (let i = 0; i < cartData.products.length; i++) {
       const cartProduct = cartData.products[i];
@@ -108,9 +107,11 @@ const placeOrder = async (req, res) => {
           }
           await Cart.deleteOne({ user: userId });
           return res.json({ success: true });
-        } else {
+        }  else {
           const orderId = orderData._id;
           const totalAmount = orderData.totalAmount;
+
+          
           if (order.paymentMethod == "onlinePayment") {
             var options = {
               amount: totalAmount,
@@ -126,9 +127,54 @@ const placeOrder = async (req, res) => {
             );
             console.log(order);
           }
+
+  //         else if (order.paymentMethod == "wallet") {
+  //   if (walletBalance >= Total) {
+  //     await User.updateOne(
+  //       { _id: userId },
+  //       {
+  //         $inc: { wallet: -Total },
+  //         $pus:{
+  //           walletHistory: {
+  //             date: new Date(),
+  //             amount: Total,
+  //             reason: "Purchaced Amount Debited.",
+  //           },
+  //         },
+  //       },
+  //       { new: true }
+  //     );
+  //     await Order.findByIdAndUpdate(
+  //       orderId,
+  //       { status: "placed", statusLevel: 1 },
+  //       { new: true }
+  //     );
+       
+  //   if (result) {
+  //     console.log("amount debited from wallet");
+  //   } else {
+  //     console.log("not debited from wallet");
+  //   }
+  //   for (let i = 0; i < cartData.products.length; i++) {
+  //     let product = cartData.products[i].product;
+  //     let count = cartData.products[i].count;
+
+  //     await Product.updateOne(
+  //       { _id: product },
+  //       { $inc: { quantity: -count } }
+  //     );
+  //   }
+  //   await Cart.deleteOne({ user: userId });
+  //   return res.json({ success: true });
+  //   }
+  // } else {
+  //   res.json({ walletFailed: true });
+  // }
+
+          }
         }
       }
-    } else {
+        else {
       res.json({ notaddress: true });
     }
   } catch (error) {
@@ -136,7 +182,7 @@ const placeOrder = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
+//=================================verifyPeyment=====================================
 const verifyPayment = async (req, res) => {
   try {
     const userId = req.session.user_id;
@@ -159,7 +205,6 @@ const verifyPayment = async (req, res) => {
     console.log("Computed HMAC:", hmacValue);
 
     if (hmacValue == details.payment.razorpay_signature) {
-      
       for (let i = 0; i < cartData.products.length; i++) {
         let product = cartData.products[i].product;
         let count = cartData.products[i].count;
@@ -213,8 +258,11 @@ const viewOrderDetails = async (req, res) => {
       );
       const currentDate = new Date();
       const deliveryDate = orderedProduct.deliveryDate;
+      console.log("dd", deliveryDate);
+
       const timeDiff = currentDate - deliveryDate;
       const daysDiff = Math.floor(timeDiff / (24 * 60 * 60 * 1000));
+      console.log("mm", daysDiff);
 
       res.render("oderDetails", {
         user,
@@ -387,6 +435,22 @@ const statusUpdate = async (req, res) => {
           { $inc: { quantity: count } }
         );
       }
+    } else if (statusLevel === "2") {
+      await Order.updateOne(
+        { _id: orderId },
+        { $set: { status: "shipped", statusLevel: 2 } }
+      );
+    } else if (statusLevel === "3") {
+      await Order.updateOne(
+        { _id: orderId },
+        {
+          $set: {
+            status: "delivered",
+            deliveryDate: new Date(),
+            statusLevel: 3,
+          },
+        }
+      );
     }
     res.redirect("/admin/orderManage");
   } catch (error) {

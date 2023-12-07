@@ -263,11 +263,18 @@ const userprofile = async (req, res) => {
     const totalPrice = orderData.totalAmount;
     console.log(totalPrice);
 
-    // console.log(orderData);
-
+    const userData1 = await User.findOne({ _id: req.session.user_id });
+    let walletAmount;
+    let walletHistory;
+    if(userData1){
+      walletAmount = userData1.wallet
+      walletHistory = userData1.walletHistory
+    }
     if (userData && AddressData) {
       res.render("userprofile", {
         user: userData,
+        walletHistory:walletHistory,
+        walletAmount:walletAmount,
         add: AddressData,
         oderData: orderData,
       });

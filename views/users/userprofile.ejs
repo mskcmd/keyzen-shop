@@ -93,6 +93,7 @@
                   >Orders</a
                 >
               </li>
+            
               <li class="nav-item">
                 <a
                   class="nav-link"
@@ -102,7 +103,7 @@
                   role="tab"
                   aria-controls="tab-downloads"
                   aria-selected="false"
-                  >Downloads</a
+                  ><i class="fa-duotone fa-wallet"></i>Wallet</i></a
                 >
               </li>
               <li class="nav-item">
@@ -322,18 +323,115 @@
               </div>
               <!-- .End .tab-pane -->
 
+
               <div
-                class="tab-pane fade"
-                id="tab-downloads"
-                role="tabpanel"
-                aria-labelledby="tab-downloads-link"
-              >
-                <p>No downloads available yet.</p>
-                <a href="category.html" class="btn btn-outline-primary-2"
-                  ><span>GO SHOP</span><i class="icon-long-arrow-right"></i
-                ></a>
+              class="tab-pane fade"
+              id="tab-downloads"
+              role="tabpanel"
+              aria-labelledby="tab-downloads-link"
+            >
+              <div class="row">
+                <% if( walletAmount !== 0 || walletHistory.length > 0){%>
+                <div class="col-lg-6">
+                  <div class="card card-dashboard" style="border-radius: 15px; background: radial-gradient(circle, #F1F0E8, #96B6C5); height: 250px; width: 400px;">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-end flex-row" style="width: 100%;">
+                      <h1 class="card-title m-1"><i class="fa-duotone fa-credit-card"></i>&nbsp;<b>Keyzen.</b></h1>
+                    </div>
+                      <!-- End .card-title -->
+                      
+
+                      <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                        <div class="d-flex d-sm-block d-md-flex align-items-center">
+                          <h2 class="mb-0">₹ &nbsp <%= walletAmount %>.00</h2>
+                        </div>   
+                      </div>
+                      <div
+                        class="col-4 col-sm-12 col-xl-4 text-center text-xl-right"
+                      >
+                        <i
+                          class="icon-lg mdi mdi-wallet-travel text-danger ml-auto"
+                        ></i>
+                      </div>
+                    </div>
+                  
+                  
+                  </div>
+                  <!-- End .card-body -->
+                </div>
+                <!-- End .card-dashboard -->
+                <% if(walletHistory.length > 0) { %>
+
+                <div class="col-lg-6 grid-margin stretch-card">
+                  <div class="card" style="background-color: #F1F0E8;">
+                    <div class="card-body">
+                      <br />
+                      <h4 class="card-title">Transaction History</h4>
+
+                      <% walletHistory.forEach((walletHistory)=> { %>
+                      <div
+                        class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3"
+                        style="justify-content: space-between"
+                      >
+                        <div class="text-md-center text-xl-left">
+                          <!-- <h6 class="mb-1">Cancel Refund</h6> -->
+                          <p class="text-muted mb-0">
+                            <%= walletHistory.date.toLocaleDateString('en-US',
+                            { year: 'numeric', month: 'short', day: '2-digit'
+                            }).replace(/\//g, '-') %>
+                          </p>
+                        </div>
+                        <div
+                          class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0"
+                        >
+                          <h6 class="font-weight-bold mb-0">
+                            ₹&nbsp<%= walletHistory.amount %>
+                          </h6>
+                          <p><%= walletHistory.reason %></p>
+                        </div>
+                      </div>
+                      <% }) %>
+                    </div>
+                  </div>
+                </div>
+                <% } %>
+
+          
+
+                <%}else{%>
+                <div class="col-lg-6">
+                  <div class="card card-dashboard" style="border-radius: 15px; background: radial-gradient(circle, rgb(224, 238, 224), #e3f7c5); height: 250px; width: 400px;">
+                    <div class="card-body">
+                      <h1 class="card-title">Wallet is empty.</h1>
+                      <!-- End .card-title -->
+                      <br />
+
+                      <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                        <div
+                          class="d-flex d-sm-block d-md-flex align-items-center"
+                        >
+                          <h2 class="mb-0">₹ &nbsp 0.00</h2>
+                        </div>
+                      </div>
+                      <div
+                        class="col-4 col-sm-12 col-xl-4 text-center text-xl-right"
+                      >
+                        <i
+                          class="icon-lg mdi mdi-wallet-travel text-danger ml-auto"
+                        ></i>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End .card-body -->
+                </div>
+                <!-- End .card-dashboard -->
+
+                <%}%>
               </div>
-              <!-- .End .tab-pane -->
+              <!-- End row -->
+            </div>
+
+
 
               <div
                 class="tab-pane fade"
@@ -398,6 +496,7 @@
                 <% } %>
               </div>
               <!-- .End .tab-pane -->
+             
             </div>
           </div>
           <!-- End .col-lg-9 -->

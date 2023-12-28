@@ -4,7 +4,8 @@ const Cart = require("../models/cartModels");
 const Address = require("../models/address");
 const Order = require("../models/oderModel");
 const Offer = require("../models/offerModel");
-
+const path = require("path");
+const error500 = path.join(__dirname, "views", "error.html");
 //==========================================addtocart=============================================
 
 const addtocart = async (req, res) => {
@@ -80,11 +81,9 @@ const cartpage = async (req, res) => {
           cartItem.product.discount !== undefined
         ) {
           let productprice = cartItem.product.discount;
-          console.log("Discounted price:", productprice);
           totalAmount += cartItem.count * productprice;
         } else {
           let productprice = cartItem.product.price;
-          console.log("Normal price:", productprice);
           totalAmount += cartItem.count * productprice;
         }
       }
@@ -104,7 +103,7 @@ const cartpage = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
@@ -129,7 +128,7 @@ const removeCartItem = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
@@ -165,7 +164,7 @@ const changeCartQuantity = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
@@ -185,7 +184,6 @@ const loadchekout = async (req, res) => {
       });
 
       if (userCart.products[0].count > productData.quantity) {
-        console.log(productData.quantity);
         return res.json({
           message: "Stock is depleted . delet your cart product",
           noStock: true,
@@ -196,7 +194,7 @@ const loadchekout = async (req, res) => {
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
@@ -224,11 +222,9 @@ const landchekout = async (req, res) => {
           cartItem.product.discount !== undefined
         ) {
           let productprice = cartItem.product.discount;
-          console.log("Discounted price:", productprice);
           totalAmount += cartItem.count * productprice;
         } else {
           let productprice = cartItem.product.price;
-          console.log("Normal price:", productprice);
           totalAmount += cartItem.count * productprice;
         }
       }
@@ -247,7 +243,7 @@ const landchekout = async (req, res) => {
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 

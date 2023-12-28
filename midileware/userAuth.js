@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const productdata = require("../models/productModel");
-
+const path = require("path");
+const error500 = path.join(__dirname, "views", "error.html");
 const islogin = async (req, res, next) => {
   try {
     if (req.session.user_id) {
@@ -9,7 +10,7 @@ const islogin = async (req, res, next) => {
         next();
       } else {
         req.session.user_id = null;
-       res.redirect("/login");
+        res.redirect("/login");
       }
       // res.redirect("/");
     } else {
@@ -19,7 +20,7 @@ const islogin = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
@@ -32,7 +33,7 @@ const isLogout = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 module.exports = {

@@ -4,7 +4,8 @@ const Product = require("../models/productModel");
 const Cart = require("../models/cartModels");
 const Address = require("../models/address");
 const Wishlist = require("../models/wishlistModel");
-
+const path = require("path");
+const error500 = path.join(__dirname, "views", "error.html");
 //==========================showwish=========================================
 
 const showwish = async (req, res) => {
@@ -23,7 +24,6 @@ const showwish = async (req, res) => {
         user: req.session.user_id,
       }).populate("products.productId");
       const products = wishlist.products;
-      console.log("hai",products);
 
       res.render("wishlist", {
         name: req.session.name,
@@ -43,7 +43,7 @@ const showwish = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 //===========================addToWishlist==================================
@@ -83,7 +83,7 @@ const addToWishlist = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
@@ -104,7 +104,7 @@ const removeWishItem = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 

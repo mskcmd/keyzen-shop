@@ -2,7 +2,8 @@ const Offer = require("../models/offerModel");
 const Cate = require("../models/category");
 const productdata = require("../models/productModel");
 const mongoose = require("mongoose");
-
+const path = require("path");
+const error500 = path.join(__dirname, "views", "error.html");
 ///=======================offerpage============================================
 
 const offerpage = async (req, res) => {
@@ -11,7 +12,7 @@ const offerpage = async (req, res) => {
     res.render("offerpage", { offer: offer });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 //====================addofferPage=============================================
@@ -20,14 +21,13 @@ const addofferpage = async (req, res) => {
     res.render("addoffer");
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
 //=======================offeradd================================================
 
 const offeradd = async (req, res) => {
-  console.log("fgf");
   try {
     const data = req.body;
     const offer = new Offer({
@@ -42,7 +42,7 @@ const offeradd = async (req, res) => {
     res.json({ success: true });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
@@ -93,7 +93,7 @@ const cateapplyoffer = async (req, res) => {
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
@@ -138,14 +138,13 @@ const cateremoveoffer = async (req, res) => {
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
 //===========================proapplyoffer=====================================
 
 const proapplyoffer = async (req, res) => {
-  console.log("called");
   try {
     const offer_id = req.body.offerid;
     const proid = req.body.proid;
@@ -185,7 +184,7 @@ const proapplyoffer = async (req, res) => {
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
@@ -219,7 +218,7 @@ const proofferRemove = async (req, res) => {
     return res.status(200).json({ success: true });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 //======================editofferpage================================================
@@ -229,7 +228,7 @@ const editofferpage = async (req, res) => {
     res.render("editOffer", { offerdata });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 //======================editoffer===================================================
@@ -252,7 +251,7 @@ const editoffer = async (req, res) => {
     res.json({ success: true });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
@@ -268,7 +267,7 @@ const blockOffer = async (req, res) => {
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 

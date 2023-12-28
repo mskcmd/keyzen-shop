@@ -4,6 +4,8 @@ const multer = require("../midileware/mullter");
 const Sharp = require("sharp");
 const Cate = require("../models/category");
 const Offer = require("../models/offerModel");
+const path = require("path");
+const error500 = path.join(__dirname, "views", "error.html");
 
 //==============================productlist===================================
 
@@ -39,7 +41,7 @@ const productlist = async (req, res) => {
   } catch (error) {
     console.log(error.message);
     // Handle the error appropriately, e.g., send an error response to the client
-    res.status(500).send("Internal Server Error");
+    res.status(500).sendFile(error500);
   }
 };
 
@@ -99,12 +101,11 @@ const inserproduct = async (req, res) => {
       });
 
       let result = await product.save();
-      console.log(result);
       res.redirect("/admin/Product");
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
@@ -128,7 +129,7 @@ const problock = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
@@ -204,7 +205,7 @@ const editProduct = async (req, res) => {
     res.redirect("/admin/Product");
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 

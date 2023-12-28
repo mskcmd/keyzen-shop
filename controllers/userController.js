@@ -14,6 +14,8 @@ const Address = require("../models/address");
 const Order = require("../models/oderModel");
 const Coupon = require("../models/couponModel");
 const Offer = require("../models/offerModel");
+const path = require("path");
+const error500 = path.join(__dirname, 'views', 'error.html')
 
 //==========================================securePassword=============================================
 
@@ -72,7 +74,7 @@ const sendVerifyMail = async (email, name, otp) => {
     });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500)
   }
 };
 
@@ -90,17 +92,14 @@ const insertUser = async (req, res) => {
       req.session.email = req.body.email;
       req.session.mobile = req.body.mobile;
       req.session.password = req.body.password;
-      console.log("code :",req.body.referralCode);
       req.session.referralCode = req.body.referralCode;
       const referralCode = req.body.referralCode
       const userData=await User.findOne({ referralCode:referralCode})
-      console.log("hh",userData);
       if(!userData&&referralCode==null){
         res.render("registration", { message: "Rong ReferralCode" });
       }else {
       if (req.body.password === req.body.confirmPassword) {
         const generatedOTP = generateAndStoreOTP(req);
-        console.log(generatedOTP);
         sendVerifyMail(req.session.email, req.session.name, generatedOTP);
         res.redirect("/verify");
       } else {
@@ -110,6 +109,7 @@ const insertUser = async (req, res) => {
   }
   } catch (error) {
     console.log(error);
+    res.status(500).sendFile(error500)
   }
 };
 
@@ -172,7 +172,6 @@ const checkotp = async (req, res) => {
        
 
          const referralCode = req.session.referralCode;
-         console.log("referralCode", referralCode);
 
          const resulttow = await User.findOneAndUpdate(
           { usedReferralCode: referralCode },
@@ -206,7 +205,7 @@ const checkotp = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).sendFile(error500)
 
   }
 };
@@ -216,7 +215,6 @@ const checkotp = async (req, res) => {
 const resendOTP = async (req, res) => {
   try {
     const generatedOTP = generateAndStoreOTP(req);
-    console.log(generatedOTP);
     const name = req.session.name; // Assign the value of name to section
 
     sendVerifyMail(req.session.email, name, generatedOTP); // Use name here
@@ -224,7 +222,7 @@ const resendOTP = async (req, res) => {
     return res.redirect("/verify");
   } catch (error) {
     console.error(error.message);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).sendFile(error500)
   }
 };
 
@@ -238,6 +236,7 @@ const homeload = async (req, res) => {
     res.render("home", { user: userData, products: products });
   } catch (error) {
     console.log(error.message);
+    res.status(500).sendFile(error500)
   }
 };
 
@@ -248,7 +247,7 @@ const otp = async (req, res) => {
     res.render("otpverify");
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500)
   }
 };
 
@@ -259,7 +258,7 @@ const login = async (req, res) => {
     res.render("login");
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500)
   }
 };
 //==========================================userLogout=================================================
@@ -340,7 +339,7 @@ const userprofile = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500)
   }
 };
 
@@ -383,7 +382,7 @@ const product = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500)
   }
 };
 
@@ -399,7 +398,7 @@ const productdeteal = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500)
   }
 };
 //========================================forgetpassword================================
@@ -409,7 +408,7 @@ const forgetpassword = async (req, res) => {
     res.render("forgetpassword");
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500)
   }
 };
 
@@ -444,7 +443,7 @@ const forgetsendmail = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500)
   }
 };
 
@@ -483,7 +482,7 @@ const passRecoverVerifyMail = async (name, email, token) => {
     });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500)
   }
 };
 
@@ -497,7 +496,7 @@ const resetpassword = async (req, res) => {
     res.render("resetPassword", { user: tokenData });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500)
   }
 };
 
@@ -509,7 +508,6 @@ const reSetpass = async (req, res) => {
     const id = req.body.id;
 
     const secPassword = await securePassword(password);
-    console.log("Secure password generated:", secPassword);
 
     const updatedData = await User.updateOne(
       { _id: id },
@@ -524,7 +522,7 @@ const reSetpass = async (req, res) => {
     }
   } catch (error) {
     console.log("Error:", error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500)
   }
 };
 
@@ -540,7 +538,7 @@ const contact = async (req, res) => {
     }
   } catch (error) {
     console.log("Error:", error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500)
   }
 };
 //==========================================filterproduct=============================================
@@ -571,7 +569,7 @@ const filterproduct = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500)
   }
 };
 //==========================================searchproduct=============================================
@@ -594,7 +592,7 @@ const searchproduct = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500)
   }
 };
 const loadError = async (req, res) => {

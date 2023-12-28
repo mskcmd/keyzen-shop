@@ -13,6 +13,7 @@ const pdf = require("html-pdf");
 const ExcelJS = require("exceljs");
 const { log } = require("util");
 const moment = require("moment");
+const error500 = path.join(__dirname, 'views', 'error.html')
 
 //==============================securePassword===============================
 
@@ -31,7 +32,7 @@ const loadlogin = async (req, res) => {
     res.render("adminlogin");
   } catch (error) {
     console.log(error.message);
-    res.status(500).send("Internal Server Error");
+    res.status(500).sendFile(error500)
   }
 };
 //==============================loginadmin===================================
@@ -232,8 +233,7 @@ const dashbord = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
+    res.status(500).sendFile(error500)  }
 };
 
 //===================weeksalesreport=======================================
@@ -285,7 +285,7 @@ const adminLogout = async (req, res) => {
     res.redirect("/admin/");
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Internal Server Error");
+    res.status(500).sendFile(error500)
   }
 };
 
@@ -328,7 +328,6 @@ const unandblock = async (req, res) => {
       const productsInCategory = await productdata.findOne({
         category: objectIdAsString,
       });
-      console.log(productsInCategory);
       const cid = productsInCategory.category;
       if (cid === objectIdAsString) {
         const uodate = await productdata.updateMany(
@@ -345,7 +344,6 @@ const unandblock = async (req, res) => {
       });
 
       const cid = productsInCategory.category;
-      console.log("rr", cid + "objectIdAsString", objectIdAsString);
       if (cid === objectIdAsString) {
         const uodate = await productdata.updateOne(
           { category: objectIdAsString },
@@ -451,7 +449,6 @@ const adduser = async (req, res) => {
 
 const addtouser = async (req, res) => {
   try {
-    console.log(req.bod);
     const spassword = await securePassword(req.body.password);
     const newUser = new User({
       name: req.body.name,
@@ -542,7 +539,6 @@ const editCate = async (req, res) => {
     const name = req.body.name;
     const id = req.body.id;
 
-    console.log(id);
 
     const already = await Cate.findOne({ name: name });
 
@@ -655,7 +651,7 @@ const saleSorting = async (req, res) => {
     res.render("salesReport", { orders });
   } catch (error) {
     console.log(error.message);
-    res.status(500).send("Internal Server Error");
+    res.status(500).sendFile(error500)
   }
 };
 
@@ -664,13 +660,10 @@ const saleSorting = async (req, res) => {
 const downloadReport = async (req, res) => {
   try {
     const format = req.query.format;
-    console.log(format);
 
     const fromDate = req.query.fromDate;
     const toDate = req.query.toDate;
 
-    console.log("fromDate", fromDate);
-    console.log("toDate", toDate);
 
     let startDate, endDate;
 
@@ -826,7 +819,7 @@ const downloadReport = async (req, res) => {
         res.render("ReportPdf", { orderData, date: dateLabel });
       } catch (error) {
         console.error("Error fetching order data:", error);
-        res.status(500).send("Internal Server Error");
+        res.status(500).sendFile(error500)
       }
     } else if (format === "excel") {
       // Generate and send an Excel report
@@ -877,7 +870,7 @@ const downloadReport = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).send("Internal Server Error");
+    res.status(500).sendFile(error500)
   }
 };
 
@@ -906,7 +899,7 @@ const chartFilterWeek = async (req, res) => {
     res.json([totalCodWeek, totalOnlineWeek, totalWalletWeek]);
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Internal Server Error");
+    res.status(500).sendFile(error500)
   }
 };
 

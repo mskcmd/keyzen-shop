@@ -1,6 +1,8 @@
 const Coupon = require("../models/couponModel");
 const Cart = require("../models/cartModels");
 const Order = require("../models/oderModel");
+const path = require("path");
+const error500 = path.join(__dirname, "views", "error.html");
 
 //============================coupen==============================
 
@@ -10,7 +12,7 @@ const coupen = async (req, res) => {
     res.render("coupons", { coupons: coupons });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 //============================showCoupon==============================
@@ -20,7 +22,7 @@ const showCoupon = async (req, res) => {
     res.render("addCoupon");
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 //============================addCoupon==============================
@@ -58,7 +60,7 @@ const addCoupon = async (req, res) => {
     } else if (active < TodayDate) {
       res.json({ expDate: true });
     } else if (req.body.expDate < Today) {
-      res.json({ expDate: true});
+      res.json({ expDate: true });
     } else if (req.body.userLimit <= 0) {
       res.json({ limit: true });
     } else {
@@ -76,16 +78,14 @@ const addCoupon = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
 //============================blockCoupons==============================
 
 const blockCoupons = async (req, res) => {
-  console.log("colled");
   try {
-    console.log(req.query.id);
     const coupen = await Coupon.findOne({ _id: req.query.id });
     if (coupen.status == true) {
       await Coupon.updateOne(
@@ -97,7 +97,7 @@ const blockCoupons = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
@@ -107,14 +107,13 @@ const showEditPage = async (req, res) => {
     res.render("editCoupon", { coupon: couponData });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 //============================updateCoupon==============================
 
 const updateCoupon = async (req, res) => {
   try {
-   
     const regexCode = new RegExp(req.body.code, "i");
     const Codealready = await Coupon.findOne({
       couponCode: { $regex: regexCode },
@@ -132,7 +131,6 @@ const updateCoupon = async (req, res) => {
       req.body.userLimit.trim() === ""
     ) {
       res.json({ require: true });
-    
     } else if (Codealready) {
       res.json({ codeAlready: true });
     } else if (req.body.discount <= 0) {
@@ -142,7 +140,7 @@ const updateCoupon = async (req, res) => {
     } else if (active < TodayDate) {
       res.json({ expDate: true });
     } else if (req.body.expDate < Today) {
-      res.json({ expDate: true});
+      res.json({ expDate: true });
     } else if (req.body.userLimit <= 0) {
       res.json({ limit: true });
     } else {
@@ -168,7 +166,7 @@ const updateCoupon = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
@@ -186,7 +184,7 @@ const deleteAppliedCoupon = async (req, res) => {
     res.json({ success: true, disTotal });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 
@@ -198,7 +196,6 @@ const applyCoupon = async (req, res) => {
 
     req.session.code = code;
     const amount = Number(req.body.amount);
-    console.log(amount);
 
     const userExist = await Coupon.findOne({
       couponCode: code,
@@ -208,7 +205,6 @@ const applyCoupon = async (req, res) => {
       res.json({ user: true });
     } else {
       const couponData = await Coupon.findOne({ couponCode: code });
-      console.log(couponData);
       if (couponData) {
         if (couponData.usersLimit <= 0) {
           res.json({ limit: true });
@@ -225,12 +221,9 @@ const applyCoupon = async (req, res) => {
                 res.json({ cartAmount: true });
               } else if (couponData.discountAmount >= amount) {
                 res.json({ activeone: true });
-              } 
-              else {
-               
+              } else {
                 const disAmount = couponData.discountAmount;
                 const disTotal = Math.round(amount - disAmount);
-                console.log(disAmount,disTotal);
                 return res.json({ amountOkey: true, disAmount, disTotal });
               }
             }
@@ -242,7 +235,7 @@ const applyCoupon = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).sendFile(error500);
   }
 };
 

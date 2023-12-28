@@ -5,10 +5,11 @@ const Address = require("../models/address");
 const Order = require("../models/oderModel");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
-const { log } = require("console");
 const Coupon = require("../models/couponModel");
 const dotenv = require("dotenv");
 dotenv.config();
+const path = require("path");
+const error500 = path.join(__dirname, 'views', 'error.html')
 //==========================RAZORPAY INSTANCE================================
 
 var instance = new Razorpay({
@@ -357,8 +358,7 @@ const verifyPayment = async (req, res) => {
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
+res.status(500).sendFile(error500)  }
 };
 
 //==========================================viewOrderDetails=============================================
@@ -386,8 +386,7 @@ const viewOrderDetails = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
+res.status(500).sendFile(error500)  }
 };
 
 //==========================================orderManage=============================================
@@ -432,8 +431,7 @@ const orderManage = async (req, res) => {
     res.render("oderManage", { orders: orderData });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
+res.status(500).sendFile(error500)  }
 };
 
 //==========================================orderFullDetails=============================================
@@ -448,8 +446,7 @@ const orderFullDetails = async (req, res) => {
     res.render("oderfullview", { orders: orderedProduct });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
+res.status(500).sendFile(error500)  }
 };
 
 //==========================================orderCancel=============================================
@@ -607,8 +604,7 @@ const statusUpdate = async (req, res) => {
     res.redirect("/admin/orderManage");
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
+res.status(500).sendFile(error500)  }
 };
 
 //==========================================orderSuccess=============================================
@@ -623,8 +619,7 @@ const orderSuccess = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
+res.status(500).sendFile(error500)  }
 };
 //==========================================homeOrderBtn=============================================
 
@@ -633,8 +628,7 @@ const homeOrderBtn = async (req, res) => {
     res.redirect("/");
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
+res.status(500).sendFile(error500)  }
 };
 //=================================orderReturn=====================================
 
@@ -691,8 +685,7 @@ const orderReturn = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
+res.status(500).sendFile(error500)  }
 };
 
 const orderInvoice = async (req, res) => {
@@ -712,8 +705,7 @@ const orderInvoice = async (req, res) => {
     res.render("invoice", { order: orderData, user: userData, date });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
+res.status(500).sendFile(error500)  }
 };
 
 module.exports = {

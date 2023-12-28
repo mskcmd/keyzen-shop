@@ -5,12 +5,13 @@ const multer = require("../midileware/mullter");
 const Sharp = require("sharp");
 const Cate = require("../models/category");
 const Address = require("../models/address");
+const path = require("path");
+const error500 = path.join(__dirname, 'views', 'error.html')
 
 //==========================================editProfile=============================================
 
 const editProfile = async (req, res) => {
   try {
-    console.log("fghjkl");
     const update = await User.updateOne(
       { _id: req.session.user_id },
       {
@@ -26,7 +27,7 @@ const editProfile = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+   res.status(500).sendFile(error500)
   }
 };
 
@@ -38,7 +39,7 @@ const addaddres = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+   res.status(500).sendFile(error500)
   }
 };
 
@@ -52,7 +53,7 @@ const addaddres2 = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+   res.status(500).sendFile(error500)
   }
 };
 
@@ -80,7 +81,7 @@ const addresAdd = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+   res.status(500).sendFile(error500)
   }
 };
 
@@ -110,7 +111,7 @@ const addresAdd1 = async (req, res) => {
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal server error" });
+   res.status(500).sendFile(error500)
   }
 };
 //==========================================editaddress=============================================
@@ -125,7 +126,7 @@ const editaddress = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+   res.status(500).sendFile(error500)
   }
 };
 
@@ -135,14 +136,13 @@ const editaddress2 = async (req, res) => {
   try {
     const id = req.query.id;
     const addaddresData = await Address.find({ _id: id });
-    console.log(addaddresData);
     const userData = await User.findById(req.session.user_id);
     if (userData) {
       res.render("editAddress2", { user: userData, addr: addaddresData });
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+   res.status(500).sendFile(error500)
   }
 };
 
@@ -171,7 +171,7 @@ const updteaddress2 = async (req, res) => {
     res.json({ success: true });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+   res.status(500).sendFile(error500)
   }
 };
 
@@ -190,7 +190,7 @@ const removeAddress = async (req, res) => {
     res.json({ remove: true });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Internal server error" });
+   res.status(500).sendFile(error500)
   }
 };
 

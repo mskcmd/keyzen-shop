@@ -7,7 +7,7 @@ module.exports = {
     mongoose
       .connect(process.env.Mongo_url, {})
       .then(() => {
-        console.log("Database connected");
+        console.log("(Atles) Mongodb Database connected");
       })
       .catch((err) => {
         console.log(err);

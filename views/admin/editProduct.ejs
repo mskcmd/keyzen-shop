@@ -39,12 +39,14 @@
             <div class="form-group">
               <label for="Category">Category</label>
               <select name="category" id="categorySelect">
-                <% if(catData.length > 0){
-                  for(let i=0; i<catData.length; i++){ %>
-                    <option value="<%= catData[i].name.slice(0, 10) %>"><%= catData[i].name.slice(0, 10) %></option>
-                  <% }
-                } else { %>
-                  <option value="">No Categories</option>
+                <% if (catData.length > 0) { %>
+                  <% for (let i = 0; i < catData.length; i++) { %>
+                    <option value="<%= catData[i]._id %>" <% if (catData._id && catData._id.toString() === catData[i]._id.toString()) { %>selected<% } %>>
+                      <%= catData[i].name.slice(0, 10) %>
+                    </option>
+                  <% } %>
+                <% } else { %>
+                  <option value="" selected>No Categories</option>
                 <% } %>
               </select>
               <input type="hidden" name="originalCategory" value="<%= product.category %>">

@@ -13,7 +13,7 @@ const isLogin = async (req, res, next) => {
 const isLogout = async (req, res, next) => {
   try {
     if (req.session.admin_id) {
-      res.render("dashbord");
+      res.redirect("/admin/adminhome");
     } else {
       next();
     }

@@ -22,6 +22,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         default:0
     },
+    referralCode:{
+        type: String,
+        default:0
+
+    },
+    usedReferralCode:{
+        type: String,
+        default:0
+
+    },
 
     is_verified:{
         type:Number,
@@ -43,6 +53,9 @@ const userSchema = new mongoose.Schema({
             type:Number,
         },
         reason:{
+            type: String,
+        },
+        cancelOderId:{
             type: String,
         }
     }]

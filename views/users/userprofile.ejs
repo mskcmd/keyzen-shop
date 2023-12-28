@@ -38,10 +38,7 @@
 </style>
 
 <main class="main">
-  <div
-    class="page-header text-center"
-    style="background-image: url('assets/images/page-header-bg.jpg')"
-  >
+  <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
     <div class="container">
       <h1 class="page-title">My Account<span>Shop</span></h1>
     </div>
@@ -65,62 +62,26 @@
       <div class="container">
         <div class="row">
           <aside class="col-md-4 col-lg-3">
-            <ul
-              class="nav nav-dashboard flex-column mb-3 mb-md-0"
-              role="tablist"
-            >
+            <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
               <li class="nav-item">
-                <a
-                  class="nav-link active"
-                  id="tab-dashboard-link"
-                  data-toggle="tab"
-                  href="#tab-dashboard"
-                  role="tab"
-                  aria-controls="tab-dashboard"
-                  aria-selected="true"
-                  >Dashboard</a
-                >
+                <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">Dashboard</a>
               </li>
               <li class="nav-item">
-                <a
-                  class="nav-link"
-                  id="tab-orders-link"
-                  data-toggle="tab"
-                  href="#tab-orders"
-                  role="tab"
-                  aria-controls="tab-orders"
-                  aria-selected="false"
-                  >Orders</a
-                >
-              </li>
-            
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  id="tab-downloads-link"
-                  data-toggle="tab"
-                  href="#tab-downloads"
-                  role="tab"
-                  aria-controls="tab-downloads"
-                  aria-selected="false"
-                  ><i class="fa-duotone fa-wallet"></i>Wallet</i></a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  id="tab-address-link"
-                  data-toggle="tab"
-                  href="#tab-address"
-                  role="tab"
-                  aria-controls="tab-address"
-                  aria-selected="false"
-                  >Adresses</a
-                >
+                <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="false">Orders</a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="/logout">Sign Out</a>
+                <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#tab-downloads" role="tab" aria-controls="tab-downloads" aria-selected="false"><i class="fa-duotone fa-wallet"></i>Wallet</i></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="tab-coupons-link" data-toggle="tab" href="#tab-coupons" role="tab" aria-controls="tab-coupons" aria-selected="false"><i class="fa-duotone fa-gift"></i>Coupons</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" style="color: red;" href="/logout">Sign Out</a>
               </li>
             </ul>
           </aside>
@@ -128,134 +89,55 @@
 
           <div class="col-md-8 col-lg-9">
             <div class="tab-content">
-              <div
-                class="tab-pane fade show active"
-                id="tab-dashboard"
-                role="tabpanel"
-                aria-labelledby="tab-dashboard-link"
-              >
+              <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
                 <div class="profile-container">
-                  <img
-                    src="/user/assets/images/icons/pic-1.png"
-                    alt="Profile Image"
-                    class="profile-image"
-                  />
+                  <img src="/user/assets/images/icons/pic-1.png" alt="Profile Image" class="profile-image" />
                   <div class="profile-info">
                     <h2><%=user.name %></h2>
                     <p><%=user.email %></p>
                     <p>Phone: <%=user.mobile %></p>
+                    <p>referralCode :<strong> <%=user.referralCode %></strong></p>
                   </div>
-                  <a
-                    href=""
-                    data-toggle="modal"
-                    data-target="#modalRegisterForm"
-                    ><button
-                      type="button"
-                      class="btn btn-primary mt-3"
-                      alt="Edit Logo"
-                    >
+                  <a href="" data-toggle="modal" data-target="#modalRegisterForm"><button type="button" class="btn btn-primary mt-3" alt="Edit Logo">
                       Edit
-                    </button></a
-                  >
+                    </button></a>
                 </div>
                 <form id="myForm" action="">
-                  <div
-                    class="modal fade"
-                    id="modalRegisterForm"
-                    tabindex="-1"
-                    role="dialog"
-                    aria-labelledby="myModalLabel"
-                    aria-hidden="true"
-                  >
+                  <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header text-center">
                           <h4 class="modal-title w-100 font-weight-bold">
                             Edit Profile
                           </h4>
-                          <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                          >
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
                         <div class="modal-body mx-3">
                           <div class="md-form mb-3">
-                            <label
-                              data-error="wrong"
-                              data-success="right"
-                              for="orangeForm-name"
-                            >
-                              Name</label
-                            >
-                            <input
-                              type="text"
-                              name="name"
-                              id="name"
-                              value="<%=user.name%>"
-                              class="form-control validate"
-                            />
-                            <div
-                              id="nameError"
-                              style="display: none; color: red"
-                            ></div>
+                            <label data-error="wrong" data-success="right" for="orangeForm-name">
+                              Name</label>
+                            <input type="text" name="name" id="name" value="<%=user.name%>" class="form-control validate" />
+                            <div id="nameError" style="display: none; color: red"></div>
                           </div>
                           <div class="md-form mb-3">
-                            <label
-                              data-error="wrong"
-                              data-success="right"
-                              for="orangeForm-email"
-                            >
-                              email</label
-                            >
+                            <label data-error="wrong" data-success="right" for="orangeForm-email">
+                              email</label>
 
-                            <input
-                              type="email"
-                              name="email"
-                              id="email"
-                              value="<%=user.email%>"
-                              class="form-control validate"
-                            />
-                            <div
-                              id="emailError"
-                              style="display: none; color: red"
-                            ></div>
+                            <input type="email" name="email" id="email" value="<%=user.email%>" class="form-control validate" />
+                            <div id="emailError" style="display: none; color: red"></div>
                           </div>
 
                           <div class="md-form mb-3">
-                            <label
-                              data-error="Enter a valid mobile number"
-                              data-success="right"
-                              for="orangeForm-mobile"
-                              >Mobile Number</label
-                            >
-                            <input
-                              type="tel"
-                              name="mobile"
-                              id="phoneNumber"
-                              value="<%=user.mobile%>"
-                              class="form-control validate"
-                              pattern="[0-9]{10}"
-                            />
-                            <div
-                              id="numberError"
-                              style="display: none; color: red"
-                            ></div>
+                            <label data-error="Enter a valid mobile number" data-success="right" for="orangeForm-mobile">Mobile Number</label>
+                            <input type="tel" name="mobile" id="phoneNumber" value="<%=user.mobile%>" class="form-control validate" pattern="[0-9]{10}" />
+                            <div id="numberError" style="display: none; color: red"></div>
                           </div>
-                          <div
-                            id="profileSuccess"
-                            style="display: none; color: green"
-                          ></div>
+                          <div id="profileSuccess" style="display: none; color: green"></div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                          <button
-                            id="editProfile"
-                            type="submit"
-                            class="btn btn-outline-primary-2"
-                          >
+                          <button id="editProfile" type="submit" class="btn btn-outline-primary-2">
                             <span>save </span>
                             <i class="icon-long-arrow-right"></i>
                           </button>
@@ -267,183 +149,243 @@
               </div>
               <!-- .End .tab-pane -->
 
-              <div
-                class="tab-pane fade"
-                id="tab-orders"
-                role="tabpanel"
-                aria-labelledby="tab-orders-link"
-              >
-              <table class="table table-cart table-mobile">
-                <thead>
+              <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
+                <table class="table table-cart table-mobile">
+                  <thead>
                     <tr>
-                        <th>No.</th>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Payment</th>
-                        <th>count</th>
-                        <th>Status</th>
-                        <th>Details</th>
-                        
-                        
-                    </tr>
-                </thead>
+                      <th>No.</th>
+                      <th>Date</th>
+                      <th>Amount</th>
+                      <th>Payment</th>
+                      <th>count</th>
+                      <th>Status</th>
+                      <th>Details</th>
 
-                <tbody>
+
+                    </tr>
+                  </thead>
+
+                  <tbody>
                     <% if(oderData.length > 0 ){ %>
                     <% for(let i=0;i<oderData.length;i++){ %>
                     <tr>
-                        <td><%= i+1 %></td>
-                        <td><%= oderData[i].date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %></td>
-                        <td>₹ <%= oderData[i].totalAmount %></td>
-                        <td><%= oderData[i].paymentMethod %> </td>
-                        <td><%= oderData[i].products.length %></td>
-                        <td><%= oderData[i].status %></td>
-                        <td>
-                            <a href="/viewOrderDetails?id=<%=oderData[i]._id%>" class=" btn-outline-dark btn-round">View Details</a>
-                        </td>
-                    </td>
-                    
-                    
-                        
+                      <td><%= i+1 %></td>
+                      <td><%= oderData[i].date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %></td>
+                      <td>₹ <%= oderData[i].totalAmount %></td>
+                      <td><%= oderData[i].paymentMethod %> </td>
+                      <td><%= oderData[i].products.length %></td>
+                      <td><%= oderData[i].status %></td>
+                      <td>
+                        <a href="/viewOrderDetails?id=<%=oderData[i]._id%>" class=" btn-outline-dark btn-round">View Details</a>
+                      </td>
+                      </td>
+
+
+
                     </tr>
-                    
+
                     <% } %>
                     <% } else{ %>
-                     
-                        <div class="error-content text-center">
-                          <p>No order has been made yet.</p>
-                          <a href="/product" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
-                        </div><!-- .End .tab-pane -->
 
-                        <% } %>
-                </tbody>
-            </table><!-- End .table table-wishlist -->
+                    <div class="error-content text-center">
+                      <p>No order has been made yet.</p>
+                      <a href="/product" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+                    </div><!-- .End .tab-pane -->
 
-       
+                    <% } %>
+                  </tbody>
+                </table><!-- End .table table-wishlist -->
+
+
               </div>
               <!-- .End .tab-pane -->
 
 
-              <div
-              class="tab-pane fade"
-              id="tab-downloads"
-              role="tabpanel"
-              aria-labelledby="tab-downloads-link"
-            >
-              <div class="row">
-                <% if( walletAmount !== 0 || walletHistory.length > 0){%>
-                <div class="col-lg-6">
-                  <div class="card card-dashboard" style="border-radius: 15px; background: radial-gradient(circle, #F1F0E8, #96B6C5); height: 250px; width: 400px;">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-end flex-row" style="width: 100%;">
-                      <h1 class="card-title m-1"><i class="fa-duotone fa-credit-card"></i>&nbsp;<b>Keyzen.</b></h1>
-                    </div>
-                      <!-- End .card-title -->
-                      
+              <div class="tab-pane fade" id="tab-downloads" role="tabpanel" aria-labelledby="tab-downloads-link">
+                <div class="row">
+                  <% if( walletAmount !== 0 || walletHistory.length > 0){%>
+                  <div class="col-lg-6">
+                    <div class="card card-dashboard" style="border-radius: 15px; background: radial-gradient(circle, #F1F0E8, #96B6C5); height: 250px; width: 400px;">
+                      <div class="card-body">
+                        <div class="d-flex justify-content-end flex-row" style="width: 100%;">
+                          <h1 class="card-title m-1"><i class="fa-duotone fa-credit-card"></i>&nbsp;<b>Keyzen.</b></h1>
+                        </div>
+                        <!-- End .card-title -->
 
-                      <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                        <div class="d-flex d-sm-block d-md-flex align-items-center">
-                          <h2 class="mb-0">₹ &nbsp <%= walletAmount %>.00</h2>
-                        </div>   
+
+                        <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                          <div class="d-flex d-sm-block d-md-flex align-items-center">
+                            <h2 class="mb-0">₹ &nbsp <%= walletAmount %>.00</h2>
+                          </div>
+                        </div>
+                        <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                          <i class="icon-lg mdi mdi-wallet-travel text-danger ml-auto"></i>
+                        </div>
                       </div>
-                      <div
-                        class="col-4 col-sm-12 col-xl-4 text-center text-xl-right"
-                      >
-                        <i
-                          class="icon-lg mdi mdi-wallet-travel text-danger ml-auto"
-                        ></i>
-                      </div>
+
+
                     </div>
-                  
-                  
+                    <!-- End .card-body -->
                   </div>
-                  <!-- End .card-body -->
-                </div>
-                <!-- End .card-dashboard -->
-                <% if(walletHistory.length > 0) { %>
+                  <!-- End .card-dashboard -->
+                  <% if(walletHistory.length > 0) { %>
 
-                <div class="col-lg-6 grid-margin stretch-card">
-                  <div class="card" style="background-color: #F1F0E8;">
-                    <div class="card-body">
-                      <br />
-                      <h4 class="card-title">Transaction History</h4>
+                  <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card" style="background-color: #F1F0E8;">
+                      <div class="card-body">
+                        <br />
+                        <h4 class="card-title">Transaction History</h4>
 
-                      <% walletHistory.forEach((walletHistory)=> { %>
-                      <div
-                        class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3"
-                        style="justify-content: space-between"
-                      >
-                        <div class="text-md-center text-xl-left">
-                          <!-- <h6 class="mb-1">Cancel Refund</h6> -->
-                          <p class="text-muted mb-0">
-                            <%= walletHistory.date.toLocaleDateString('en-US',
+                        <% walletHistory.forEach((walletHistory)=> { %>
+                        <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3" style="justify-content: space-between">
+                          <div class="text-md-center text-xl-left">
+                            <!-- <h6 class="mb-1">Cancel Refund</h6> -->
+                            <h6 class="font-weight-bold mb-0">
+                             
+                              ID: &nbsp<%= walletHistory.cancelOderId  %>
+                              
+                            </h6>
+                            <p class="text-muted mb-0">
+                              <%= walletHistory.date.toLocaleDateString('en-US',
                             { year: 'numeric', month: 'short', day: '2-digit'
                             }).replace(/\//g, '-') %>
-                          </p>
+                            </p>
+                          </div>
+                          <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                            <h6 class="font-weight-bold mb-0">
+                              ₹&nbsp<%= walletHistory.amount %>
+                            </h6>
+                            <p><%= walletHistory.reason %></p>
+                          </div>
                         </div>
-                        <div
-                          class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0"
-                        >
-                          <h6 class="font-weight-bold mb-0">
-                            ₹&nbsp<%= walletHistory.amount %>
-                          </h6>
-                          <p><%= walletHistory.reason %></p>
-                        </div>
-                      </div>
-                      <% }) %>
-                    </div>
-                  </div>
-                </div>
-                <% } %>
-
-          
-
-                <%}else{%>
-                <div class="col-lg-6">
-                  <div class="card card-dashboard" style="border-radius: 15px; background: radial-gradient(circle, rgb(224, 238, 224), #e3f7c5); height: 250px; width: 400px;">
-                    <div class="card-body">
-                      <h1 class="card-title">Wallet is empty.</h1>
-                      <!-- End .card-title -->
-                      <br />
-
-                      <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                        <div
-                          class="d-flex d-sm-block d-md-flex align-items-center"
-                        >
-                          <h2 class="mb-0">₹ &nbsp 0.00</h2>
-                        </div>
-                      </div>
-                      <div
-                        class="col-4 col-sm-12 col-xl-4 text-center text-xl-right"
-                      >
-                        <i
-                          class="icon-lg mdi mdi-wallet-travel text-danger ml-auto"
-                        ></i>
+                        <% }) %>
                       </div>
                     </div>
                   </div>
-                  <!-- End .card-body -->
-                </div>
-                <!-- End .card-dashboard -->
 
-                <%}%>
+                  > <nav aria-label="Page navigation example ">
+                    <ul class="pagination d-flex justify-content-center">
+                      <li class="page-item">
+                        <a class="page" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+
+                      <li class="page-item"><a class="page-link" href=></a></li>
+
+                      <li class="page-item">
+                        <a class="page" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                  <% } %>
+
+
+
+                  <%}else{%>
+                  <div class="col-lg-6">
+                    <div class="card card-dashboard" style="border-radius: 15px; background: radial-gradient(circle, rgb(224, 238, 224), #e3f7c5); height: 250px; width: 400px;">
+                      <div class="card-body">
+                        <h1 class="card-title">Wallet is empty.</h1>
+                        <!-- End .card-title -->
+                        <br />
+
+                        <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                          <div class="d-flex d-sm-block d-md-flex align-items-center">
+                            <h2 class="mb-0">₹ &nbsp 0.00</h2>
+                          </div>
+                        </div>
+                        <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                          <i class="icon-lg mdi mdi-wallet-travel text-danger ml-auto"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End .card-body -->
+                  </div>
+                  <!-- End .card-dashboard -->
+
+                  <%}%>
               </div>
               <!-- End row -->
             </div>
 
 
+            <div
+            class="tab-pane fade"
+            id="tab-coupons"
+            role="tabpanel"
+            aria-labelledby="tab-coupons-link"
+        >
+        <p><h3>Coupons</h3></p>
+            <div class="row">
+            <% if(coupons.length > 0 ){ %>
+                  <% coupons.forEach((value)=>{ %>
+                  <div class="row col-lg-4 ">
+                    <div class=" " style="height: 50vh;">
+                      <div class="card text-center" style="width: 250px;
+                        padding: 9px;
+                        border-radius: 20px;
+                        background: rgb(161, 233, 95);
+                        border: none;
+                        color: #fff;
+                        height: 300px;
+                        display: flex;
+                        flex-direction: column;
+                        position: relative;
+                        align-items: center;
+                        justify-content: center;">
 
-              <div
-                class="tab-pane fade"
-                id="tab-address"
-                role="tabpanel"
-                aria-labelledby="tab-address-link"
-              >
-                <a href="/addaddres"
-                  ><button class="btn btn-white" style="margin-bottom: 10px">
-                    Add New Address
-                  </button></a
-                ><!-- End .card-title -->
+                        <div style="position: absolute; opacity: .1; left: 0; top: 0;" class="image">
+                          <img src="https://i.imgur.com/DC94rZe.png" width="150" alt="Background Image">
+                        </div>
+                        <h1 style="font-size: 48px; margin-bottom: 0px;">₹<%= value.discountAmount %></h1>
+                        <h2 class="m-0" style="color:aliceblue;"><%= value.couponCode %></h2>
+
+                        <p class="mt-1"><b>T&C:&nbsp;</b>Coupon requires a ₹<b><%= value.criteriaAmount %></b> minimum purchace. Use the code at order checkout.
+
+
+                        <div class="mt-3"><small>With Code: <%= value.couponCode %></small></div>
+                        <div class="" style="color: red;"><small>Expire On: &nbsp;<%= value.expiryDate.toLocaleDateString('en-US',
+                          { year: 'numeric', month: 'short', day: '2-digit'
+                          }).replace(/\//g, '-') %></small></div>
+
+                        <div class="image2" style="position: absolute; bottom: 0; right: 0; opacity: .1;">
+                          <img src="https://i.imgur.com/DC94rZe.png" width="150" alt="Background Image">
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <% }) %>
+                  <% }else{ %>
+                  <div class="col-lg-6">
+                    <div class="card card-dashboard" style="border-radius: 15px; background: radial-gradient(circle, #E5DCC3, #E5DCC3); height: 300px; width: 400px;">
+                      <div class="card-body">
+
+                        <!-- End .card-title -->
+                        <div class="mt-2 col-12 mx-auto">
+                          <h4 style="text-align: center;">No Coupons Available</h4>
+                          <h4 style="text-align: center;">Now.</h4>
+
+                        </div>
+
+
+
+                        <div class="circle1"></div>
+                        <div class="circle2"></div>
+                      </div>
+                    </div>
+                    <!-- End .card-body -->
+                  </div>
+                  <% } %>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
+
+                >
+                <!-- End .card-title -->
                 <div class="row">
                   <% if (add.length > 0) { %> <% for (let i = 0; i <
                   add.length;i++) { %>
@@ -462,9 +404,7 @@
                           <%=add[i].pin %><br />
                           <%=add[i].mobile %><br />
                           <%=add[i].email %><br />
-                          <a href="/editaddress?id=<%=add[i]._id %>"
-                            >Edit <i class="icon-edit"></i
-                          ></a>
+
                         </p>
                       </div>
                       <!-- End .card-body -->
@@ -496,7 +436,7 @@
                 <% } %>
               </div>
               <!-- .End .tab-pane -->
-             
+
             </div>
           </div>
           <!-- End .col-lg-9 -->
@@ -512,10 +452,9 @@
 <!-- End .main -->
 
 <script>
-  
   document
     .getElementById("editProfile")
-    .addEventListener("click", function (e) {
+    .addEventListener("click", function(e) {
       e.preventDefault();
       const name = document.getElementById("name").value;
       const email = document.getElementById("email").value;

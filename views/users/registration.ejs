@@ -1,231 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Include your head content here -->
 
-    <!-- Include your CSS files and other head content -->
+<head>
+  <!-- Include your head content here -->
 
-    <link
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Add Font Awesome Icons (you can use other icon libraries as well) -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-    />
-  </head>
+  <!-- Include your CSS files and other head content -->
 
-  <body>
-    <!-- Begin .header -->
-    <!-- Include your header content here -->
-    <!-- End .header -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Add Font Awesome Icons (you can use other icon libraries as well) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
 
-    <%- include('../users/layouts/navbar') %>
+<body>
+  <!-- Begin .header -->
+  <!-- Include your header content here -->
+  <!-- End .header -->
 
-    <main class="main">
-      <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
-        <div class="container">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Pages</a></li>
-            <li class="breadcrumb-item active" aria-current="page">sign Up</li>
-          </ol>
-        </div>
-        <!-- End .container -->
-      </nav>
-      <!-- End .breadcrumb-nav -->
+  <%- include('../users/layouts/navbar') %>
 
-      <div
-        class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
-        style="
-          background-image: url('/user/assets/images/backgrounds/login-bg.jpg');
-        "
-      >
-        <div class="form-box container">
-          <div class="form-tab text-center">
-            <h3>Register</h3>
-          </div>
-          <div
-            class="tab-pane fade show active"
-            id="register-2"
-            role="tabpanel"
-            aria-labelledby="register-tab-2"
-          >
-            <form action="" method="post" id="registration-form">
-              <!-- CSRF token for security -->
-              <input type="hidden" name="_csrf" value="your_csrf_token_here" />
-
-              <div class="form-group">
-                <label for="name">Username*</label>
-                <input type="text" class="form-control" id="name" name="name" />
-                <p
-                  style="color: rgb(231, 14, 14)"
-                  class="error-message"
-                  id="name-error"
-                ></p>
-              </div>
-
-              <div class="form-group">
-                <label for="email">Your email address*</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  id="email"
-                  name="email"
-                />
-                <span id="email-error" class="error-message"></span>
-              </div>
-
-              <div class="form-group">
-                <label for="mobile">Your mobile*</label>
-                <p
-                  style="color: rgb(231, 14, 14)"
-                  class="error-message"
-                  id="number-error"
-                ></p>
-                <input
-                  type="tel"
-                  class="form-control"
-                  id="mobile"
-                  pattern="[0-9]{10}"
-                  name="mobile"
-                />
-              </div>
-
-              <div class="d-flex">
-                <div class="form-group w-50">
-                  <label for="password">Password*</label>
-                  <p
-                    style="color: rgb(231, 14, 14)"
-                    class="error-message"
-                    id="password-error"
-                  ></p>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    name="password"
-                  />
-                </div>
-                <div class="form-group w-50 ml-5">
-                  <label for="password-2">Confirm Password*</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="password-2"
-                    name="confirmPassword"
-                  />
-                </div>
-              </div>
-
-              <small
-                id="password-error"
-                class="error-message text-danger"
-              ></small>
-
-              <div class="d-flex text-center">
-                <div class="form-group">
-                  <button type="submit" class="btn btn-outline-primary-2 w-75">
-                    <span>SIGN UP</span>
-                    <i class="icon-long-arrow-right"></i>
-                  </button>
-                </div>
-              </div>
-            </form>
-            <div class="text-center ml-5 mt-3">
-              <p class="text-center">
-                I already have an account <a href="/login">Login</a>
-              </p>
-            </div>
-            <% if (typeof message !== "undefined") { %>
-
-            <div class="alert alert-secondary" role="alert">
-              <!-- Replace the message with your dynamic message -->
-              <%= message %>
-            </div>
-            <% } %>
-
-            <!-- End .form-choice -->
-
-            <!-- .End .tab-pane -->
-          </div>
-        </div>
+  <main class="main">
+    <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">Pages</a></li>
+          <li class="breadcrumb-item active" aria-current="page">sign Up</li>
+        </ol>
       </div>
       <!-- End .container -->
-    </main>
-    <!-- End .main -->
+    </nav>
+    <!-- End .breadcrumb-nav -->
 
-    <!-- Begin .scripts -->
-    <!-- Include your script tags here -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const form = document.getElementById("registration-form");
-        const nameInput = document.getElementById("name");
-        const emailInput = document.getElementById("email");
-        const numberInput = document.getElementById("mobile");
-        const passwordInput = document.getElementById("password");
-        const confirmPasswordInput = document.getElementById("password-2");
-        const formError = document.getElementById("form-error");
+    <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17" style="
+          background-image: url('/user/assets/images/backgrounds/login-bg.jpg');
+        ">
+      <div class="form-box container">
+        <div class="form-tab text-center">
+          <h3>Register</h3>
+        </div>
+        <div class="tab-pane fade show active" id="register-2" role="tabpanel" aria-labelledby="register-tab-2">
+          <form action="" method="post" id="registration-form">
+            <!-- CSRF token for security -->
+            <input type="hidden" name="_csrf" value="your_csrf_token_here" />
 
-        form.addEventListener("submit", function (event) {
-          let isValid = true;
+            <div class="form-group">
+              <label for="name">Username*</label>
+              <input type="text" class="form-control" id="name" name="name" />
+              <p style="color: rgb(231, 14, 14)" class="error-message" id="name-error"></p>
+            </div>
 
-          const errorMessages = document.querySelectorAll(".error-message");
-          errorMessages.forEach((error) => {
-            error.textContent = "";
-          });
+            <div class="form-group">
+              <label for="email">Your email address*</label>
+              <input type="email" class="form-control" id="email" name="email" />
+              <span id="email-error" class="error-message"></span>
+            </div>
+            
+            <div class="form-group">
+              <label for="referralCode">Your referral code</label>
+              <input type="text" class="form-control" id="referralCode" name="referralCode" />
+              <span id="referralCode-error" class="error-message"></span>
+          </div>
+          
+          
 
-          if (nameInput.value.trim() === "") {
-            document.getElementById("name-error").textContent =
-              "Name is required";
-            isValid = false;
-          } else if (!/^[a-zA-Z\s]+$/.test(nameInput.value.trim())) {
-            document.getElementById("name-error").textContent =
-              "Full name should contain only alphabets.";
-            isValid = false;
-          } else if (nameInput.value.trim().length < 3) {
-            document.getElementById("name-error").textContent =
-              "Full name should contain at least 3 characters.";
-            isValid = false;
-          }
+            <div class="form-group">
+              <label for="mobile">Your mobile*</label>
+              <p style="color: rgb(231, 14, 14)" class="error-message" id="number-error"></p>
+              <input type="tel" class="form-control" id="mobile" pattern="[0-9]{10}" name="mobile" />
+            </div>
 
-          const emailPattern =
-            /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-          if (!emailPattern.test(emailInput.value)) {
-            document.getElementById("email-error").textContent =
-              "Invalid email address";
-            isValid = false;
-          }
+            <div class="d-flex">
+              <div class="form-group w-50">
+                <label for="password">Password*</label>
+                <!-- <p style="color: rgb(231, 14, 14)" class="error-message" id="password-error"></p> -->
+                <input type="password" class="form-control" id="password" name="password" />
+              </div>
+              <div class="form-group w-50 ml-5">
+                <label for="password-2">Confirm Password*</label>
+                <input type="password" class="form-control" id="password-2" name="confirmPassword" />
+              </div>
+            </div>
 
-          const numberPattern = /^(?!0+$)(\d{10}|\*)$/;
-          if (!numberPattern.test(numberInput.value)) {
-            document.getElementById("number-error").textContent =
-              "Invalid phone number (must be 10 digits or '*')";
-            isValid = false;
-          }
 
-          if (passwordInput.value.length < 6) {
-            document.getElementById("password-error").textContent =
-              "Password must be at least 6 characters long";
-            isValid = false;
-          }
+            <div class="d-flex text-center">
+              <div class="form-group">
+                <button type="submit" class="btn btn-outline-primary-2 w-75">
+                  <span>SIGN UP</span>
+                  <i class="icon-long-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+          <div class="text-center ml-5 mt-3">
+            <p class="text-center">
+              I already have an account <a href="/login">Login</a>
+            </p>
+          </div>
+          <% if (typeof message !== "undefined") { %>
 
-          if (passwordInput.value !== confirmPasswordInput.value) {
-            document.getElementById("password-2-error").textContent =
-              "Passwords do not match";
-            isValid = false;
-          }
+          <div class="alert alert-secondary" role="alert">
+            <!-- Replace the message with your dynamic message -->
+            <%= message %>
+          </div>
+          <% } %>
+          <small id="password-error" class="error-message text-danger"></small>
 
-          if (!isValid) {
-            event.preventDefault();
-            formError.textContent = "Please fix the errors in the form.";
-          }
+          <!-- End .form-choice -->
+
+          <!-- .End .tab-pane -->
+        </div>
+      </div>
+    </div>
+    <!-- End .container -->
+  </main>
+  <!-- End .main -->
+
+  <!-- Begin .scripts -->
+  <!-- Include your script tags here -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const form = document.getElementById("registration-form");
+      const nameInput = document.getElementById("name");
+      const emailInput = document.getElementById("email");
+      const numberInput = document.getElementById("mobile");
+      const passwordInput = document.getElementById("password");
+      const confirmPasswordInput = document.getElementById("password-2");
+      const formError = document.getElementById("form-error");
+      const passwordError = document.getElementById("password-error"); 
+
+      form.addEventListener("submit", function(event) {
+        let isValid = true;
+
+        const errorMessages = document.querySelectorAll(".error-message");
+        errorMessages.forEach((error) => {
+          error.textContent = "";
         });
-      });
-    </script>
 
-    <!-- End .scripts -->
-  </body>
+        if (nameInput.value.trim() === "") {
+          document.getElementById("name-error").textContent =
+            "Name is required";
+          isValid = false;
+        } else if (!/^[a-zA-Z\s]+$/.test(nameInput.value.trim())) {
+          document.getElementById("name-error").textContent =
+            "Full name should contain only alphabets.";
+          isValid = false;
+        } else if (nameInput.value.trim().length < 3) {
+          document.getElementById("name-error").textContent =
+            "Full name should contain at least 3 characters.";
+          isValid = false;
+        }
+
+        const emailPattern =
+          /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (!emailPattern.test(emailInput.value)) {
+          document.getElementById("email-error").textContent =
+            "Invalid email address";
+          isValid = false;
+        }
+
+        const numberPattern = /^(?!0+$)(\d{10}|\*)$/;
+        if (!numberPattern.test(numberInput.value)) {
+          document.getElementById("number-error").textContent =
+            "Invalid phone number (must be 10 digits or '*')";
+          isValid = false;
+        }
+
+        passwordError.textContent = "";
+
+        // Check length
+        if (passwordInput.value.length < 6) {
+          passwordError.textContent = "Password must be at least 6 characters long";
+          isValid = false;
+        }
+
+        // Check strength criteria
+        const hasUppercase = /[A-Z]/.test(passwordInput.value);
+        const hasLowercase = /[a-z]/.test(passwordInput.value);
+        const hasDigit = /\d/.test(passwordInput.value);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(passwordInput.value);
+
+        if (!hasUppercase || !hasLowercase || !hasDigit || !hasSpecialChar) {
+          passwordError.textContent = "Password must include at least one uppercase letter, one lowercase letter, one digit, and one special character";
+          isValid = false;
+        }
+
+        if (passwordInput.value !== confirmPasswordInput.value) {
+          document.getElementById("password-2-error").textContent =
+            "Passwords do not match";
+          isValid = false;
+        }
+
+        if (!isValid) {
+          event.preventDefault();
+          formError.textContent = "Please fix the errors in the form.";
+        }
+      });
+    });
+  </script>
+
+  <!-- End .scripts -->
+</body>
+
 </html>

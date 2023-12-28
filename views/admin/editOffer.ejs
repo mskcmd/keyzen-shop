@@ -1,0 +1,182 @@
+<%- include('../admin/layouts/adminsidebars') %>
+<%- include('../admin/layouts/adminnavebar') %>
+
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Add offers</h4>
+          <p class="card-description"> Give offers details </p>
+          <form class="forms-sample">
+            <div class="form-group">
+              <label for="exampleInputName1">offers Name</label>
+              <input type="text"  class="form-control" id="name" name="name" placeholder="Name" value="<%=offerdata.name %>" >
+              <div id="nameError" style="display: none; color: red;"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputEmail3">Percentage</label>
+              <input type="number" class="form-control" id="percentages" name="percentages" placeholder="percentages(%)" value="<%=offerdata.percentages %>">
+              <div id="perceError" style="display: none; color: red;"></div>
+            </div>
+
+            <div class="d-flex">
+              <div class="form-group  w-50">
+                <label for="exampleInputPassword4">Activation Date</label>
+                <input type="date" class="form-control" id="activeDate" name="activeDate" placeholder="Activation Date" value="<%=offerdata.activeDate %>">
+                <div id="activeError" style="display: none; color: red;"></div>
+              </div>
+              <div class="form-group w-50 ml-5">
+                <label for="exampleInputPassword4">Expiry Date</label>
+                <input type="date" class="form-control" id="expDate" name="expDate" placeholder="Expiry Date" value="<%=offerdata.expDate %>">
+                <div id="expError" style="display: none; color: red;"></div>
+              </div>
+            </div>
+            <input type="text" id="id" value="<%= offerdata._id %>" hidden>
+
+            <button type="submit" id="addOffer" class="btn btn-primary mr-2">Submit</button>
+            <button class="btn btn-inverse-danger"><a href="/admin/showCoupon">Cancel</a></button>
+
+          </form>
+          <% if(typeof message !== 'undefined'){ %>
+          <span id="er2" style="color: rgb(241, 7, 7); text-align: center"><%= message %></span>
+          <% } %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- Your HTML code... -->
+
+  <!-- Your HTML code... -->
+
+  <script>
+    document.getElementById("addOffer").addEventListener("click", function(e) {
+      e.preventDefault();
+  
+      const name = document.getElementById("name").value;
+      const percentages = document.getElementById("percentages").value;
+      const activeDate = document.getElementById("activeDate").value; 
+      const expDate = document.getElementById("expDate").value; 
+      const id = document.getElementById('id').value;
+  
+      const nameError = document.getElementById("nameError");
+      const perceError = document.getElementById("perceError");
+      const activationDateError = document.getElementById("activeError");
+      const expiryDateError = document.getElementById("expError");
+      const namePattern = /^[a-zA-Z\s]+$/;
+  
+      function isValidDate(dateString) {
+        var regexDate = /^\d{4}-\d{2}-\d{2}$/; 
+        return regexDate.test(dateString);
+      }
+  
+      // Add a function to check if a date is after another date
+      function isDateAfter(date1, date2) {
+        return new Date(date1) > new Date(date2);
+      }
+  
+      // Get the current date in the format YYYY-MM-DD
+      const currentDate = new Date().toISOString().split("T")[0];
+  
+      nameError.style.display = "none";
+      perceError.style.display = "none";
+      activationDateError.style.display = "none";
+      expiryDateError.style.display = "none";
+  
+      if (name.trim() === "") {
+        nameError.style.display = "block";
+        nameError.textContent = "Name is required.";
+      } else if (!namePattern.test(name)) {
+        nameError.style.display = "block";
+        nameError.textContent = "Full name should not contain any non-alphabets.";
+      } else if (name.length < 3) {
+        nameError.style.display = "block";
+        nameError.textContent = "Full name should contain at least 3 letters.";
+      } else if (percentages.trim() === "") {
+        perceError.style.display = "block";
+        perceError.textContent = "Percentages is required.";
+      } else if (isNaN(percentages) || percentages < 0 || percentages > 100) {
+        perceError.style.display = "block";
+        perceError.textContent = "Enter a valid percentage between 0 and 100.";
+      } else if (activeDate.trim() === "") {
+        activationDateError.style.display = "block";
+        activationDateError.textContent = "Activation Date is required.";
+      } else if (!isValidDate(activeDate)) {
+        activationDateError.style.display = "block";
+        activationDateError.textContent = "Enter a valid Activation Date.";
+      } else if (activeDate <= currentDate) {
+        activationDateError.style.display = "block";
+        activationDateError.textContent = "Activation Date must be after the current date.";
+      } else if (expDate.trim() === "") {
+        expiryDateError.style.display = "block";
+        expiryDateError.textContent = "Expiry Date is required.";
+      } else if (!isValidDate(expDate)) {
+        expiryDateError.style.display = "block";
+        expiryDateError.textContent = "Enter a valid Expiry Date.";
+      } else if (!isDateAfter(expDate, activeDate)) {
+        expiryDateError.style.display = "block";
+        expiryDateError.textContent = "Expiry Date must be after Activation Date.";
+      } else {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "Edit offer!",
+          background: "#191c24",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes !",
+          cancelButtonText: "Cancel",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            console.log("iam add offer");
+            $.ajax({
+              url: "/admin/editoffer?id=" + id,
+              data: {
+                name,
+                percentages,
+                activeDate,
+                expDate,
+              },
+              method: "post",
+              success: (response) => {
+                if (response.success) {
+                  const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                  });
+                  window.location.href = "/admin/offerMange";
+                } else {
+                  const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                  });
+  
+                  Toast.fire({
+                    icon: "error",
+                    title: "Oops !! try again.",
+                  });
+                }
+              },
+            });
+          }
+        });
+      }
+    });
+  </script>
+  
+  
+
+  <!-- Your HTML code... -->
+
+
+  <!-- Your HTML code... -->
+
+
+  <%- include('../admin/layouts/adminfootbar') %>

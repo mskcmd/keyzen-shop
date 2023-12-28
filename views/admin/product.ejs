@@ -5,13 +5,14 @@ include('../admin/layouts/adminnavebar') %>
   <div class="content-wrapper">
     <div class="row">
       <div class="col-lg-12 grid-margin stretch-card" id="products">
-        <div class="card">
+        <div class="card" id="product2">
           <div class="card-body">
             <h4 class="card-title">Product Management</h4>
 
-            <p class="card-description">All BloomStyle Products</p>
+            <input type="text" class="form-control form-control mb-3" id="myInput" style="border-radius: 10px;" onkeyup="myFunction()" placeholder="Search for names..">
+
             <div class="table-responsive">
-              <table class="table">
+              <table class="table" id="myTable">
                 <thead>
                   <tr>
                     <th>No.</th>
@@ -21,14 +22,14 @@ include('../admin/layouts/adminnavebar') %>
                     <th>Category</th>
                     <th>Stock</th>
                     <th>Price</th>
-                    <th>Status</th>
+                    <th>Offer</th>
+                    <th>Offer Action</th>
+
                     <th>Action</th>
                     <th>Edit</th>
-                    <a
-                      href="/admin/addProduct"
-                      class="btn btn-outline-primary btn-rounded"
-                      >Add Products</a
-                    >
+
+
+                    <a href="/admin/addProduct" class="btn btn-outline-primary btn-rounded ">Add Products</a>
                   </tr>
                 </thead>
                 <tbody>
@@ -38,63 +39,250 @@ include('../admin/layouts/adminnavebar') %>
                     <td><%= i+1 %></td>
                     <td><%=product[i].name %></td>
                     <td>
-                      <img
-                        src="/products/crope/<%= product[i].images.image1 %>"
-                        alt=""
-                      />
+                      <img src="/products/crope/<%= product[i].images.image1 %>" alt="" />
                     </td>
-                    <td><%= product[i].category %></td>
+                    <td><%= product[i].categoryName %></td>
                     <td><%= product[i].quantity %></td>
                     <td><%= product[i].price %></td>
+                   <% if (product[i].offer==null) { %>
+                    <td>not offer</td>
+                    <% } else { %>
+                    <td><%= product[i].offer.percentages %>%</td>
+                    <% } %>
 
-                    <td
-                      class="<% if (product[i].blocked === 0) { %>text-success<% } else if (product[i].blocked === 1) { %>text-danger<% } %>"
-                    >
-                      <% if (product[i].blocked === 0) { %>Active<% } else if
-                      (product[i].blocked === 1) { %>Blocked<% } %>
-                    </td>
 
+                    
                     <td>
-                      <% if (product[i].blocked === 0) { %>
-                      <a href="/admin/problock?id=<%=product[i]._id%>">
-                        <button style="background-color: red; color: white">
-                          Block
-                        </button>
-                      </a>
-                      <% } else { %>
-                      <a href="/admin/problock?id=<%=product[i].id%>">
-                        <button style="background-color: green; color: white">
-                          Unblock
-                        </button>
-                      </a>
-                      <% } %>
-                    </td>
-                    <td>
-                      <a href="/admin/updeteproduct?id=<%=product[i]._id%>">
-                        <button
-                          style="
-                            background-color: rgb(0, 30, 255);
-                            color: white;
-                          "
-                        >
-                          Update
-                        </button>
-                      </a>
-                    </td>
-                  </tr>
-                  <% } %> <% } else { %>
-                  <tr>
-                    <td colspan="5">Products Not Found</td>
-                  </tr>
+                    
+
+                    <div class="dropdown">
+                      <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Offer Action
+                      </button>
+
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <button type="button" value="" name="butten" class="btn btn-primary" data-toggle="modal" data-target="#modalCart<%= i %>">Apply Offer</button>
+
+                        <% if (product[i].discount !==null) { %>
+                        <button type="button" onclick="proremoveoffer('<%= product[i]._id %>')" value="<%=product[i]._id%>" class="btn btn-primary">Remove Offer</button>
+
+                        <% } %>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                  <% if (product[i].blocked===0) { %>
+
+                  <a class="badge badge-danger" onclick="blockProduct('<%= product[i]._id %>')">Block</a>
+
+                  <% } else { %>
+
+                  <a onclick="blockProduct('<%= product[i]._id %>')" class="badge badge-success">Unblock</a>
+
                   <% } %>
-                </tbody>
-              </table>
-            </div>
+                </td>
+                  <td>
+                      <a href="/admin/updeteproduct?id=<%=product[i]._id%>" class=" badge badge-primary">
+
+                        Update
+                      </a>
+                    </td>
+                    <div class="modal modal-lg modal-dialog-top fade" id="modalCart<%= i %>" tabindex="-1">
+
+
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
+      <em class="icon ni ni-cross"></em>
+    </a>
+    <div class="modal-header">
+      <h3 class="modal-title">Offers</h3>
+    </div>
+    <div class="modal-body container ro d-flex justify-content-center">
+      <div class="row justify-content-center">
+        <% if (offer.length> 0) { %> <% for (let j=0; j < offer.length; j++) { %>
+        <div class="col-md-5 col-sm-12 m-3 size" onclick="cateapplyoffer('<%= product[i]._id %>','<%= offer[j]._id %>')"  
+          style="background-color: rgb(10, 1, 43); border-radius: 25px;">
+          
+          <div class="coupon-card">
+            <h3>
+              <%=offer[j].name%> </h3>
+            <h3>
+              <%=offer[j].percentages%>% OFF
+            </h3>
+            <p>
+              Valid Till: <%= new Date(offer[j].expDate).toLocaleDateString('en-US', { month: '2-digit' ,
+                  day: '2-digit' , year: 'numeric' }) %>
+            </p>
+            <div class="circle1"></div>
+            <div class="circle2"></div>
           </div>
         </div>
+        <% } %>
+        <% } else { %>
+        <h1>not</h1>
+        <% } %>
+
       </div>
     </div>
-  </div>
 
-  <%- include('../admin/layouts/adminfootbar') %>
+  </div>
+</div>
+
+</div>
+    </td>
+    </tr>
+    <% } %> <% } else { %>
+    <tr>
+      <td colspan="5">Products Not Found</td>
+    </tr>
+    <% } %>
+    </tbody>
+    </table>
+  </div>
+</div>
+</div>
+</div>
+</div>
+<nav aria-label="Page navigation example">
+  <ul class="pagination d-flex justify-content-center" >
+    <li class="page-item">
+      <a class="page-link" href="?page=1" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <!-- Use a loop to generate page links -->
+    <% for (let i = 1; i <= totalPages; i++) { %>
+      <li  class="page-item <%= i === currentPage ? 'active' : '' %>">
+        <a  class="page-link" href="?page=<%= i %>"><%= i %></a>
+      </li>
+    <% } %>
+    <li class="page-item">
+      <a class="page-link" href="?page=<%= totalPages %>" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+</div>
+
+
+<script>
+  function myFunction() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[1];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+
+  function blockProduct(id) {
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      background: "#191c24",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes !",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "/admin/block-pro",
+          data: {
+            id: id,
+          },
+          method: "get",
+          success: (response) => {
+            if ((response.success)) {
+              $("#product2").load("/admin/Product #product2");
+            }
+          },
+        });
+      }
+    });
+  }
+
+  function cateapplyoffer(proid, offerid) {
+    console.log(proid, offerid);
+    $.ajax({
+      url: "/admin/proaddoffer",
+      data: {
+        proid: proid,
+        offerid: offerid,
+      },
+      method: "post",
+      success: (response) => {
+        // Check if the response indicates success
+        if (response.success) {
+          Swal.fire({
+            position: 'top-end',
+            background: "#191c24",
+            icon: 'success',
+            title: 'Your offer has been saved',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        } else {
+          // Handle the case where the response indicates an error
+          Swal.fire({
+            icon: 'error',
+            background: "#191c24",
+            title: 'Oops...',
+            text: 'Something went wrong!',
+          });
+        }
+      },
+      error: (error) => {
+        // Handle the case where there is an AJAX error
+        console.error("AJAX error:", error);
+        Swal.fire({
+          icon: 'error',
+          background: "#191c24",
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        });
+      }
+    });
+  }
+
+  function proremoveoffer(cateid) {
+    console.log(cateid);
+    $.ajax({
+      url: "/admin/proremoveoffer",
+      data: {
+        cateid,
+      },
+      method: "post",
+      success: (response) => {
+        Swal.fire({
+          position: 'top-end',
+          background: "#191c24",
+          icon: 'success',
+          title: 'Your offer has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+    })
+
+  }
+</script>
+<%- include('../admin/layouts/adminfootbar') %>
 </div>

@@ -20,8 +20,16 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="product-gallery product-gallery-vertical">
+                                    
                                     <div class="row">
+                                        
                                         <figure class="product-main-image">
+                                            <% if (product.offer !== null) { %>
+                                                <span class="product-label label-sale">
+                                                  
+                                                  <%= product.offer.percentages %> % OFF
+                                                   </span>        
+                                                    <% } %>
                                             <img id="product-zoom"
                                             src="/products/crope/<%= product.images.image1 %>"
                                             data-zoom-image="/products/images/<%= product.images.image1 %>"
@@ -74,9 +82,16 @@
                                         </div><!-- End .ratings -->
                                         <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews )</a>
                                     </div><!-- End .rating-container -->
-
+                                    <div class="">
+                                        <%= product.categoryName%>
+                                    </div><!-- End .product-price -->
                                     <div class="product-price">
+                                        <% if (product.offer == null) { %>
+
                                         ₹<%= product.price%>
+                                        <% } else{ %>
+                                            <S style="color: red;">₹&nbsp <%= product.price %> </S> &nbsp&nbsp&nbsp&nbsp₹&nbsp<%= product.discount %>
+                                <% } %>
                                     </div><!-- End .product-price -->
 
                                     <div class="product-content">
@@ -84,21 +99,7 @@
                                     </div><!-- End .product-content -->
 
 
-                                    <div class="details-filter-row details-row-size">
-                                        <label for="size">Size:</label>
-                                        <div class="select-custom">
-                                            <select name="size" id="size" class="form-control">
-                                                <option value="#" selected="selected">One Size</option>
-                                                <option value="s">Small</option>
-                                                <option value="m">Medium</option>
-                                                <option value="l">Large</option>
-                                                <option value="xl">Extra Large</option>
-                                            </select>
-                                        </div><!-- End .select-custom -->
-
-                                        <a href="#" class="size-guide"><i class="icon-th-list"></i>size guide</a>
-                                    </div><!-- End .details-filter-row -->
-
+                                  
                                     <div class="product-details-action">
                                         <div class="details-action-col">
                                             <% if(product.quantity==0) { %>
@@ -114,7 +115,7 @@
                                         </div>
 
                                         <div class="details-action-wrapper">
-                                            <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
+                                            <a onclick="addWishlist('<%= product._id%>')" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
                                             <a href="#" class="btn-product btn-compare" title="Compare"><span>Add to Compare</span></a>
                                         </div><!-- End .details-action-wrapper -->
                                     </div><!-- End .product-details-action -->
@@ -227,7 +228,52 @@ $('#product-zoom').elevateZoom({
             });
         });
     </script>   
-  
+  <script>
+
+    function addWishlist(productId) {
+        $.ajax({
+          url: "/addToWishlist",
+          method: "post",
+          data: {
+            id: productId,
+          },
+          success: (response) => {
+            if (response.login == true) {
+              swal
+                .fire({
+                  icon: "warning",
+                  title: "Please Login",
+                  confirmButtonText: "Login",
+                  showCancelButton: true,
+                  cancelButtonColor: "#d33",
+                  text: response.message,
+                })
+                .then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.href = "/login";
+                  }
+                });
+            } else if (response.exist == true) {
+              swal.fire({
+                position: "center",
+                icon: "warning",
+                title: "This product already in your wishlist",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            } else if (response.success) {
+              swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Product added to your Wishlist",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          },
+        });
+      }
+      </script>
   
     <%- include('../users/layouts/footer') %>
 

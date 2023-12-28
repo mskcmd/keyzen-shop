@@ -2,18 +2,18 @@ const User = require("../models/userModel");
 const Product = require("../models/productModel");
 const Cart = require("../models/cartModels");
 const Address = require("../models/address");
+const Order = require("../models/oderModel");
+const Offer = require("../models/offerModel");
 
 //==========================================addtocart=============================================
 
 const addtocart = async (req, res) => {
   try {
-    console.log("called");
     const user_id = req.session.user_id;
     const product_id = req.body.id;
     const count = 1;
     if (user_id) {
       const existingUser = await Cart.findOne({ user: user_id });
-
       if (existingUser) {
         const existingProduct = existingUser.products.find(
           (item) => item.product.toString() === product_id
@@ -67,15 +67,28 @@ const cartpage = async (req, res) => {
       "products.product"
     );
 
+    req.session.code = false;
     let totalAmount = 0;
 
     if (cartData) {
       for (let i = 0; i < cartData.products.length; i++) {
         let cartItem = cartData.products[i];
-        let productprice = cartItem.product.price;
-        let productcount = cartItem.count;
-        totalAmount += productcount * productprice;
+
+        // Check if there is a discount
+        if (
+          cartItem.product.discount !== null &&
+          cartItem.product.discount !== undefined
+        ) {
+          let productprice = cartItem.product.discount;
+          console.log("Discounted price:", productprice);
+          totalAmount += cartItem.count * productprice;
+        } else {
+          let productprice = cartItem.product.price;
+          console.log("Normal price:", productprice);
+          totalAmount += cartItem.count * productprice;
+        }
       }
+
       res.render("addtoCart", {
         user: userData,
         cartData: cartData,
@@ -127,7 +140,6 @@ const changeCartQuantity = async (req, res) => {
     const userId = req.session.user_id;
     const count = req.body.count;
     const product_id = req.body.product_id;
-    console.log(product_id);
     const existingUser = await Cart.findOne({ user: userId });
 
     if (existingUser) {
@@ -143,6 +155,8 @@ const changeCartQuantity = async (req, res) => {
         res.status(200).json({
           count: existingProduct.count,
           amount: product.price * existingProduct.count,
+          disamount: product.discount * existingProduct.count,
+
           message: "Cart updated successfully",
         });
       } else {
@@ -193,6 +207,8 @@ const landchekout = async (req, res) => {
     const user_id = req.session.user_id;
     const userData = await User.findById(user_id);
     const AddressData = await Address.find({ user: user_id });
+    const orderData = await Order.find({ userId: user_id });
+
     const cartData = await Cart.findOne({ user: user_id }).populate(
       "products.product"
     );
@@ -201,16 +217,29 @@ const landchekout = async (req, res) => {
     if (cartData) {
       for (let i = 0; i < cartData.products.length; i++) {
         let cartItem = cartData.products[i];
-        let productprice = cartItem.product.price;
-        let productcount = cartItem.count;
-        totalAmount += productcount * productprice;
+
+        // Check if there is a discount
+        if (
+          cartItem.product.discount !== null &&
+          cartItem.product.discount !== undefined
+        ) {
+          let productprice = cartItem.product.discount;
+          console.log("Discounted price:", productprice);
+          totalAmount += cartItem.count * productprice;
+        } else {
+          let productprice = cartItem.product.price;
+          console.log("Normal price:", productprice);
+          totalAmount += cartItem.count * productprice;
+        }
       }
+
       if (userData) {
         res.render("chekOut", {
           user: userData,
           add: AddressData,
           cartData: cartData,
           totalAmount,
+          orderData,
         });
       }
     } else {

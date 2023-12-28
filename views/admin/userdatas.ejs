@@ -14,10 +14,11 @@ include('../admin/layouts/adminnavebar') %> >
               <thead>
                 <tr>
                   <th>User</th>
-                  <th>name</th>
+                  <th>Name</th>
                   <th>number</th>
-                  <th>status</th>
-                  <th>block</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <% if (users.length > 0) { %> <% for (let i = 0; i < users.length;
@@ -32,6 +33,9 @@ include('../admin/layouts/adminnavebar') %> >
                   </td>
                   <td><%= users[i].name %></td>
                   <td><%= users[i].mobile %></td>
+                  <td><%= users[i].email %></td>
+
+
 
                   <td>
                     <% if (users[i].is_verified === 0) { %>

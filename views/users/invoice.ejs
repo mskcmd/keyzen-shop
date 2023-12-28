@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
+</head>
+
+<style>
+  /* Add some additional styles for responsiveness */
+  @media (max-width: 767px) {
+    .invoice {
+      width: 100% !important;
+    }
+
+    .col-xs-4 {
+      width: 100%;
+    }
+
+    .panel-body {
+      padding: 10px;
+    }
+
+    .panel-title {
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .invoice-body {
+      padding: 15px;
+    }
+  }
+
+  .col-xs-4 {
+    margin-bottom: 20px;
+  }
+
+  body {
+    background: #EEE;
+  }
+
+  .invoice {
+    background: #fff;
+    width: 970px !important;
+    margin: 50px auto;
+  }
+
+  .invoice .invoice-header {
+    padding: 25px 25px 15px;
+  }
+
+  .invoice .invoice-header h1 {
+    margin: 0;
+  }
+
+  .invoice .invoice-header .media .media-body {
+    font-size: 0.9em;
+    margin: 0;
+  }
+
+  .invoice .invoice-body {
+    border-radius: 10px;
+    padding: 25px;
+    background: #FFF;
+  }
+
+  .invoice .invoice-footer {
+    padding: 15px;
+    font-size: 0.9em;
+    text-align: center;
+    color: #999;
+  }
+
+  .logo {
+    max-height: 70px;
+    border-radius: 10px;
+  }
+
+  .dl-horizontal {
+    margin: 0;
+  }
+
+  .dl-horizontal dt {
+    float: left;
+    width: 80px;
+    overflow: hidden;
+    clear: left;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .dl-horizontal dd {
+    margin-left: 90px;
+  }
+
+  .rowamount {
+    padding-top: 15px !important;
+  }
+
+  .rowtotal {
+    font-size: 1.3em;
+  }
+
+  .colfix {
+    width: 12%;
+  }
+
+  .mono {
+    font-family: monospace;
+  }
+</style>
+
+<body>
+  <div class="container invoice">
+    <div class="invoice-header">
+      <div class="row">
+        <div class="col-xs-8">
+          <h1>Invoice </h1>
+          <h4 class="text-muted">NO:<%= order.uniqueId %> | <%= date.toLocaleDateString('en-US', { year: 'numeric' , month: 'short' , day: '2-digit'
+          }).replace(/\//g, '-' ) %></h4>
+        </div>
+        <div class="col-xs-4">
+          <div class="media">
+            <div class="media-left">
+              <img src="/user/assets/images/demos/demo-2/logo.png" alt="Molla Logo" width="120" height="60">
+            </div>
+            <ul class="media-body list-unstyled">
+              <li><strong>Keyzen Private Limited</strong></li>
+              <li>Furniture Shope</li>
+              <li>New Address, City</li>
+              <li>info@keyzenprivatelimited.com</li>
+            </ul>            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="invoice-body">
+      <div class="row">
+        
+        <div class="col-xs-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Customer Details</h3>
+            </div>
+            <div class="panel-body">
+              <dl class="dl-horizontal">
+                <dt>Order ID :</dt>
+                <dd> <%= order.uniqueId %></dd>
+                <dt>Name :</dt>
+                <dd> <%= user.name %></dd>
+                <dt>Phone :</dt>
+                <dd><%= user.mobile %></dd>
+                <dt>Email :</dt>
+                <dd><%= user.email %></dd>
+                <dt>Date :</dt>
+                <dd> <%= order.date.toLocaleDateString('en-US', { year: 'numeric' , month: 'short' , day: '2-digit'
+                }).replace(/\//g, '-' ) %></dd>
+                <dt>Tax NO :</dt>
+                <dd class="mono">123456789</dd>
+                <dt>&nbsp;</dt>
+                <dd>&nbsp;</dd>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Order adress  Details</h3>
+            </div>
+            <div class="panel-body">
+              <dl class="dl-horizontal">
+                <dt>Name</dt>
+                <dd><%= order.address[0].name %></dd>
+                <dt>Phone</dt>
+                <dd><%= order.address[0].mobile %></dd>
+                <dt>Email</dt>
+                <dd><%= order.address[0].email %></dd>
+                <dt>House</dt>
+                <dd><%= order.address[0].houseName %></dd>
+                <dt>City</dt>
+                <dd><%= order.address[0].city %></dd>
+                <dt>State</dt>
+                <dd class="mono"><%= order.address[0].state %></dd>
+                <dt>Pincode</dt>
+                <dd><%= order.address[0].pin %></dd>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Services / Products</h3>
+        </div>
+        <table class="table table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th class="text-center colfix">No</th>
+              <th class="text-center " >Item / Details</th>
+              <th class="text-center colfix">Quantity</th>
+              <th class="text-center colfix">Price</th>
+              <th class="text-center colfix">Discount</th>
+              <th class="text-center colfix">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% const products = order.products; %>
+            <% let grandTotal = 0; %>
+          
+            <% for (let i = 0; i < products.length; i++) { %>
+              <% const product = products[i].productId; %>
+          
+              <tr>
+                <td>
+                  <%= i + 1 %>
+                </td>
+                <td>
+                  <%= product.name %>
+                </td>
+                <td class="text-right">
+                  <span class="mono"><%= products[i].count %></span>
+                </td>
+                <td class="text-right">
+                  <span class="mono"> ₹<%= products[i].productId.price * products[i].count %></span>
+                </td>
+                <td class="text-right">
+                  <span class="mono">₹<%= products[i].productId.discount * products[i].count %></span>
+                </td>
+                <td class="text-right">
+                  <strong class="">₹<%= products[i].productId.price * products[i].count - products[i].productId.discount * products[i].count %></strong>
+                  <small class="text-muted mono"></small>
+                </td>
+              </tr>
+          
+              <% grandTotal += (products[i].productId.price * products[i].count - products[i].productId.discount * products[i].count); %>
+            <% } %>
+          
+            <!-- Display Grand Total -->
+            <tr>
+              <td colspan="5" class="text-right">
+                <strong>Grand Total</strong>
+              </td>
+              <td class="text-right">
+                <strong class="">₹<%= grandTotal %></strong>
+                <small class="text-muted mono"></small>
+              </td>
+            </tr>
+          </tbody>
+          
+        </table>
+      </div>
+    
+      
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Payment Method</h3>
+            </div>
+            <div class="panel-body">
+              <ul class="list-unstyled">
+                <li> paymentMethod :- <span class="mono"><%= order.paymentMethod %></span></li>
+                <% if (order.paymentMethod == 'COD') { %>
+                  <li> paymentMethod :- <span class="mono">Cash On Delivery</span></li>
+                <% } %>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-xs-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Compny Deleals</h3>
+            </div>
+            <div class="panel-body">
+              <li><strong>Keyzen Private Limited</strong></li>
+              <li>Furniture Development</li>
+              <li>info@keyzenprivatelimited.com</li>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+    <div class="invoice-footer">
+      Thank you for choosing our services.
+      
+   We hope to see you again soon
+      
+  
+      <strong>~KEYZEN~</strong>
+    </div>
+  </div>
+  
+</body>
+</html>!-- <script>
+  function download() {
+    window.print()
+  }
+
+  download()
+</script> 
+</html>

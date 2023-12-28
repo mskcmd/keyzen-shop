@@ -1,0 +1,141 @@
+<%- include('../admin/layouts/adminsidebars') %>
+<%- include('../admin/layouts/adminnavebar') %>
+
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Add Coupons</h4>
+          <p class="card-description"> Give Coupon details </p>
+          <form class="forms-sample">
+            <div class="form-group">
+              <label for="exampleInputName1">Coupon Name</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+              <div id="nameError" style="display: none; color: red;"></div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail3">Coupon Code</label>
+              <input type="text" class="form-control" id="code" name="code" placeholder="Code">
+              <div id="codeError" style="display: none; color: red;"></div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail3">Discount Amount</label>
+              <input type="number" class="form-control" id="discount" name="discount" placeholder="Discount">
+              <div id="disError" style="display: none; color: red;"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputPassword4">Criteria Amount</label>
+              <input type="number" class="form-control" id="amount" name="criteriaAmount" placeholder="Criteria Amount">
+              <div id="amountError" style="display: none; color: red;"></div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword4">Activation Date</label>
+              <input type="date" class="form-control" id="active" name="activeDate" placeholder="Activation Date">
+              <div id="activeError" style="display: none; color: red;"></div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword4">Expiry Date</label>
+              <input type="date" class="form-control" id="expiry" name="expDate" placeholder="Expiry Date">
+              <div id="expError" style="display: none; color: red;"></div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword4">Users Limit</label>
+              <input type="number" class="form-control" id="limit" name="userLimit" placeholder="Users Limit">
+              <div id="limitError" style="display: none; color: red;"></div>
+            </div>
+            <button id="submitBtn" class="btn btn-primary mr-2">Submit</button>
+            <button class="btn btn-inverse-danger"><a href="/admin/showCoupon">Cancel</a></button>
+
+          </form>
+          <% if(typeof message !== 'undefined'){ %>
+          <span id="er2" style="color: rgb(241, 7, 7); text-align: center"><%= message %></span>
+          <% } %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script>
+    document.getElementById('submitBtn').addEventListener('click', function(event) {
+      event.preventDefault()
+      const name = document.getElementById('name').value;
+      const code = document.getElementById('code').value;
+      const discount = document.getElementById('discount').value;
+      const amount = document.getElementById('amount').value;
+      const active = document.getElementById('active').value;
+      const expiry = document.getElementById('expiry').value;
+      const limit = document.getElementById('limit').value;
+
+      const nameError = document.getElementById('nameError')
+      const codeError = document.getElementById('codeError')
+      const disError = document.getElementById('disError')
+      const amountError = document.getElementById('amountError')
+      const activeError = document.getElementById('activeError')
+      const expError = document.getElementById('expError')
+      const limitError = document.getElementById('limitError')
+        // Validation for name: Only allow letters and spaces
+        const namePattern = /^[A-Za-z]+(\s[A-Za-z]+)*$/;
+const isNameValid = namePattern.test(name.trim());
+
+if (!isNameValid) {
+  nameError.style.display = 'block';
+  nameError.textContent = 'Invalid name format. Only letters and spaces are allowed, and spaces should not be at the beginning or end.';
+  return; // Exit the function if name is invalid
+}
+
+      $.ajax({
+        url: "/admin/addCoupon",
+        data: {
+          name: name,
+          code: code,
+          discount: discount,
+          activeDate: active,
+          expDate: expiry,
+          criteriaAmount: amount,
+          userLimit: limit
+        },
+        method: "post",
+        success: (response) => {
+          if ((response.require)) {
+            nameError.style.display = "block";
+            nameError.textContent = "Must fillout all fields."
+          } else if (response.nameAlready) {
+            nameError.style.display = "block";
+            nameError.textContent = "Give unique name for coupon."
+          } else if (response.codeAlready) {
+            codeError.style.display = "block";
+            codeError.textContent = "Give unique Code for coupon."
+          } else if (response.disMinus) {
+            disError.style.display = "block";
+            disError.textContent = "Discount not contain negative or zero value."
+          } else if (response.amountMinus) {
+            amountError.style.display = "block";
+            amountError.textContent = "Criteria amount not contain negative or zero value."
+          } else if (response.activeDate) {
+            activeError.style.display = "block";
+            activeError.textContent = "Activation date not be a past date."
+          } else if (response.expDate) {
+            expError.style.display = "block";
+            expError.textContent = "Expiry date must be after activation date.Expiry date must be after the current date."
+          } else if (response.limit) {
+            limitError.style.display = "block";
+            limitError.textContent = "Users limit must be positive value."
+          } else {
+            window.location.href = "/admin/coupenMange"
+          }
+        },
+
+      })
+
+
+
+
+    })
+  </script>
+
+  <%- include('../admin/layouts/adminfootbar') %>

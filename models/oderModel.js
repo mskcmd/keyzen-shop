@@ -65,6 +65,7 @@ const orderSchema = new mongoose.Schema({
   ],
   deliveryDate: {
     type: Date,
+    
   },
   cancelReason: {
     type: String,
@@ -97,6 +98,11 @@ const orderSchema = new mongoose.Schema({
   },
   discount: {
     type: Number,
+    default: null
+
+  },
+  applied:{
+    type: String,
   },
 });
 

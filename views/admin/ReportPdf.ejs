@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Sales Report</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="text-center">Sales Report</h1>
+      <p class="text-center">Date: <%= date %></p>
+      <hr>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (orderData && orderData.length > 0) { %>
+            <% let grandTotal = 0; %>
+            <% orderData.forEach(order => { %>
+              <% order.products.forEach(product => { %>
+                <% let total = product.count * product.productId.price; %>
+                <tr>
+                  <td><%= order.date.toLocaleString('en-US') %></td>
+                  <td><%= product.productId.name %></td>
+                  <td><%= product.count %></td>
+                  <td>₹<%= product.productId.price.toFixed(2) %></td>
+                  <td>₹<%= total.toFixed(2) %></td>
+                </tr>
+                <% grandTotal += total; %>
+              <% }); %>
+            <% }); %>
+            <tfoot>
+              <tr>
+                <td colspan="4" class="text-right">Grand Total:</td>
+                <td>₹<%= grandTotal.toFixed(2) %></td>
+              </tr>
+            </tfoot>
+          <% } else { %>
+            <tr>
+              <td colspan="5" class="text-center">No data available</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+      <h5>KEYZEN Ltd.</h5>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS and dependencies (jQuery and Popper.js) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- Add html2pdf library -->
+
+<script>
+  function download() {
+    window.print();
+  }
+
+  download();
+</script>
+</body>
+
+</html>

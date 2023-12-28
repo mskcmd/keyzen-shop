@@ -3,6 +3,8 @@ const productdata = require("../models/productModel");
 const Cate = require("../models/category");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
+dotenv.config();
 const otpGenerator = require("otp-generator");
 const express = require("express");
 const crypto = require("crypto");
@@ -10,6 +12,8 @@ const randomstring = require("randomstring");
 const app = express();
 const Address = require("../models/address");
 const Order = require("../models/oderModel");
+const Coupon = require("../models/couponModel");
+const Offer = require("../models/offerModel");
 
 //==========================================securePassword=============================================
 
@@ -41,7 +45,7 @@ const sendVerifyMail = async (email, name, otp) => {
       secure: false,
       requireTLS: true,
       auth: {
-        user: "suhail701953@gmail.com",
+      user: process.env.EMAIL_USER,
         pass: "kibv yizd iomd mgwf",
       },
     });
@@ -76,7 +80,6 @@ const sendVerifyMail = async (email, name, otp) => {
 const insertUser = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email: req.body.email });
-    console.log(req.body);
 
     if (existingUser) {
       res.render("registration", {
@@ -87,16 +90,24 @@ const insertUser = async (req, res) => {
       req.session.email = req.body.email;
       req.session.mobile = req.body.mobile;
       req.session.password = req.body.password;
+      console.log("code :",req.body.referralCode);
+      req.session.referralCode = req.body.referralCode;
+      const referralCode = req.body.referralCode
+      const userData=await User.findOne({ referralCode:referralCode})
+      console.log("hh",userData);
+      if(!userData&&referralCode==null){
+        res.render("registration", { message: "Rong ReferralCode" });
+      }else {
       if (req.body.password === req.body.confirmPassword) {
         const generatedOTP = generateAndStoreOTP(req);
         console.log(generatedOTP);
         sendVerifyMail(req.session.email, req.session.name, generatedOTP);
-
         res.redirect("/verify");
       } else {
         res.render("registration", { message: "Enter same password" });
       }
     }
+  }
   } catch (error) {
     console.log(error);
   }
@@ -129,20 +140,59 @@ const checkotp = async (req, res) => {
   try {
     const verifyotp = req.body.otp;
     const currTime = Math.floor(Date.now() / 1000);
+    const charset =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    const charsetLength = charset.length;
+
+    const length = 8;
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charsetLength);
+      result += charset.charAt(randomIndex);
+    }
 
     if (req.session && req.session.otp && currTime <= req.session.otp.expiry) {
       if (req.session.otp.code == verifyotp) {
         const spassword = await securePassword(req.session.password);
+      
         const user = new User({
           name: req.session.name,
           email: req.session.email,
           password: spassword,
           mobile: req.session.mobile,
+          referralCode:result,    
+          usedReferralCode:req.session.referralCode,
+          wallet:0,
           is_Verified: 1,
         });
-
+        
         const userData = await user.save();
-        console.log(userData);
+
+       
+
+         const referralCode = req.session.referralCode;
+         console.log("referralCode", referralCode);
+
+         const resulttow = await User.findOneAndUpdate(
+          { usedReferralCode: referralCode },
+          { $set: { wallet: 25 } },
+          { new: true }
+        );
+        
+        // The console.log below is trying to access result, but it might not be initialized yet.
+        
+         // The issue is here: result is declared but not assigned a value yet.
+         const resultone = await User.findOneAndUpdate(
+           { referralCode: referralCode },
+           { $set: { wallet: 50 } },
+           { new: true }
+         );
+         
+         // The console.log below is trying to access result, but it might not be initialized yet.
+         
+         
+      
 
         if (userData) {
           req.session.user_id = userData._id;
@@ -156,7 +206,8 @@ const checkotp = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    // Handle other errors as needed
+    return res.status(500).json({ error: "Internal server error" });
+
   }
 };
 
@@ -261,21 +312,27 @@ const userprofile = async (req, res) => {
     const AddressData = await Address.find({ user: user_id });
     const orderData = await Order.find({ userId: user_id }).sort({ date: -1 });
     const totalPrice = orderData.totalAmount;
-    console.log(totalPrice);
 
     const userData1 = await User.findOne({ _id: req.session.user_id });
     let walletAmount;
     let walletHistory;
-    if(userData1){
-      walletAmount = userData1.wallet
-      walletHistory = userData1.walletHistory
+    if (userData1) {
+      walletAmount = userData1.wallet;
+      walletHistory = userData1.walletHistory;
     }
+
+    const coupons = await Coupon.find({
+      status: true,
+      expiryDate: { $gte: new Date() },
+    });
+
     if (userData && AddressData) {
       res.render("userprofile", {
         user: userData,
-        walletHistory:walletHistory,
-        walletAmount:walletAmount,
+        walletHistory: walletHistory,
+        walletAmount: walletAmount,
         add: AddressData,
+        coupons: coupons,
         oderData: orderData,
       });
     } else {
@@ -298,14 +355,20 @@ const product = async (req, res) => {
       page = req.query.page;
     }
     const products = await productdata
-      .find({ blocked: 0 })
-      .limit(limit)
-      .skip((page - 1) * limit);
+  .find({ blocked: 0 })
+  .limit(limit)
+  .skip((page - 1) * limit)
+  .populate("offer");
 
+
+    // const productData = await productdata.find({}).populate("offer");
     const catedata = await Cate.find({ blocked: 0 });
+    const cateDatas = await Cate.find({}).populate("offer");
+    const offerdata = await Offer.find({})
 
     const count = await productdata.find({ blocked: 0 }).countDocuments();
     const totalPages = Math.ceil(count / limit);
+
 
     res.render("shop", {
       user: userData,
@@ -313,6 +376,10 @@ const product = async (req, res) => {
       category: catedata,
       currentPage: page,
       totalPages: totalPages,
+      cateDatas,
+      offerdata
+
+
     });
   } catch (error) {
     console.log(error.message);
@@ -324,7 +391,7 @@ const product = async (req, res) => {
 const productdeteal = async (req, res) => {
   try {
     const userData = await User.findById(req.session.user_id);
-    const product = await productdata.findOne({ _id: req.query.id });
+    const product = await productdata.findOne({ _id: req.query.id }).populate("offer");
     if (userData && product) {
       res.render("Productsdetail", { user: userData, product: product });
     } else {
@@ -391,7 +458,7 @@ const passRecoverVerifyMail = async (name, email, token) => {
       secure: false,
       requireTLS: true,
       auth: {
-        user: "suhail701953@gmail.com",
+      user: process.env.EMAIL_USER,
         pass: "kibv yizd iomd mgwf",
       },
     });
@@ -425,10 +492,8 @@ const passRecoverVerifyMail = async (name, email, token) => {
 const resetpassword = async (req, res) => {
   try {
     const token = req.query.token;
-    console.log(token);
     const tokenData = await User.findOne({ token: token });
 
-    console.log("totken", tokenData);
     res.render("resetPassword", { user: tokenData });
   } catch (error) {
     console.log(error.message);
@@ -442,8 +507,6 @@ const reSetpass = async (req, res) => {
   try {
     const password = req.body.password;
     const id = req.body.id;
-    console.log("Received password :", password);
-    console.log("Received user ID:", id);
 
     const secPassword = await securePassword(password);
     console.log("Secure password generated:", secPassword);
@@ -456,10 +519,8 @@ const reSetpass = async (req, res) => {
     );
 
     if (updatedData) {
-      console.log("Password updated successfully");
       res.render("login", { message: "Password reset successful." });
     } else {
-      console.log("Password update failed");
     }
   } catch (error) {
     console.log("Error:", error.message);
@@ -486,19 +547,21 @@ const contact = async (req, res) => {
 
 const filterproduct = async (req, res) => {
   try {
-    const user= req.session.user_id
+    const user = req.session.user_id;
     let cate = req.body.category;
-    console.log(cate);
     let priceSort = parseInt(req.body.price);
-    console.log(priceSort);
-    const category = await Cate.find({ blocked: 0 }); 
+    const category = await Cate.find({ blocked: 0 });
     let filtered;
     if (req.body.category === "allCate") {
-      filtered = await productdata.find({ blocked: 0 }).sort({ price: priceSort });
+      filtered = await productdata
+        .find({ blocked: 0 })
+        .sort({ price: priceSort });
     } else {
-      filtered = await productdata.find({ category: cate, blocked: 0 }).sort({
-        price: priceSort,
-      });
+      filtered = await productdata
+        .find({ categoryName: cate, blocked: 0 })
+        .sort({
+          price: priceSort,
+        });
     }
     res.render("shop", {
       user,
@@ -511,16 +574,37 @@ const filterproduct = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+//==========================================searchproduct=============================================
 
-const search = async(req,res)=>{
-try {
-  
-} catch (error) {
-  console.log(error.message);
-  res.status(500).json({ error: "Internal server error" });
-}
-}
-
+const searchproduct = async (req, res) => {
+  try {
+    const user = req.session.user_id;
+    const category = await Cate.find({ blocked: 0 });
+    const name = req.query.q;
+    const regex = new RegExp(`^${name}`, "i");
+    const products = await productdata.find({
+      name: { $regex: regex },
+      blocked: 0,
+    });
+    res.render("shop", {
+      user,
+      products: products,
+      totalPages: 0,
+      category,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+const loadError = async (req, res) => {
+  try {
+    res.status(404).render("404");
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
 
 module.exports = {
   loadRegister,
@@ -541,5 +625,6 @@ module.exports = {
   reSetpass,
   contact,
   filterproduct,
-  search
+  searchproduct,
+  loadError
 };

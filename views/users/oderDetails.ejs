@@ -2,10 +2,7 @@
 
 
 <main class="main">
-  <div
-    class="page-header text-center"
-    style="background-image: url('/user/images/banners/shop.jpg')"
-  >
+  <div class="page-header text-center" style="background-image: url('/user/images/banners/shop.jpg')">
     <div class="container">
       <h1 class="page-title">Orders<span class="text-dark">Details</span></h1>
     </div>
@@ -32,7 +29,7 @@
           <% if(orders.status == "delivered"){ %>
           <div class="col-6 col-lg-4 col-xl-2">
             <div class="btn-wrap">
-              
+
               <a href="/invoice/<%= orders._id %>" class="btn btn-outline-dark btn-round">Download Invoice</a>
             </div><!-- End .btn-wrap -->
           </div><!-- End .col-md-4 col-lg-2 -->
@@ -40,26 +37,20 @@
           <% if(orders.status == "shipped" || orders.status == "placed" || orders.status == "delivered"){ %>
           <div class="progress-track w-100  w-100">
             <ul id="progressbar" class="d-flex justify-content-center">
-                <li style="font-size: 12px;" class="step0 active " id="step1">Order placed
-                </li>
-                <% if(orders.status == "delivered"){ %>
-                  <li style="font-size: 12px;"
-                    class="step0 text-center active"
-                    id="step2">Shipped</li>
-                  <% }else{ %>
-                <li style="font-size: 12px;"
-                    class="step0 text-center <%= orders.statusLevel === 2 ? 'active' : '' %>"
-                    id="step2">Shipped</li>
-                    <% } %>
-                <li style="font-size: 12px;"
-                    class="step0  text-right <%= orders.statusLevel === 3 ? 'active' : '' %>"
-                    id="step3">Delivered</li>
-               
+              <li style="font-size: 12px;" class="step0 active " id="step1">Order placed
+              </li>
+              <% if(orders.status == "delivered"){ %>
+              <li style="font-size: 12px;" class="step0 text-center active" id="step2">Shipped</li>
+              <% }else{ %>
+              <li style="font-size: 12px;" class="step0 text-center <%= orders.statusLevel === 2 ? 'active' : '' %>" id="step2">Shipped</li>
+              <% } %>
+              <li style="font-size: 12px;" class="step0  text-right <%= orders.statusLevel === 3 ? 'active' : '' %>" id="step3">Delivered</li>
+
 
             </ul>
-        </div>
-        <% } %>
-          
+          </div>
+          <% } %>
+
           <div class="row">
             <!-- End .col-lg-9 -->
             <aside class="col-lg-12">
@@ -68,31 +59,24 @@
                 <!-- End .summary-title -->
 
                 <table class="table table-summary">
-                  
+
                   <tbody>
                     <% if( orders.products.length > 0 ){
                     orders.products.forEach((data)=>{ %>
 
                     <tr>
                       <td>
-                       <img
-                      src="/products/images/<%= data.productId.images.image1 %>"
-                         alt=""
-                       width="100"
-                       height="100" 
-  />
+                        <img src="/products/images/<%= data.productId.images.image1 %>" alt="" width="100" height="100" />
 
                         <h6>
-                          
-                          <%= data.productId.name %>&nbsp&nbsp<span
-                            style="
+
+                          <%= data.productId.name %>&nbsp&nbsp<span style="
                               border-radius: 50%;
                               font-weight: 100;
                               background-color: rgb(7, 7, 7);
                               padding: 3px 7px;
-                            "
-                            class="badge center"><%= data.count %></span>
-                          
+                            " class="badge center"><%= data.count %></span>
+
                         </h6>
                       </td>
                       <td><b>Price</b>&nbsp;&nbsp;&nbsp;₹ <%= data.totalPrice %></td>
@@ -102,14 +86,14 @@
                       <p>
                       <td>Billing Address: &nbsp</td>
                       <td><strong>Name:</strong> <%= orders.address[0].name %><br>
-                     <strong>Mobile:</strong> <%= orders.address[0].mobile %><br>
-                         <strong>Email:</strong> <%= orders.address[0].email %><br>
+                    <strong>Mobile:</strong> <%= orders.address[0].mobile %><br>
+                    <strong>Email:</strong> <%= orders.address[0].email %><br>
                     <strong>House Name:</strong> <%= orders.address[0].houseName %><br>
-                   <strong>City:</strong> <%= orders.address[0].city %><br>
-                           <strong>State:</strong> <%= orders.address[0].state %><br>
-                        <strong>Pin:</strong> <%= orders.address[0].pin %><br>
-                      </p>
-                          </td>
+                    <strong>City:</strong> <%= orders.address[0].city %><br>
+                    <strong>State:</strong> <%= orders.address[0].state %><br>
+                    <strong>Pin:</strong> <%= orders.address[0].pin %><br>
+                    </p>
+                    </td>
                     </tr>
                     <tr>
                       <td>Ordered Date:</td>
@@ -124,19 +108,33 @@
                       <td><%= orders.status %></td>
                     </tr>
                     <tr>
+                      <td>Coupon :</td>
+                      <% if (orders.discount === null) { %>
+                      <td>Coupon not added</td>
+                      <% } else { %>
+                        
+                      <td><br>
+                      Coupon Added<br>
+                      Discount Amount: <strong> <%= orders.discount %></strong><br>
+                       </td>
+
+                      <% } %>
+                    </tr>
+
+                    <tr>
                       <td>Payment Method:</td>
                       <td><%= orders.paymentMethod %></td>
                     </tr>
                     <% if(orders.status == "delivered" && daysDiff < 7 ){ %>
-                    
+
                     <tr>
                       <td>Reurn Policy:</td>
                       <td>If you've received them in a condition that is physically damaged, has missing parts or accessories <br>
-                          you can return the product within <b style="color: red;"><%= 7-daysDiff %> Days</b>.
+                        you can return the product within <b style="color: red;"><%= 7-daysDiff %> Days</b>.
                       </td>
                     </tr>
                     <% } %>
-                    
+
 
                     <tr class="summary-total">
                       <td>Total:</td>
@@ -146,73 +144,61 @@
                   </tbody>
                 </table>
                 <!-- End .table table-summary -->
-                
-                
+
+
                 <% if(orders.status == "placed" || orders.status == "pending"){ %>
-                <button
-                  type="button"
-                  class="btn btn-outline-primary-2 btn-order btn-block"
-                  data-bs-toggle="modal" data-bs-target="#exampleModal"
-                >
+                <button type="button" class="btn btn-outline-primary-2 btn-order btn-block" data-bs-toggle="modal" data-bs-target="#exampleModal">
                   <span class="btn-text">Cancel Order</span>
-                  <span class="btn-hover-text"
-                    >Proceed to Cancel the Order</span
-                  >
+                  <span class="btn-hover-text">Proceed to Cancel the Order</span>
                 </button>
 
                 <%}else if(orders.status == "delivered" && daysDiff <= 7) {%>
-                  <button
-                  type="button"
-                  class="btn btn-outline-primary-2 btn-order btn-block"
-                  data-bs-toggle="modal" data-bs-target="#exampleModal"
-                >
+                <button type="button" class="btn btn-outline-primary-2 btn-order btn-block" data-bs-toggle="modal" data-bs-target="#exampleModal">
                   <span class="btn-text">Return Product</span>
-                  <span class="btn-hover-text"
-                    >Proceed to Return the Product</span
-                  >
+                  <span class="btn-hover-text">Proceed to Return the Product</span>
                 </button>
 
-                  <% } %>
+                <% } %>
 
 
               </div>
               <!-- End .summary -->
             </aside>
             <% if(orders.status == "delivered" && daysDiff <= 7) {%>
-              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header p-5">
-                      <h5  id="exampleModalLabel">Are you sure?</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-5">
-                      <form action="/productReturn" method="post">
-                        <input type="hidden" value="<%= orders._id %>" name="orderid">
-                        <input type="hidden" value="<%= orders.totalAmount %>" name="totalPrice">
-  
-                        <div class="mb-3">
-                          <label for="message-text" class="col-form-label">Give reason for order returning:</label>
-                          <textarea name="reason" class="form-control" id="message-text" placeholder="eg: Not in good condition."></textarea>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                          <button type="submit" class="btn btn-primary">Yes</button>
-                        </div>
-                      </form>
-                    </div>
-                    
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header p-5">
+                    <h5 id="exampleModalLabel">Are you sure?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
+                  <div class="modal-body p-5">
+                    <form action="/productReturn" method="post">
+                      <input type="hidden" value="<%= orders._id %>" name="orderid">
+                      <input type="hidden" value="<%= orders.totalAmount %>" name="totalPrice">
+
+                      <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Give reason for order returning:</label>
+                        <textarea name="reason" class="form-control" id="message-text" placeholder="eg: Not in good condition."></textarea>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary">Yes</button>
+                      </div>
+                    </form>
+                  </div>
+
                 </div>
               </div>
+            </div>
 
-              <% }else{ %>
+            <% }else{ %>
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header p-5">
-                    <h5  id="exampleModalLabel">Are you sure?</h5>
+                    <h5 id="exampleModalLabel">Are you sure?</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body p-5">
@@ -226,9 +212,9 @@
                         <label for="recipient-name" class="col-form-label">Choose Refund Option:</label>
                         <select class="form-select form-control" aria-label="Default select example" name="refundOption">
                           <option value="Wallet" class="form-control" id="recipient-name">Wallet</option>
-                        
-                        
-                      </select>
+
+
+                        </select>
                       </div>
 
                       <% } %>
@@ -243,20 +229,19 @@
                       </div>
                     </form>
                   </div>
-                  
+
                 </div>
               </div>
             </div>
             <% } %>
-            
-
-           
 
 
-            
+
+
+
           </div>
           <!-- End .row -->
-            </div>
+        </div>
       </div>
       <!-- End .container -->
     </div>
@@ -268,26 +253,22 @@
 
 <script>
   var exampleModal = document.getElementById('exampleModal')
-exampleModal.addEventListener('show.bs.modal', function (event) {
-  // Button that triggered the modal
-  var button = event.relatedTarget
-  // Extract info from data-bs-* attributes
-  var recipient = button.getAttribute('data-bs-whatever')
-  // If necessary, you could initiate an AJAX request here
-  // and then do the updating in a callback.
-  //
-  // Update the modal's content.
-  var modalTitle = exampleModal.querySelector('.modal-title')
-  var modalBodyInput = exampleModal.querySelector('.modal-body input')
+  exampleModal.addEventListener('show.bs.modal', function(event) {
+    // Button that triggered the modal
+    var button = event.relatedTarget
+    // Extract info from data-bs-* attributes
+    var recipient = button.getAttribute('data-bs-whatever')
+    // If necessary, you could initiate an AJAX request here
+    // and then do the updating in a callback.
+    //
+    // Update the modal's content.
+    var modalTitle = exampleModal.querySelector('.modal-title')
+    var modalBodyInput = exampleModal.querySelector('.modal-body input')
 
-  modalTitle.textContent = 'New message to ' + recipient
-  modalBodyInput.value = recipient
-})
+    modalTitle.textContent = 'New message to ' + recipient
+    modalBodyInput.value = recipient
+  })
 </script>
-
-
-
-
 
 
 

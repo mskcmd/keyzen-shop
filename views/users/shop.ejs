@@ -40,8 +40,12 @@
                   <div class="col-6 col-md-4 col-lg-4 col-xl-3">
                       <div class="product">
                           <figure class="product-media">
-                              <span class="product-label label-new">New</span>
+                            <% if (data.offer !== null) { %>
+                            <span class="product-label label-sale">
                               
+                              <%= data.offer.percentages %> % OFF
+                               </span>        
+                                <% } %>
                               <a href="/productdeteal?id=<%=data._id%>">
                                   <img src="/products/crope/<%= data.images.image1 %>" alt="Product image" class="product-image">
                                   <img src="/products/crope/<%= data.images.image1%>" alt="Product image" class="product-image-hover">
@@ -73,12 +77,16 @@
 
                           <div class="product-body">
                               <div class="product-cat">
-                                  <a href=""><%= data.category %>></a>
+                                  <a href=""><%= data.categoryName %>></a>
                               </div><!-- End .product-cat -->
                               <h3 class="product-title"><a href="/productView?id=<%=data._id%>"><%= data.name %></a></h3><!-- End .product-title -->
                               <div class="product-price">
+                                <% if (data.offer == null) { %>
                                   ₹&nbsp <%= data.price %>
-                                  <% if(data.quantity == 0){ %>
+                                <% } else{ %>
+                                 <p style="color: red;"><S >₹&nbsp <%= data.price %> </S></p> &nbsp&nbsp&nbsp&nbsp₹&nbsp<%= data.discount %>
+                                <% } %>
+                                 <% if(data.quantity == 0){ %>
                                   &nbsp&nbsp<p style="color: red;">(Out of stock !)</p>
                                   <% }else if(data.quantity < 10){ %>
                                       &nbsp&nbsp<p style="color: red;">(Only&nbsp <%= data.quantity %> &nbsp left !)</p>
@@ -93,7 +101,7 @@
                   <% }) %>
 
               </div><!-- End .row -->
-              <% if(totalPages != 0){ %>
+            <% if(totalPages != 0){ %>
                 <nav aria-label="Page navigation example " >
         <ul class="pagination d-flex justify-content-center">
           <li class="page-item">
@@ -164,7 +172,7 @@
                         <div class="filter-items filter-items-count">
                           <div class="filter-item">
                             <div class="custom-control custom-checkbox">
-                              <input type="radio" name="price" class="custom-control-input" checked id="allPrices" value="0">
+                              <input type="radio" name="price" class="custom-control-input" checked id="allPrices" value="1">
                               <label class="custom-control-label" for="allPrices">All Prices</label>
                             </div>
                           </div>
@@ -280,5 +288,50 @@ $(document).ready(function() {
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
 
+function addWishlist(productId) {
+    $.ajax({
+      url: "/addToWishlist",
+      method: "post",
+      data: {
+        id: productId,
+      },
+      success: (response) => {
+        if (response.login == true) {
+          swal
+            .fire({
+              icon: "warning",
+              title: "Please Login",
+              confirmButtonText: "Login",
+              showCancelButton: true,
+              cancelButtonColor: "#d33",
+              text: response.message,
+            })
+            .then((result) => {
+              if (result.isConfirmed) {
+                window.location.href = "/login";
+              }
+            });
+        } else if (response.exist == true) {
+          swal.fire({
+            position: "center",
+            icon: "warning",
+            title: "This product already in your wishlist",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else if (response.success) {
+          swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Product added to your Wishlist",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      },
+    });
+  }
+  </script>
 <%- include('../users/layouts/footer') %>

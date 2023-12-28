@@ -102,24 +102,47 @@ include('../admin/layouts/adminnavebar') %>
             
             
            
-              <% if (orders.status == "shipped" || orders.status == "placed"||orders.status == "delivered" ) { %>            <td>
-            <div class="dropdown m-3">
-              <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuOutlineButton5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Actions </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton5">
-                <a class="dropdown-item" href="/admin/statusUpdate?id=<%= orders._id %>&status=0">Cancel</a>
-                <a class="dropdown-item" href="/admin/statusUpdate?id=<%= orders._id %>&status=2">Shipped</a>
-                <a class="dropdown-item" href="/admin/statusUpdate?id=<%= orders._id %>&status=3">Delivery</a>
-              </div>
-            </div>
-          </td>
-          <% } else { %>
-            <td>
-              <div class="">
-                <button class="btn btn-outline-danger " type="button" id="dropdownMenuOutlineButton5" > cancllled </button>
-                
-              </div>
-            </td>
-          <% } %>          <br>
+              <% if (orders.status==="shipped" || orders.status==="placed" ) { %>
+                <td>
+                  <div class="dropdown">
+                    <button class="btn btn-outline-success dropdown-toggle" type="button"
+                      id="dropdownMenuOutlineButton5" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="false">
+                      Actions
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton5">
+                      <a class="dropdown-item" href="/admin/statusUpdate?id=<%= orders._id %>&status=0">Cancel</a>
+                      <a class="dropdown-item" href="/admin/statusUpdate?id=<%= orders._id %>&status=2">Shipped</a>
+                      <a class="dropdown-item" href="/admin/statusUpdate?id=<%= orders._id %>&status=3">Delivery</a>
+                    </div>
+                  </div>
+                </td>
+              <% } else if (orders.status==="Returned" ) { %>
+                <td>
+                  <div class="">
+                    <button class="btn btn-outline-danger" type="button" id="dropdownMenuOutlineButton5">
+                      Returned
+                    </button>
+                  </div>
+                </td>
+              <% } else if (orders.status==="delivered" ) { %>
+                <td>
+                  <div class="">
+                    <button class="btn btn-outline-success" type="button" id="dropdownMenuOutlineButton5">
+                      Delivery
+                    </button>
+                  </div>
+                </td>
+              <% } else { %>
+                <td>
+                  <div class="">
+                    <button class="btn btn-outline-danger" type="button" id="dropdownMenuOutlineButton5">
+                      Cancelled
+                    </button>
+                  </div>
+                </td>
+              <% } %>
+                       <br>
 
             <table class="table table-dark">
               <thead>

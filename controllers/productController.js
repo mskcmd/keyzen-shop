@@ -3,15 +3,43 @@ const bcrypt = require("bcrypt");
 const multer = require("../midileware/mullter");
 const Sharp = require("sharp");
 const Cate = require("../models/category");
+const Offer = require("../models/offerModel");
 
 //==============================productlist===================================
 
 const productlist = async (req, res) => {
   try {
-    const productData = await productdata.find({});
-    res.render("product", { product: productData });
+    const offer = await Offer.find({});
+
+    var page = 1;
+    var limit = 8;
+    if (req.query.page) {
+      page = req.query.page;
+    }
+    const productData = await productdata
+      .find({})
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .populate("offer")
+      .exec();
+
+    const catIds = productData.map((product) => product.category);
+    const count = await productdata.find({}).countDocuments();
+    const totalPages = Math.ceil(count / limit);
+    // Assuming your category model has a 'name' field, adjust it based on your actual model structure
+    const cate = await Cate.find({ _id: { $in: catIds } }, "name");
+
+    res.render("product", {
+      product: productData,
+      cate,
+      offer,
+      currentPage: page,
+      totalPages: totalPages,
+    });
   } catch (error) {
     console.log(error.message);
+    // Handle the error appropriately, e.g., send an error response to the client
+    res.status(500).send("Internal Server Error");
   }
 };
 
@@ -34,6 +62,10 @@ const inserproduct = async (req, res) => {
       res.redirect("/admin/addProduct");
     } else {
       let details = req.body;
+      const selectedCategoryId = req.body.category;
+      const category = await Cate.findById(selectedCategoryId);
+      const categoryName = category.name;
+
       const files = await req.files;
 
       const img = [
@@ -56,6 +88,7 @@ const inserproduct = async (req, res) => {
         name: details.name,
         price: details.price,
         quantity: details.quantity,
+        categoryName: categoryName,
         category: details.category, // Set the category field with the _id of the found category
         description: details.description,
         blocked: 0,
@@ -85,13 +118,13 @@ const problock = async (req, res) => {
         { _id: req.query.id },
         { $set: { blocked: 1 } }
       );
-      res.redirect("/admin/Product");
+      res.json({ success: true });
     } else {
       await productdata.updateOne(
         { _id: req.query.id },
         { $set: { blocked: 0 } }
       );
-      res.redirect("/admin/Product");
+      res.json({ success: true });
     }
   } catch (error) {
     console.log(error.message);
@@ -118,10 +151,9 @@ const editProduct = async (req, res) => {
     let details = req.body;
     let imagesFiles = req.files || {};
     let currentData = await productdata.findOne({ _id: req.query.id });
-
-    console.log("Request Body:", details);
-    console.log("Uploaded Files:", imagesFiles);
-    console.log("Current Product Data:", currentData);
+    const selectedCategoryId = req.body.category;
+    const category = await Cate.findById(selectedCategoryId);
+    const categoryName = category.name;
 
     const img = [
       imagesFiles.image1?.[0]?.filename || currentData.images.image1,
@@ -129,8 +161,6 @@ const editProduct = async (req, res) => {
       imagesFiles.image3?.[0]?.filename || currentData.images.image3,
       imagesFiles.image4?.[0]?.filename || currentData.images.image4,
     ];
-
-    console.log("Selected Image Filenames:", img);
 
     for (let i = 0; i < img.length; i++) {
       await Sharp("public/products/images/" + img[i])
@@ -153,8 +183,6 @@ const editProduct = async (req, res) => {
       ? imagesFiles.image4[0].filename
       : currentData.images.image4;
 
-    console.log("Final Image Filenames:", img1, img2, img3, img4);
-
     let update = await productdata.updateOne(
       { _id: req.query.id },
       {
@@ -162,6 +190,7 @@ const editProduct = async (req, res) => {
           name: details.name,
           price: details.price,
           quantity: details.quantity,
+          categoryName: categoryName,
           category: details.category,
           description: details.description,
           "images.image1": img1,
@@ -171,8 +200,6 @@ const editProduct = async (req, res) => {
         },
       }
     );
-
-    console.log("Database Update Result:", update);
 
     res.redirect("/admin/Product");
   } catch (error) {

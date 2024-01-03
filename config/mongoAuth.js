@@ -5,12 +5,12 @@ dotenv.config();
 module.exports = {
   mongoDB: () => {
     mongoose
-      .connect(process.env.Mongo_url, {})
+      .connect(process.env.Mongo_url)
       .then(() => {
-        console.log("(Atles) Mongodb Database connected");
+        console.log("(Atlas) MongoDB Database connected");
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Error connecting to MongoDB:", err.message);
       });
   },
 };

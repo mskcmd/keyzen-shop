@@ -1,226 +1,306 @@
 <%- include('../users/layouts/userHeader') %>
 
+<h1>haj</h1>
+<main class="main">
+  <div
+    class="page-header text-center"
+    style="background-image: url('assets/images/page-header-bg.jpg')"
+  >
+    <div class="container">
+      <h1 class="page-title">My Account<span>Shop</span></h1>
+    </div>
+    <!-- End .container -->
+  </div>
+  <!-- End .page-header -->
+  <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/product">Shop</a></li>
+        <li class="breadcrumb-item active" aria-current="page">My Account</li>
+      </ol>
+    </div>
+    <!-- End .container -->
+  </nav>
+  <!-- End .breadcrumb-nav -->
 
-        <main class="main">
-        	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
-        		<div class="container">
-        			<h1 class="page-title">My Account<span>Shop</span></h1>
-        		</div><!-- End .container -->
-        	</div><!-- End .page-header -->
-            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
-                <div class="container">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item"><a href="/product">Shop</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">My Account</li>
-                    </ol>
-                </div><!-- End .container -->
-            </nav><!-- End .breadcrumb-nav -->
+  <div class="page-content">
+    <div class="dashboard">
+      <div class="container">
+        <div class="row">
+          <aside class="col-md-4 col-lg-3">
+            <ul
+              class="nav nav-dashboard flex-column mb-3 mb-md-0"
+              role="tablist"
+            >
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  id="tab-dashboard-link"
+                  data-toggle="tab"
+                  href="#tab-dashboard"
+                  role="tab"
+                  aria-controls="tab-dashboard"
+                  aria-selected="true"
+                  >add addres
+                </a>
+              </li>
 
-            <div class="page-content">
-            	<div class="dashboard">
-	                <div class="container">
-	                	<div class="row">
-	                		<aside class="col-md-4 col-lg-3">
-	                			<ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
-								    <li class="nav-item">
-								        <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">add addres </a>
-								    </li>
-								    
-								    <li class="nav-item">
-								        <a class="nav-link" href="#">Sign Out</a>
-								    </li>
-								</ul>
-	                		</aside><!-- End .col-lg-3 -->
+              <li class="nav-item">
+                <a class="nav-link" href="#">Sign Out</a>
+              </li>
+            </ul>
+          </aside>
+          <!-- End .col-lg-3 -->
 
-	                		<div class="col-md-8 col-lg-9">
-	                			<div class="tab-content">
-								    <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
-										<form action="/addaddress" method="post">
+          <div class="col-md-8 col-lg-9">
+            <div class="tab-content">
+              <div
+                class="tab-pane fade show active"
+                id="tab-dashboard"
+                role="tabpanel"
+                aria-labelledby="tab-dashboard-link"
+              >
+                <form action="">
+                  <label>Name *</label>
+                  <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    id="name"
+                  />
+                  <div id="nameError" style="display: none; color: red"></div>
 
-			                				<label>Name *</label>
-		            						<input type="text"  name="name" class="form-control" required>      
-		            						<small class="form-text"></small>
+                  <label>Email address *</label>
+                  <input
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    id="email"
+                  />
+                  <div
+                    id="addEmailError"
+                    style="display: none; color: red"
+                  ></div>
 
+                  <label>Phone number</label>
+                  <input
+                    name="mobile"
+                    type="text"
+                    class="form-control"
+                    id="mobile"
+                  />
+                  <div id="phoneError" style="display: none; color: red"></div>
 
-                                            <label>Email address *</label>
-		        							<input type="email" name="email" class="form-control" required>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label>houseName</label>
+                      <input
+                        type="text"
+                        name="houseName"
+                        class="form-control"
+                        id="houseName"
+                      />
+                      <div
+                        id="houseError"
+                        style="display: none; color: red"
+                      ></div>
+                    </div>
+                    <!-- End .col-sm-6 -->
 
+                    <div class="col-sm-6">
+                      <label>city</label>
+                      <input
+                        type="text"
+                        name="city"
+                        class="form-control"
+                        id="city"
+                      />
+                    </div>
+                    <!-- End .col-sm-6 -->
+                    <div id="cityError" style="display: none; color: red"></div>
+                  </div>
+                  <!-- End .row -->
 
-		            						<label>Phone number</label>
-		            						<input name="mobile" type="text" class="form-control" required>
-		            						<small class="form-text">This will be how your name will be displayed in the account section and in reviews</small>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label>state</label>
+                      <input
+                        type="text"
+                        name="state"
+                        class="form-control"
+                        id="state"
+                      />
+                    </div>
+                    <!-- End .col-sm-6 -->
+                    <div
+                      id="stateError"
+                      style="display: none; color: red"
+                    ></div>
 
-		                					
-		            						
+                    <div class="col-sm-6">
+                      <label>pincode</label>
+                      <input
+                        type="text"
+                        name="pin"
+                        class="form-control"
+                        id="pin"
+                      />
+                    </div>
+                    <!-- End .col-sm-6 -->
+                    <div id="pinError" style="display: none; color: red"></div>
+                  </div>
+                  <!-- End .row -->
+                  <button
+                    type="submit"
+                    id="addaddres"
+                    class="btn btn-outline-primary-2"
+                  >
+                    <span>Add Address</span>
+                    <i class="icon-long-arrow-right"></i>
+                    <input
+                      type="text"
+                      id="userId"
+                      value="<%=user._id %>"
+                      hidden
+                    />
+                  </button>
+                </form>
+              </div>
+              <!-- .End .tab-pane -->
+            </div>
+          </div>
+          <!-- End .col-lg-9 -->
+        </div>
+        <!-- End .row -->
+      </div>
+      <!-- End .container -->
+    </div>
+    <!-- End .dashboard -->
+  </div>
+  <!-- End .page-content -->
+</main>
+<!-- End .main -->
+<script>
+  document.getElementById("addaddres").addEventListener("click", function (e) {
+    e.preventDefault();
+    const id = document.getElementById("userId").value;
+    const name = document.getElementById("name").value;
+    const addressEmail = document.getElementById("email").value;
+    const mobile = document.getElementById("mobile").value;
+    const houseName = document.getElementById("houseName").value;
+    const city = document.getElementById("city").value;
+    const state = document.getElementById("state").value;
+    const pin = document.getElementById("pin").value;
 
-		            						<div class="row">
-			                					<div class="col-sm-6">
-			                						<label>houseName</label>
-			                						<input type="text" name="houseName" class="form-control" required>
-			                					</div><!-- End .col-sm-6 -->
+    const fnameError = document.getElementById("nameError");
+    const pinError = document.getElementById("pinError");
+    const phoneError = document.getElementById("phoneError");
+    const addEmailError = document.getElementById("addEmailError");
+    const houseError = document.getElementById("houseError");
+    const cityError = document.getElementById("cityError");
+    const stateError = document.getElementById("stateError");
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const mobilePattern = /^\d{10}$/;
+    const namePattern = /^[a-zA-Z\s]+$/;
+    const pincodePattern = /^\d{6}$/;
 
-			                					<div class="col-sm-6">
-			                						<label>city</label>
-			                						<input type="text" name="city" class="form-control" required>
-			                					</div><!-- End .col-sm-6 -->
-			                				</div><!-- End .row -->
+    if (name.trim() === "") {
+      nameError.style.display = "block";
+      nameError.textContent = "Name is required.";
+    } else if (!namePattern.test(name)) {
+      nameError.style.display = "block";
+      nameError.textContent = "Full name not contain any non alphabets.";
+    } else if (name.length < 3) {
+      nameError.style.display = "block";
+      nameError.textContent = "Full name should contain at least 3 letters.";
+    } else if (pin.trim() == "") {
+      pinError.style.display = "block";
+      pinError.textContent = "Pincode is required.";
+    } else if (!pincodePattern.test(pin)) {
+      pinError.style.display = "block";
+      pinError.textContent = "Enter the valid pincode.";
+    } else if (mobile.trim() === "") {
+      phoneError.style.display = "block";
+      phoneError.textContent = "Phone number is required.";
+    } else if (!mobilePattern.test(mobile) || mobile === "0000000000") {
+      phoneError.style.display = "block";
+      phoneError.textContent =
+        "Enter the valid Phone number (must contain 10 numbers).";
+    } else if (addressEmail.trim() === "") {
+      addEmailError.style.display = "block";
+      addEmailError.textContent = "Email is required.";
+    } else if (!emailPattern.test(addressEmail)) {
+      addEmailError.style.display = "block";
+      addEmailError.textContent = "Enter the valid email address.";
+    } else if (houseName.trim() === "") {
+      houseError.style.display = "block";
+      houseError.textContent = "House name is required";
+    } else if (city.trim() === "") {
+      cityError.style.display = "block";
+      cityError.textContent = "City name is required";
+    } else if (state.trim() === "") {
+      stateError.style.display = "block";
+      stateError.textContent = "State name is required";
+    } else {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You want to add these details?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        cancelButtonText: "Not now",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log("iam add addrress two");
+          $.ajax({
+            url: "/addresAdd1",
+            data: {
+              name: name,
+              mobile: mobile,
+              email: addressEmail,
+              houseName: houseName,
+              city: city,
+              state: state,
+              pin: pin,
+              id: id,
+            },
+            method: "post",
+            success: (response) => {
+              if (response.success) {
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                });
+                Toast.fire({
+                  icon: "success",
+                  title: "Billing address added successfully.",
+                });
+                setTimeout(() => {
+                  window.location.href = "/account";
+                }, 3000);
+              } else {
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                });
 
-		            						<div class="row">
-			                					<div class="col-sm-6">
-			                						<label>state</label>
-			                						<input type="text" name="state" class="form-control" required>
-			                					</div><!-- End .col-sm-6 -->
-
-			                					<div class="col-sm-6">
-			                						<label>pincode</label>
-			                						<input type="text" name="pin" class="form-control" required>
-			                					</div><!-- End .col-sm-6 -->
-			                				</div><!-- End .row -->
-		                					<button type="submit" class="btn btn-outline-primary-2">
-			                					<span>Add Address</span>
-			            						<i class="icon-long-arrow-right"></i>
-			                				</button>
-			                			</form>
-									</div><!-- .End .tab-pane -->
-
-								  
-								</div>
-	                		</div><!-- End .col-lg-9 -->
-	                	</div><!-- End .row -->
-	                </div><!-- End .container -->
-                </div><!-- End .dashboard -->
-            </div><!-- End .page-content -->
-        </main><!-- End .main -->
-
-		<footer class="footer footer-2">
-			
-			
-		
-			<div class="footer-middle">
-				<div class="container">
-					<div class="row">
-						<div class="col-sm-12 col-lg-6">
-							<div class="widget widget-about">
-								<img src="/user/assets/images/demos/demo-2/logo.png" class="footer-logo" alt="Footer Logo" width="105" height="25">
-								<p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus. </p>
-								
-								<div class="widget-about-info">
-									<div class="row">
-										<div class="col-sm-6 col-md-4">
-											<span class="widget-about-title">Got Question? Call us 24/7</span>
-											<a href="tel:123456789">+0123 456 789</a>
-										</div><!-- End .col-sm-6 -->
-										<div class="col-sm-6 col-md-8">
-											<span class="widget-about-title">Payment Method</span>
-											<figure class="footer-payments">
-												<img src="/user/assets/images/payments.png" alt="Payment methods" width="272" height="20">
-											</figure><!-- End .footer-payments -->
-										</div><!-- End .col-sm-6 -->
-									</div><!-- End .row -->
-								</div><!-- End .widget-about-info -->
-							</div><!-- End .widget about-widget -->
-						</div><!-- End .col-sm-12 col-lg-3 -->
-		
-						<div class="col-sm-4 col-lg-2">
-							<div class="widget">
-								<h4 class="widget-title">Information</h4><!-- End .widget-title -->
-		
-								<ul class="widget-list">
-									<li><a href="about.html">About Molla</a></li>
-									<li><a href="#">How to shop on Molla</a></li>
-									<li><a href="#">FAQ</a></li>
-									<li><a href="contact.html">Contact us</a></li>
-									<li><a href="login.html">Log in</a></li>
-								</ul><!-- End .widget-list -->
-							</div><!-- End .widget -->
-						</div><!-- End .col-sm-4 col-lg-3 -->
-		
-						<div class="col-sm-4 col-lg-2">
-							<div class="widget">
-								<h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
-		
-								<ul class="widget-list">
-									<li><a href="#">Payment Methods</a></li>
-									<li><a href="#">Money-back guarantee!</a></li>
-									<li><a href="#">Returns</a></li>
-									<li><a href="#">Shipping</a></li>
-									<li><a href="#">Terms and conditions</a></li>
-									<li><a href="#">Privacy Policy</a></li>
-								</ul><!-- End .widget-list -->
-							</div><!-- End .widget -->
-						</div><!-- End .col-sm-4 col-lg-3 -->
-		
-						<div class="col-sm-4 col-lg-2">
-							<div class="widget">
-								<h4 class="widget-title">My Account</h4><!-- End .widget-title -->
-		
-								<ul class="widget-list">
-									<li><a href="#">Sign In</a></li>
-									<li><a href="cart.html">View Cart</a></li>
-									<li><a href="#">My Wishlist</a></li>
-									<li><a href="#">Track My Order</a></li>
-									<li><a href="#">Help</a></li>
-								</ul><!-- End .widget-list -->
-							</div><!-- End .widget -->
-						</div><!-- End .col-sm-64 col-lg-3 -->
-					</div><!-- End .row -->
-				</div><!-- End .container -->
-			</div><!-- End .footer-middle -->
-		
-			<div class="footer-bottom">
-				<div class="container">
-					<p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p><!-- End .footer-copyright -->
-					<ul class="footer-menu">
-						<li><a href="#">Terms Of Use</a></li>
-						<li><a href="#">Privacy Policy</a></li>
-					</ul><!-- End .footer-menu -->
-		
-					<div class="social-icons social-icons-color">
-						<span class="social-label">Social Media</span>
-						<a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
-						<a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
-						<a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
-						<a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
-						<a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
-					</div><!-- End .soial-icons -->
-				</div><!-- End .container -->
-			</div><!-- End .footer-bottom -->
-		</footer><!-- End .footer -->
-		</div><!-- End .page-wrapper -->
-		
-		
-		
-										
-										<!-- Plugins JS File -->
-										<script src="/user/assets/js/jquery.min.js"></script>
-										<script src="/user/assets/js/bootstrap.bundle.min.js"></script>
-										<script src="/user/assets/js/jquery.hoverIntent.min.js"></script>
-										<script src="/user/assets/js/jquery.waypoints.min.js"></script>
-										<script src="/user/assets/js/superfish.min.js"></script>
-										<script src="/user/assets/js/owl.carousel.min.js"></script>
-										<script src="/user/assets/js/jquery.plugin.min.js"></script>
-										<script src="/user/assets/js/jquery.magnific-popup.min.js"></script>
-										<script src="/user/assets/js/jquery.countdown.min.js"></script> 
-										<!-- Main JS File -->
-									 <script src="/user/assets/js/main.js"></script>
-									   
-		  
-										
-		
-		
-										<script src="/user/assets/js/jquery.min.js"></script>
-										<script src="/user/assets/js/bootstrap.bundle.min.js"></script>
-										<script src="/user/assets/js/jquery.hoverIntent.min.js"></script>
-										<script src="/user/assets/js/jquery.waypoints.min.js"></script>
-										<script src="/user/assets/js/superfish.min.js"></script>
-										<script src="/user/assets/js/owl.carousel.min.js"></script>
-										<script src="/user/assets/js/jquery.elevateZoom.min.js"></script>
-										<script src="/user/assets/js/jquery.magnific-popup.min.js"></script>
-										<!-- Main JS File -->
-										<script src="/user/assets/js/main.js"></script>
-										</body>
-										
-										
-										<!-- molla/index-1.html  22 Nov 2019 09:55:32 GMT -->
-										</html>
+                Toast.fire({
+                  icon: "error",
+                  title: "Oops !! try again.",
+                });
+              }
+            },
+          });
+        }
+      });
+    }
+  });
+</script>
+<%- include('../users/layouts/footer2') %>

@@ -152,7 +152,7 @@ const placeOrder = async (req, res) => {
           const totalAmount = orderData.totalAmount;
 
           if (order.paymentMethod == "onlinePayment") {
-            var options = {
+            var options = {             
               amount: totalAmount * 100,
               currency: "INR",
               receipt: "" + orderId,

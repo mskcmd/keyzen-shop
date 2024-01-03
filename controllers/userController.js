@@ -109,7 +109,7 @@ const insertUser = async (req, res) => {
   }
   } catch (error) {
     console.log(error);
-    res.status(500).sendFile(error500)
+    // res.status(500).sendFile(error500)
   }
 };
 

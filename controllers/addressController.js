@@ -30,8 +30,9 @@ const editProfile = async (req, res) => {
    res.status(500).sendFile(error500)
   }
 };
+//==========================================profile - addaddres2=============================================
 
-const addaddres = async (req, res) => {
+const addaddres1 = async (req, res) => {
   try {
     const userData = await User.findById(req.session.user_id);
     if (userData) {
@@ -59,13 +60,12 @@ const addaddres2 = async (req, res) => {
 
 //==========================================addresAdd=============================================
 
-const addresAdd = async (req, res) => {
+
+const addaddres21 = async (req, res) => {
   try {
     const user_id = req.session.user_id;
-    const already = await Address.findOne({ name: req.body.name });
-    if (already) {
-      res.redirect("/addaddres");
-    } else {
+    const userid = req.body.id;
+    if (user_id) {
       const address = new Address({
         user: user_id,
         name: req.body.name,
@@ -76,15 +76,18 @@ const addresAdd = async (req, res) => {
         state: req.body.state,
         pin: req.body.pin,
       });
+
+      // Save the new address
       let result = await address.save();
-      res.redirect("/landchekout");
+      res.json({ success: true });
+    } else {
+      res.redirect("/login");
     }
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
    res.status(500).sendFile(error500)
   }
 };
-
 //==========================================addresAdd1=============================================
 
 const addresAdd1 = async (req, res) => {
@@ -114,9 +117,9 @@ const addresAdd1 = async (req, res) => {
    res.status(500).sendFile(error500)
   }
 };
-//==========================================editaddress=============================================
+//==========================================profile - editaddress=============================================
 
-const editaddress = async (req, res) => {
+const editaddress1 = async (req, res) => {
   try {
     const id = req.query.id;
     const addaddresData = await Address.find({ _id: id });
@@ -174,6 +177,34 @@ const updteaddress2 = async (req, res) => {
    res.status(500).sendFile(error500)
   }
 };
+//==========================================profilel - updteaddress2=============================================
+
+const updteaddress1 = async (req, res) => {
+  try {
+    const addressId = req.body.id;
+    const userId = req.session.user_id;
+    const updated = await Address.updateOne(
+      { user: userId, _id: addressId }, // Find the user and the specific address by its ID
+      {
+        $set: {
+          name: req.body.name,
+          mobile: req.body.mobile,
+          email: req.body.email,
+          houseName: req.body.houseName,
+          city: req.body.city,
+          state: req.body.state,
+          pin: req.body.pin,
+        },
+      }
+    );
+
+
+    res.json({ success: true });
+  } catch (error) {
+    console.log(error.message);
+   res.status(500).sendFile(error500)
+  }
+};
 
 //==========================================removeAddress=============================================
 
@@ -193,15 +224,36 @@ const removeAddress = async (req, res) => {
    res.status(500).sendFile(error500)
   }
 };
+//==========================================profile _removeAddress=============================================
+
+const removeAddress1 = async (req, res) => {
+
+  try {
+    const id = req.body.id;
+console.log(id);
+    const result = await Address.deleteOne(
+      { user: req.session.user_id },
+      { address: { _id: id } }
+    );
+
+
+    res.json({ remove: true });
+  } catch (error) {
+    console.log(error.message);
+   res.status(500).sendFile(error500)
+  }
+};
 
 module.exports = {
   editProfile,
-  addaddres,
-  addresAdd,
-  editaddress,
+  addaddres1,
+  addaddres21,
+  editaddress1,
   addaddres2,
   addresAdd1,
   editaddress2,
   updteaddress2,
   removeAddress,
+  updteaddress1,
+  removeAddress1
 };

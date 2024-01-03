@@ -9,9 +9,7 @@ const path = require("path");
 const ejs = require("ejs");
 const PDFDocument = require("pdfkit");
 const zip = require("express-zip");
-const pdf = require("html-pdf");
 const ExcelJS = require("exceljs");
-const { log } = require("util");
 const moment = require("moment");
 const error500 = path.join(__dirname, 'views', 'error.html')
 

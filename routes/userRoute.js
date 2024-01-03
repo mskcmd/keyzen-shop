@@ -72,10 +72,6 @@ user_route.get("/contact", userController.contact);
 
 //===================================addaddres========================================
 
-user_route.get("/addaddres", Auth.islogin, adddressController.addaddres);
-user_route.post("/addaddress", Auth.islogin, adddressController.addresAdd);
-user_route.get("/editaddress", Auth.islogin, adddressController.editaddress);
-user_route.get("/editaddress", Auth.islogin, adddressController.editaddress);
 
 //===================================addtocart========================================
 
@@ -88,6 +84,24 @@ user_route.post("/updatecart", cartController.changeCartQuantity);
 
 user_route.get("/loadchekout", Auth.islogin, cartController.loadchekout);
 user_route.get("/landchekout", Auth.islogin, cartController.landchekout);
+
+
+//===================================profile - addaddres========================================
+user_route.get("/addaddres1", Auth.islogin, adddressController.addaddres1);
+user_route.post("/addresAdd1", Auth.islogin, adddressController.addaddres21);
+user_route.get("/editaddress1", Auth.islogin, adddressController.editaddress1);
+
+user_route.post(
+  "/updateaddress1",
+  Auth.islogin,
+  adddressController.updteaddress1
+);
+
+user_route.post(
+  "/removeAddress1",
+  Auth.islogin,
+  adddressController.removeAddress1
+);
 
 //===================================addaddres========================================
 

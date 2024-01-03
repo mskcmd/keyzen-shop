@@ -50,7 +50,7 @@ app.use((err, req, res, next) => {
   res.status(500).sendFile(path.join(__dirname, 'views', 'error.html'));
 });
 
+
 app.listen(3000, function () {
   console.log(`Server is running on http://localhost:${3000}`);
 });
-//hai

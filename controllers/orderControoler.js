@@ -150,13 +150,37 @@ const placeOrder = async (req, res) => {
         } else {
           const orderId = orderData._id;
           const totalAmount = orderData.totalAmount;
-
           if (order.paymentMethod == "onlinePayment") {
-            var options = {             
-              amount: totalAmount * 100,
-              currency: "INR",
-              receipt: "" + orderId,
-            };
+            if (req.session.code) {
+              const coupon1 = await Coupon.findOne({
+                couponCode: req.session.code,
+              });
+              const disAmount = coupon1.discountAmount;
+              const disAmount4 = totalAmount - disAmount;
+            
+              if (coupon1) {
+                var options = {
+                  amount: disAmount4 * 100,
+                  currency: "INR",
+                  receipt: "" + orderId,
+                };
+              } else {
+                var options = {
+                  amount: totalAmount * 100,
+                  currency: "INR",
+                  receipt: "" + orderId,
+                };
+              }
+            } else {
+              // Handle the case when req.session.code is falsy (e.g., undefined or null)
+              // You might want to set default options or handle it differently based on your requirements.
+              var options = {
+                amount: totalAmount * 100,
+                currency: "INR",
+                receipt: "" + orderId,
+              };
+            }
+            
             const order = instance.orders.create(
               options,
               function (err, order) {

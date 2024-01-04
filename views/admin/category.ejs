@@ -141,29 +141,29 @@
           </table>
           
         </div>
-        <nav aria-label="Page navigation example">
-          <ul class="pagination d-flex justify-content-center">
-            <li class="page-item">
-              <a class="page-link" href="?page=1" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            <!-- Use a loop to generate page links -->
-            <% for (let i = 1; i <= totalPages; i++) { %>
-              <li class="page-item <%= i == currentPage ? 'active' : '' %>">
-                <!-- Use '==' instead of '===' for loose equality -->
-                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-              </li>
-            <% } %>
-            <li class="page-item">
-              <a class="page-link" href="?page=<%= totalPages %>" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+       
       </div>
-  
+      <nav aria-label="Page navigation example">
+        <ul class="pagination d-flex justify-content-center">
+          <li class="page-item">
+            <a class="page-link" href="?page=1" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <!-- Use a loop to generate page links -->
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <li class="page-item <%= i == currentPage ? 'active' : '' %>">
+              <!-- Use '==' instead of '===' for loose equality -->
+              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+            </li>
+          <% } %>
+          <li class="page-item">
+            <a class="page-link" href="?page=<%= totalPages %>" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
     
   </div>

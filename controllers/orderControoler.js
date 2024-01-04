@@ -254,6 +254,7 @@ const placeOrder = async (req, res) => {
               }
 
               await Cart.deleteOne({ user: userId });
+              
               return res.json({ success: true });
             } else {
               console.log("false");

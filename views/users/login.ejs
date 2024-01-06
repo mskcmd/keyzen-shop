@@ -1,8 +1,11 @@
 <%- include('../users/layouts/navbar') %>
 
 <!-- End .header -->
+<style>
+  
+</style>
+<main class="main" >
 
-<main class="main">
   <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
     <div class="container">
       <ol class="breadcrumb">
@@ -14,14 +17,16 @@
     <!-- End .container -->
   </nav>
   <!-- End .breadcrumb-nav -->
+ 
+  <div  class="login-page bg-image pt-14 pb-6 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
+  style="
+    background-image: url('/user/assets/images/backgrounds/login-bg.jpg');
 
-  <div
-    class="login-page bg-image pt-8 pb-6 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
-    style="
-      background-image: url('/user/assets/images/backgrounds/login-bg.jpg');
-    "
-  >
-    <div class="container-fluid">
+  " >
+  
+ 
+>
+    <div class="container-fluid" >
       <div class="form-box">
         <div class="form-tab text-center">
           <h3 class="mb-3">Sign In</h3>
@@ -78,7 +83,6 @@
       </div>
     </div>
   </div>
-
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       var loginForm = document.getElementById("loginForm");

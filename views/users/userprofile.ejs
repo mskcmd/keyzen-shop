@@ -38,7 +38,7 @@
 </style>
 
 <main class="main">
-  <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+  <div class="page-header text-center" style="background-image: url('/user/assets/images/page-header-bg.jpg')">
     <div class="container">
       <h1 class="page-title">My Account<span>Shop</span></h1>
     </div>
@@ -153,16 +153,15 @@
                 <table class="table table-cart table-mobile">
                   <thead>
                     <tr>
-                      <th>No.</th>
-                      <th>Date</th>
-                      <th>Amount</th>
-                      <th>Payment</th>
-                      <th>count</th>
-                      <th>Status</th>
-                      <th>Details</th>
-
-
+                      <th><strong class="text-dark">No.</strong></th>
+                      <th><strong class="text-dark">Date</strong></th>
+                      <th><strong class="text-dark">Amount</strong></th>
+                      <th><strong class="text-dark">Payment</strong></th>
+                      <th><strong class="text-dark">Count</strong></th>
+                      <th><strong class="text-dark">Status</strong></th>
+                      <th><strong class="text-dark">Details</strong></th>
                     </tr>
+
                   </thead>
 
                   <tbody>
@@ -172,13 +171,21 @@
                       <td><%= i+1 %></td>
                       <td><%= oderData[i].date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %></td>
                       <td>₹ <%= oderData[i].totalAmount %></td>
+
                       <td><%= oderData[i].paymentMethod %> </td>
-                      <td><%= oderData[i].products.length %></td>
-                      <td><%= oderData[i].status %></td>
+                      <td ><strong><%= oderData[i].products.length %></strong></td>
+                      <td>
+                        <% if (oderData[i].status === 'pending') { %>
+                        <span style="color: rgb(194, 6, 6);"><%= oderData[i].status %></span>
+                        <% } else { %>
+                        <span><%= oderData[i].status %></span>
+                        <% } %>
+                      </td>
+
                       <td>
                         <a href="/viewOrderDetails?id=<%=oderData[i]._id%>" class="btn btn-outline-dark btn-round" style="background-color: green; color: white;">View Details</a>
                       </td>
-                      
+
                       </td>
 
 
@@ -242,9 +249,9 @@
                           <div class="text-md-center text-xl-left">
                             <!-- <h6 class="mb-1">Cancel Refund</h6> -->
                             <h6 class="font-weight-bold mb-0">
-                             
+
                               ID: &nbsp<%= walletHistory.cancelOderId  %>
-                              
+
                             </h6>
                             <p class="text-muted mb-0">
                               <%= walletHistory.date.toLocaleDateString('en-US',
@@ -395,9 +402,9 @@
                   add.length;i++) { %>
 
                   <div class="col-lg-6">
-                   
+
                     <div class="card card-dashboard">
-                     
+
                       <div class="card-body">
                         <h3 class="card-title">Billing Address</h3>
                         <!-- End .card-title -->
@@ -413,13 +420,13 @@
 
                         </p>
                         <a href="/editaddress1?id=<%=add[i]._id %>">
-                <button  class="btn btn-white" style="margin-bottom: 10px; background-color: rgb(130, 241, 173);">Edit Address</button>
+                          <button class="btn btn-white" style="margin-bottom: 10px; background-color: rgb(130, 241, 173);">Edit Address</button>
 
-              </a>
-              <a onclick="removeAddress1('<%= add[i]._id %>')">
-                <button class="btn btn-white" style="margin-bottom: 10px; background-color: rgb(209, 55, 50);">Remove Address</button>
+                        </a>
+                        <a onclick="removeAddress1('<%= add[i]._id %>')">
+                          <button class="btn btn-white" style="margin-bottom: 10px; background-color: rgb(209, 55, 50);">Remove Address</button>
 
-              </a>
+                        </a>
                       </div>
                       <!-- End .card-body -->
                     </div>

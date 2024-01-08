@@ -172,8 +172,7 @@ const placeOrder = async (req, res) => {
                 };
               }
             } else {
-              // Handle the case when req.session.code is falsy (e.g., undefined or null)
-              // You might want to set default options or handle it differently based on your requirements.
+             
               var options = {
                 amount: totalAmount * 100,
                 currency: "INR",

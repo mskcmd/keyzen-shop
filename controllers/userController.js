@@ -580,18 +580,8 @@ const searchproduct = async (req, res) => {
     const category = await Cate.find({ blocked: 0 });
     const searchTerm = req.query.q;
     
-    // Check if the search term is a full string or substring
-    const isSubstringSearch = req.query.subSearch === 'true';
-    
-    let regex;
-    
-    if (isSubstringSearch) {
-      // Substring search
-      regex = new RegExp(`${searchTerm}`, "i");
-    } else {
-      // Full string search
-      regex = new RegExp(`^${searchTerm}`, "i");
-    }
+    // Always use full string search
+    const regex = new RegExp(`${searchTerm}`, "i");
 
     const products = await productdata.find({
       name: { $regex: regex },
@@ -609,6 +599,7 @@ const searchproduct = async (req, res) => {
     res.status(500).sendFile(error500);
   }
 };
+
          
 const loadError = async (req, res) => {
   try {

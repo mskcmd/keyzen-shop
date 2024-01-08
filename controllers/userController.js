@@ -578,12 +578,26 @@ const searchproduct = async (req, res) => {
   try {
     const user = req.session.user_id;
     const category = await Cate.find({ blocked: 0 });
-    const name = req.query.q;
-    const regex = new RegExp(`^${name}`, "i");
+    const searchTerm = req.query.q;
+    
+    // Check if the search term is a full string or substring
+    const isSubstringSearch = req.query.subSearch === 'true';
+    
+    let regex;
+    
+    if (isSubstringSearch) {
+      // Substring search
+      regex = new RegExp(`${searchTerm}`, "i");
+    } else {
+      // Full string search
+      regex = new RegExp(`^${searchTerm}`, "i");
+    }
+
     const products = await productdata.find({
       name: { $regex: regex },
       blocked: 0,
     });
+
     res.render("shop", {
       user,
       products: products,
@@ -592,9 +606,10 @@ const searchproduct = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    res.status(500).sendFile(error500)
+    res.status(500).sendFile(error500);
   }
 };
+         
 const loadError = async (req, res) => {
   try {
     res.status(404).render("404");

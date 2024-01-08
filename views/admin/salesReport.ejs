@@ -1,5 +1,6 @@
-<%- include('../admin/layouts/adminsidebars') %> <%-
-include('../admin/layouts/adminnavebar') %> >
+<%- include('../admin/layouts/adminsidebars') %>
+<%- include('../admin/layouts/adminnavebar') %>
+
 
 
 
@@ -143,10 +144,45 @@ include('../admin/layouts/adminnavebar') %> >
         </ul>
       </nav> -->
 
-  </div><%- include('../admin/layouts/adminfootbar') %>
+  </div>
 
   <!-- content-wrapper ends -->
- 
+  <script>
+    function isValidDate(dateString) {
+        var regexDate = /^\d{4}-\d{2}-\d{2}$/;
+        return regexDate.test(dateString);
+    }
+
+    function isDateAfter(date1, date2) {
+        var currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0); // Set current date to midnight for accurate comparison
+
+        return new Date(date1) > currentDate && new Date(date1) > new Date(date2);
+    }
+
+    document.getElementById('submitDateRangeBtn').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent the form from submitting by default
+
+        var fromDate = document.getElementById('fromDate').value;
+        var toDate = document.getElementById('toDate').value;
+        var dateError = document.getElementById('dateError');
+
+        // Clear any existing error messages
+        dateError.textContent = '';
+
+        if (fromDate.trim() === '' || toDate.trim() === '') {
+            dateError.textContent = 'Both From Date and To Date are required.';
+        } else if (!isValidDate(fromDate) || !isValidDate(toDate)) {
+            dateError.textContent = 'Enter valid dates in the format YYYY-MM-DD.';
+        } else if (!isDateAfter(toDate, fromDate)) {
+            dateError.textContent = 'To Date must be after From Date and the current date.';
+        } else {
+            // If all validations pass, submit the form
+            document.getElementById('reportForm').submit();
+        }
+    });
+</script>
+
   <script>
 
     
@@ -165,7 +201,6 @@ include('../admin/layouts/adminnavebar') %> >
       const duration = urlParts[urlParts.length - 1];
       console.log("duration", duration);
   
-      // Fix: Get 'fromDate' parameter using getUrlParameter function
       let fromDate = getUrlParameter('fromDate');
       console.log("fromDate", fromDate);
   
@@ -180,7 +215,6 @@ include('../admin/layouts/adminnavebar') %> >
       const duration = urlParts[urlParts.length - 1];
       console.log("duration", duration);
   
-      // Fix: Get 'fromDate' parameter using getUrlParameter function
       let fromDate = getUrlParameter('fromDate');
       console.log("fromDate", fromDate);
   
@@ -188,4 +222,6 @@ include('../admin/layouts/adminnavebar') %> >
       excelurl.href = `/admin/reportDown?duration=${duration}&format=excel&fromDate=${fromDate}`;
     });
   </script>
-  
+
+    <%- include('../admin/layouts/adminfootbar') %>
+

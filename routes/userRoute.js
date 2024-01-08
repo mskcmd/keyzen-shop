@@ -70,7 +70,6 @@ user_route.post("/reSetpass", userController.reSetpass);
 
 user_route.get("/contact", userController.contact);
 
-//===================================addaddres========================================
 
 
 //===================================addtocart========================================

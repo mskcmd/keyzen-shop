@@ -645,7 +645,7 @@ const orderSuccess = async (req, res) => {
         res.render("orderSuccess", { user: userData });
         req.session.success = false;
       } else {
-        res.redirect("404");
+        res.redirect("/");
       }
     } else {
       res.redirect("/login");

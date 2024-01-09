@@ -142,9 +142,11 @@ const placeOrder = async (req, res) => {
                 { $set: { applied: "applied" } }
               );
             }
+            req.session.success=true
             await Cart.deleteOne({ user: userId });
             return res.json({ success: true, orderId });
           }
+          req.session.success=true
           await Cart.deleteOne({ user: userId });
           return res.json({ success: true, orderId });
         } else {
@@ -248,12 +250,13 @@ const placeOrder = async (req, res) => {
                     { $set: { applied: "applied" } }
                   );
                 }
+                req.session.success=true
                 await Cart.deleteOne({ user: userId });
                 return res.json({ success: true, orderId });
               }
 
               await Cart.deleteOne({ user: userId });
-              
+              req.session.success=true
               return res.json({ success: true });
             } else {
               console.log("false");
@@ -358,6 +361,7 @@ const verifyPayment = async (req, res) => {
         const cartDeletion = await Cart.deleteOne({ user: userId });
 
         const orderid = details.order.receipt;
+        req.session.success=true
         await Cart.deleteOne({ user: userId });
         return res.json({ codsuccess: true, orderId });
       }
@@ -371,7 +375,7 @@ const verifyPayment = async (req, res) => {
           },
         }
       );
-
+      req.session.success=true
       const cartDeletion = await Cart.deleteOne({ user: userId });
       const orderid = details.order.receipt;
       res.json({ codsuccess: true, orderid });
@@ -637,14 +641,22 @@ const orderSuccess = async (req, res) => {
   try {
     const userData = await User.findById(req.session.user_id);
     if (userData) {
-      res.render("orderSuccess", { user: userData });
+      if (req.session.success) {
+        res.render("orderSuccess", { user: userData });
+        req.session.success = false;
+      } else {
+        res.redirect("404");
+      }
     } else {
       res.redirect("/login");
     }
   } catch (error) {
     console.log(error.message);
-res.status(500).sendFile(error500)  }
+    res.status(500).sendFile(error500);
+  }
 };
+
+
 //==========================================homeOrderBtn=============================================
 
 const homeOrderBtn = async (req, res) => {

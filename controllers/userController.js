@@ -232,7 +232,7 @@ const homeload = async (req, res) => {
   try {
     const userData = await User.findById(req.session.user_id);
     const products = await productdata.find({ blocked: 0 });
-
+    req.session.success = false;
     res.render("home", { user: userData, products: products });
   } catch (error) {
     console.log(error.message);

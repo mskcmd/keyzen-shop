@@ -13,7 +13,7 @@
   }
 </style>
 <main class="main">
-  <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+  <div class="page-header text-center" style="background-image: url('/user/assets/images/page-header-bg.jpg')">
     <div class="container">
       <h1 class="page-title">Checkout<span>Shop</span></h1>
     </div><!-- End .container -->
@@ -125,7 +125,7 @@
                     <td>
                       <a href="/product?id=<%= cartData.products[i].product._id %>">
                         <%= cartData.products[i].product.name %>.(Set: <%=
-                                                                    cartData.products[i].count%>)
+                           cartData.products[i].count%>)
                       </a>
                     </td>
                     <td>
@@ -139,13 +139,11 @@
                   </tr>
                   <% } } %>
                   <tr id="appliedBadge" style="display: none;">
-                    <td>Coupon</td>
-                    
-                    <td> Coupon Applied</td>
+                    <td>Coupen :</td>
+                    <td>Coupon Applied</td>
                   </tr>
                   <tr class="summary-subtotal" id="disCol" style="display: none;">
                     <td> Discount Amount:</td>
-                    <td></td>
                     <td id="discount"></td>
                   </tr>
 
@@ -359,6 +357,7 @@
       success: (response) => {
         if (response.codsuccess == true) {
           window.location.href = "/orderSuccess"
+          // location.href = `/orderSuccess?id=${order_id}`
         } else {
           swal.fire({
             positon: "center",

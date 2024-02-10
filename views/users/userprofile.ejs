@@ -134,6 +134,13 @@
                             <input type="tel" name="mobile" id="phoneNumber" value="<%=user.mobile%>" class="form-control validate" pattern="[0-9]{10}" />
                             <div id="numberError" style="display: none; color: red"></div>
                           </div>
+                          <!-- <label for="photo">Profile Photo:</label>
+                          <div class="rounded-image-preview" style="width: 100px; height: 100px;">
+                              <img id="imagePreview" src="/admin/assets/images/preview.jpg" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;">
+                          </div>
+                          <input type="file" id="photo" name="photo" accept="image/*"> -->
+                          
+                          
                           <div id="profileSuccess" style="display: none; color: green"></div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
@@ -470,6 +477,31 @@
   <!-- End .page-content -->
 </main>
 <!-- End .main -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+        document.getElementById('photo').addEventListener('change', function() {
+            updateImagePreview(this, 'imagePreview');
+        });
+
+        function updateImagePreview(inputElement, imagePreviewId) {
+            var imagePreview = document.getElementById(imagePreviewId);
+            var file = inputElement.files[0];
+
+            if (file) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                // Reset the image preview when no file is selected
+                imagePreview.src = "/admin/assets/images/preview.jpg";
+            }
+        }
+    </script>
 
 <script>
   document

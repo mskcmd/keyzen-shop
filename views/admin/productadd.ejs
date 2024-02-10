@@ -23,21 +23,21 @@
 
 
             <div class="form-group">
-  <label for="Category">Category</label>
-  <select name="category" id="categorySelect">
-    <% if (catData.length > 0) { %>
-      <% for (let i = 0; i < catData.length; i++) { %>
-        <option value="<%= catData[i]._id %>" <% if (catData._id && catData._id.toString() === catData[i]._id.toString()) { %>selected<% } %>>
-          <%= catData[i].name.slice(0, 10) %>
-        </option>
-      <% } %>
-    <% } else { %>
-      <option value="" selected>No Categories</option>
-    <% } %>
-  </select> 
-</div>
+              <label for="Category">Category</label>
+              <select name="category" id="categorySelect">
+                <% if (catData.length > 0) { %>
+                <% for (let i = 0; i < catData.length; i++) { %>
+                <option value="<%= catData[i]._id %>" <% if (catData._id && catData._id.toString() === catData[i]._id.toString()) { %>selected<% } %>>
+                  <%= catData[i].name.slice(0, 10) %>
+                </option>
+                <% } %>
+                <% } else { %>
+                <option value="" selected>No Categories</option>
+                <% } %>
+              </select>
+            </div>
 
-            
+
             <div class="form-group">
               <label for="exampleInputPassword4">Quantity</label>
               <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Quantity">
@@ -123,47 +123,44 @@
       updateImagePreview(input, imagePreviewId);
     });
   });
-
-  
-
 </script>
 <script>
   //=============PRODUCT VALIDATION==================
-document.getElementById('addPro').addEventListener('click', function(event){
-    
+  document.getElementById('addPro').addEventListener('click', function(event) {
+
     const name = document.getElementById('name').value;
     const price = document.getElementById('price').value;
     const quantity = document.getElementById('quantity').value;
     const description = document.getElementById('description').value;
-    
+
     const nameError = document.getElementById('nameError')
     const priceError = document.getElementById('priceError')
     const quanError = document.getElementById('quanError')
     const descError = document.getElementById('descError')
 
-    if(price.trim() === "" && quantity.trim() == "" && description.trim() == ""){
+    if (price.trim() === "" && quantity.trim() == "" && description.trim() == "") {
       nameError.style.display = ""
       nameError.textContent = "Must fillout all the fields."
       event.preventDefault()
-    }else if(name.trim() == ""){
+    } else if (name.trim() == "") {
       nameError.style.display = ""
       nameError.textContent = "Product name is required."
       event.preventDefault()
-    }else if(price < 1){
+    } else if (price < 1) {
       priceError.style.display = ""
       priceError.textContent = "Price must be positive value."
       event.preventDefault()
-    }else if(quantity < 1){
+    } else if (quantity < 1) {
       quanError.style.display = ""
       quanError.textContent = "Quantity must be positive value."
       event.preventDefault()
-    }else if(description.length < 10){
+    } else if (description.length < 10) {
       descError.style.display = ""
       descError.textContent = "Description atleast 10 letters."
     }
 
-})
-  </script>
+  })
+</script>
 
 <!-- Include your footer here -->
 <%- include('../admin/layouts/adminfootbar') %>

@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://via.placeholder.com/150x150.png?text=Keyzen+Logo" alt="Keyzen Logo" width="150"/>
+  <img src="https://scontent-bom2-1.xx.fbcdn.net/v/t39.30808-6/453999291_122104429784449942_8781013130901857629_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=57znYWzWze4Q7kNvgFPOU2C&_nc_ht=scontent-bom2-1.xx&oh=00_AYA24M_7uhsihTZZW8U680iu5VVtsP6a-koG-IPfy_i-Xw&oe=66B66CC9" alt="Keyzen Logo" width="150"/>
 
   # Keyzen Furniture Shop
 

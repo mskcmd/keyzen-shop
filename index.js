@@ -8,6 +8,7 @@ const app = express();
 const crypto = require("crypto");
 const secretKey = crypto.randomBytes(32).toString("hex");
 const nocache = require("nocache");
+require('dotenv').config();
 
 
 app.use(nocache());

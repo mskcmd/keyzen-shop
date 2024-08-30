@@ -47,8 +47,8 @@ const sendVerifyMail = async (email, name, otp) => {
       secure: false,
       requireTLS: true,
       auth: {
-      user: process.env.EMAIL_USER,
-        pass: "kibv yizd iomd mgwf",
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
     const mailOptions = {

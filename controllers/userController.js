@@ -40,7 +40,7 @@ const loadRegister = async (req, res) => {
 //==========================================sendVerifyMail============================================
 
 const sendVerifyMail = async (email, name, otp) => {
-  try {
+  try {    
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 587,

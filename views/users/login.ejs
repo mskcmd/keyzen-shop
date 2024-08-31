@@ -1,11 +1,8 @@
 <%- include('../users/layouts/navbar') %>
 
 <!-- End .header -->
-<style>
-  
-</style>
-<main class="main" >
-
+<style></style>
+<main class="main">
   <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
     <div class="container">
       <ol class="breadcrumb">
@@ -17,22 +14,24 @@
     <!-- End .container -->
   </nav>
   <!-- End .breadcrumb-nav -->
- 
-  <div  class="login-page bg-image pt-14 pb-6 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
-  style="
-    background-image: url('/user/assets/images/backgrounds/login-bg.jpg');
-height: 100%;
-  " >
-  
- 
->
-    <div class="container-fluid" style="height: 650px;   overflow: hidden; " >
+
+  <div
+    class="login-page bg-image pt-14 pb-6 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
+    style="
+      background-image: url('/user/assets/images/backgrounds/login-bg.jpg');
+      height: 100%;
+    "
+  >
+    >
+
+    <div class="container-fluid" style="height: 650px; overflow: hidden">
       <div class="form-box">
         <div class="form-tab text-center">
           <h3 class="mb-3">Sign In</h3>
-
         </div>
-
+        <div class="text-center mt-3">
+          <button id="fill-test-credentials" class="btn btn-secondary">Use Test Credentials</button>
+        </div>
         <form action="login" method="post" id="loginForm">
           <div class="form-group">
             <label for="singin-email-2" class="mb-2"
@@ -75,13 +74,15 @@ height: 100%;
           class="error-message alert-danger text-center"
         ></p>
 
-        <% if (typeof message !== "undefined") { %>
+        <% if (typeof message !=="undefined" ) { %>
         <div class="alert alert-primary mt-3" role="alert">
           <!-- Replace the message with your dynamic message -->
           <%= message %>
         </div>
         <% } %>
       </div>
+
+      <!-- Test Button -->
     </div>
   </div>
   <script>
@@ -102,6 +103,13 @@ height: 100%;
 
           loginForm.submit();
         }
+      });
+
+      // Fill Test Credentials
+      var fillTestButton = document.getElementById("fill-test-credentials");
+      fillTestButton.addEventListener("click", function () {
+        document.getElementById("email").value = "test@gmail.com";
+        document.getElementById("password").value = "Abcd@123";
       });
     });
   </script>

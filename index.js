@@ -1,3 +1,4 @@
+require('dotenv').config();
 const mongoDB = require('./config/mongoAuth')
 mongoDB.mongoDB()
 const session = require("express-session");
